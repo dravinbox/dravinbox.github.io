@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="Dravin&#39;s Blog">
 <meta property="og:description" content="部署Zookeeper单台机器部署3个zookeeper节点首先，初始化swarm 1docker swarm init 然后编辑一个文件,如下： docker-compose-single.yml 1234567891011121314151617181920212223242526272829303132333435363738394041version: &apos;3.1&apos;services:">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-21T03:33:41.722Z">
+<meta property="og:updated_time" content="2017-12-21T04:16:26.207Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在docker里部署zookeeper">
 <meta name="twitter:description" content="部署Zookeeper单台机器部署3个zookeeper节点首先，初始化swarm 1docker swarm init 然后编辑一个文件,如下： docker-compose-single.yml 1234567891011121314151617181920212223242526272829303132333435363738394041version: &apos;3.1&apos;services:">
@@ -132,6 +132,16 @@
 
 
 
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?46c6464e6051e8e95a52fdd11a5edceb";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
 
 
 
@@ -350,6 +360,17 @@
 
           
             
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/12/21/docker-zookeeper/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2017/12/21/docker-zookeeper/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
           
 
           
@@ -387,19 +408,20 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="built_in">stat</span> | nc 127.0.0.1 2183</span><br></pre></td></tr></table></figure>
 <p>如果显示如下内容，说明启动成功，zookeeper的容器已经绑定在你本机的2181,2182,2183端口上</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Zookeeper version: 3.4.11-37e277162d567b55a07d1755f0b31c32e93c01a0, built on 11/01/2017 18:06 GMT</span><br><span class="line">Clients:</span><br><span class="line"> /10.255.0.2:56420[0](queued=0,recved=1,sent=0)</span><br><span class="line"></span><br><span class="line">Latency min/avg/max: 0/0/0</span><br><span class="line">Received: 1</span><br><span class="line">Sent: 0</span><br><span class="line">Connections: 1</span><br><span class="line">Outstanding: 0</span><br><span class="line">Zxid: 0x0</span><br><span class="line">Mode: follower</span><br><span class="line">Node count: 4</span><br></pre></td></tr></table></figure>
-<h3 id="怎么使用zkCli-sh登陆客户端呢："><a href="#怎么使用zkCli-sh登陆客户端呢：" class="headerlink" title="怎么使用zkCli.sh登陆客户端呢："></a>怎么使用zkCli.sh登陆客户端呢：</h3><p>首先, </p>
+<div class="note primary"><h3 id="怎么使用zkCli-sh登陆客户端呢："><a href="#怎么使用zkCli-sh登陆客户端呢：" class="headerlink" title="怎么使用zkCli.sh登陆客户端呢："></a>怎么使用zkCli.sh登陆客户端呢：</h3></div>
+<p>首先, </p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">docker ps</span><br><span class="line">CONTAINER ID        IMAGE                             COMMAND                  CREATED             STATUS              PORTS                          NAMES</span><br><span class="line">99ee6c7335cd        zookeeper:latest                  <span class="string">"/docker-entrypoin..."</span>   17 hours ago        Up 17 hours         2181/tcp, 2888/tcp, 3888/tcp   zoolab_zoo2.1.0rfczhfcn1782fzpb2d6ir2iq</span><br><span class="line">0148b0cc522f        zookeeper:latest                  <span class="string">"/docker-entrypoin..."</span>   17 hours ago        Up 17 hours         2181/tcp, 2888/tcp, 3888/tcp   zoolab_zoo3.1.981cslrn7zqegvvp90r5vx5dm</span><br><span class="line">e534fd292d3f        zookeeper:latest                  <span class="string">"/docker-entrypoin..."</span>   17 hours ago        Up 17 hours         2181/tcp, 2888/tcp, 3888/tcp   zoolab_zoo1.1.k45vcu9hqmzsxf8fg56b5hlx8</span><br><span class="line">12e9ab6ae214        dockersamples/visualizer:stable   <span class="string">"npm start"</span>              17 hours ago        Up 17 hours         8080/tcp                       zoolab_visualizer.1.hbg9c9sx9zd2c3obcaa9nbwgi</span><br></pre></td></tr></table></figure>
 <p>找到zookeeper的容器id : 99ee6c7335cd，0148b0cc522f，e534fd292d3f</p>
 <p>我们现在选择一个容器id，进入容器:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker  <span class="built_in">exec</span>  -it  99ee6c7335cd bash</span><br><span class="line"></span><br><span class="line">bash-4.4<span class="comment"># ls</span></span><br><span class="line">LICENSE.txt                bin                        dist-maven                 lib                        zookeeper-3.4.11.jar.asc</span><br><span class="line">NOTICE.txt                 build.xml                  docs                       recipes                    zookeeper-3.4.11.jar.md5</span><br><span class="line">README.md                  conf                       ivy.xml                    src                        zookeeper-3.4.11.jar.sha1</span><br><span class="line">README_packaging.txt       contrib                    ivysettings.xml            zookeeper-3.4.11.jar</span><br><span class="line">bash-4.4<span class="comment"># ./bin/zkCli.sh （直接回车即可登陆zk客户端）</span></span><br></pre></td></tr></table></figure>
 <p>即可使用 zk 的 ls , get ,set ,create 等命令,</p>
-<h3 id="为了验证3个zookeeper之间的数据是互通的"><a href="#为了验证3个zookeeper之间的数据是互通的" class="headerlink" title="为了验证3个zookeeper之间的数据是互通的"></a>为了验证3个zookeeper之间的数据是互通的</h3><p>我们可以登陆到一个容器里的zkCli创建一个节点数据：</p>
+<div class="note primary"><h3 id="为了验证3个zookeeper之间的数据是互通的"><a href="#为了验证3个zookeeper之间的数据是互通的" class="headerlink" title="为了验证3个zookeeper之间的数据是互通的"></a>为了验证3个zookeeper之间的数据是互通的</h3></div>
+<p>我们可以登陆到一个容器里的zkCli创建一个节点数据：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#容器99ee6c7335cd里的zkCli里输入</span></span><br><span class="line">[zk: localhost:2181(CONNECTED) 1] create /<span class="built_in">test</span> 123456</span><br><span class="line">Created /<span class="built_in">test</span></span><br></pre></td></tr></table></figure>
 <p>我们登陆到另一台的容器的zkCli里：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#容器0148b0cc522f里的zkCli里输入</span></span><br><span class="line">[zk: localhost:2181(CONNECTED) 1] get /<span class="built_in">test</span></span><br><span class="line">123456</span><br><span class="line">cZxid = 0x100000002</span><br><span class="line">ctime = Thu Dec 21 03:29:15 GMT 2017</span><br><span class="line">mZxid = 0x100000002</span><br><span class="line">mtime = Thu Dec 21 03:29:15 GMT 2017</span><br><span class="line">pZxid = 0x100000002</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 0</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 6</span><br><span class="line">numChildren = 0</span><br></pre></td></tr></table></figure>
 <p>如果在其他的容器里的zkCli能获取其他容器创建的节点数据，说明他们的数据是互通的。</p>
-<h2 id="多台机器部署3个zookeeper节点"><a href="#多台机器部署3个zookeeper节点" class="headerlink" title="多台机器部署3个zookeeper节点"></a>多台机器部署3个zookeeper节点</h2><p>在多台机器上部署</p>
-
+<h2 id="多台机器部署3个zookeeper节点"><a href="#多台机器部署3个zookeeper节点" class="headerlink" title="多台机器部署3个zookeeper节点"></a>多台机器部署3个zookeeper节点</h2>
       
     </div>
     
@@ -480,6 +502,15 @@
 
 
           
+  
+    <div class="comments" id="comments">
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    </div>
   
 
 
@@ -748,6 +779,26 @@
 
   
 
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2017/12/21/docker-zookeeper/';
+          this.page.identifier = '2017/12/21/docker-zookeeper/';
+          this.page.title = '在docker里部署zookeeper';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
 
   
 
