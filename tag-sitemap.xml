@@ -2,15 +2,15 @@
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     <url>
-        <loc>http://dravinbox.github.io/tags/Docker/</loc>
+        <loc>http://dravinbox.github.io/tags/Zookeeper/</loc>
         <lastmod>2017-12-22T02:32:12.187Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>http://dravinbox.github.io/tags/Zookeeper/</loc>
-        <lastmod>2017-12-22T02:32:12.187Z</lastmod>
+        <loc>http://dravinbox.github.io/tags/Docker/</loc>
+        <lastmod>2017-12-22T03:08:12.803Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

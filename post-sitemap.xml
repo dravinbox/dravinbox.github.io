@@ -7,6 +7,46 @@
     </url>
 
     <url>
+        <loc>http://dravinbox.github.io/2017/12/22/docker-part5/</loc>
+        <lastmod>2017-12-22T03:08:12.803Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2017/12/22/docker-part4/</loc>
+        <lastmod>2017-12-22T03:04:10.161Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2017/12/22/docker-part3/</loc>
+        <lastmod>2017-12-22T02:59:19.915Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2017/12/22/docker-part2/</loc>
+        <lastmod>2017-12-22T02:54:50.890Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2017/12/22/docker-part1/</loc>
+        <lastmod>2017-12-22T02:54:42.508Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://dravinbox.github.io/2017/12/21/docker-zookeeper/</loc>
         <lastmod>2017-12-22T02:32:12.187Z</lastmod>
         <changefreq>weekly</changefreq>
