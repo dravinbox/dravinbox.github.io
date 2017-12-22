@@ -2,23 +2,23 @@
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
     <sitemap>
-        <loc>http://yoursite.com/post-sitemap.xml</loc>
-        <lastmod>2017-12-21T08:21:16.060Z</lastmod>
+        <loc>http://dravinbox.github.io/post-sitemap.xml</loc>
+        <lastmod>2017-12-22T02:32:12.187Z</lastmod>
     </sitemap>
 
     <sitemap>
-        <loc>http://yoursite.com/page-sitemap.xml</loc>
+        <loc>http://dravinbox.github.io/page-sitemap.xml</loc>
         <lastmod>2017-12-21T09:55:52.515Z</lastmod>
     </sitemap>
 
     <sitemap>
-        <loc>http://yoursite.com/category-sitemap.xml</loc>
-        <lastmod>2017-12-21T08:21:16.060Z</lastmod>
+        <loc>http://dravinbox.github.io/category-sitemap.xml</loc>
+        <lastmod>2017-12-22T02:32:12.187Z</lastmod>
     </sitemap>
 
     <sitemap>
-        <loc>http://yoursite.com/tag-sitemap.xml</loc>
-        <lastmod>2017-12-21T08:21:16.060Z</lastmod>
+        <loc>http://dravinbox.github.io/tag-sitemap.xml</loc>
+        <lastmod>2017-12-22T02:32:12.187Z</lastmod>
     </sitemap>
 
 </sitemapindex>

@@ -85,11 +85,11 @@
 <meta name="keywords" content="Docker,Zookeeper">
 <meta property="og:type" content="article">
 <meta property="og:title" content="在docker里部署zookeeper">
-<meta property="og:url" content="http://yoursite.com/2017/12/21/docker-zookeeper/index.html">
+<meta property="og:url" content="http://dravinbox.github.io/2017/12/21/docker-zookeeper/index.html">
 <meta property="og:site_name" content="Dravin&#39;s Blog">
 <meta property="og:description" content="部署Zookeeper单台机器部署3个zookeeper节点首先，初始化swarm 1docker swarm init 然后编辑一个文件,如下： docker-compose-single.yml 1234567891011121314151617181920212223242526272829303132333435363738394041version: &apos;3.1&apos;services:">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-21T08:21:16.060Z">
+<meta property="og:updated_time" content="2017-12-22T02:32:12.187Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="在docker里部署zookeeper">
 <meta name="twitter:description" content="部署Zookeeper单台机器部署3个zookeeper节点首先，初始化swarm 1docker swarm init 然后编辑一个文件,如下： docker-compose-single.yml 1234567891011121314151617181920212223242526272829303132333435363738394041version: &apos;3.1&apos;services:">
@@ -122,7 +122,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2017/12/21/docker-zookeeper/"/>
+  <link rel="canonical" href="http://dravinbox.github.io/2017/12/21/docker-zookeeper/"/>
 
 
 
@@ -322,7 +322,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/12/21/docker-zookeeper/">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2017/12/21/docker-zookeeper/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Dravin">
@@ -459,13 +459,80 @@
 <p>我们登陆到另一台的容器的zkCli里：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#容器0148b0cc522f里的zkCli里输入</span></span><br><span class="line">[zk: localhost:2181(CONNECTED) 1] get /<span class="built_in">test</span></span><br><span class="line">123456</span><br><span class="line">cZxid = 0x100000002</span><br><span class="line">ctime = Thu Dec 21 03:29:15 GMT 2017</span><br><span class="line">mZxid = 0x100000002</span><br><span class="line">mtime = Thu Dec 21 03:29:15 GMT 2017</span><br><span class="line">pZxid = 0x100000002</span><br><span class="line">cversion = 0</span><br><span class="line">dataVersion = 0</span><br><span class="line">aclVersion = 0</span><br><span class="line">ephemeralOwner = 0x0</span><br><span class="line">dataLength = 6</span><br><span class="line">numChildren = 0</span><br></pre></td></tr></table></figure>
 <p>如果在其他的容器里的zkCli能获取其他容器创建的节点数据，说明他们的数据是互通的。</p>
-<h2 id="多台机器部署3个zookeeper节点"><a href="#多台机器部署3个zookeeper节点" class="headerlink" title="多台机器部署3个zookeeper节点"></a>多台机器部署3个zookeeper节点</h2>
+<h2 id="多台机器部署3个zookeeper节点"><a href="#多台机器部署3个zookeeper节点" class="headerlink" title="多台机器部署3个zookeeper节点"></a>多台机器部署3个zookeeper节点</h2><p>由于我们没有这么多台机器，我们将虚拟出其他3台虚拟机。</p>
+<p>使用docker-machine 模拟3台机器：</p>
+<div class="note info"><p>Mac,Linux,Win7,Win8 使用virtualbox</p></div>
+<p>首先，您需要一个可以创建虚拟机(vm)的管理程序，因此为您的机器的操作系统安装Oracle VirtualBox。然后使用以下命令创建多台虚拟机</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create --driver virtualbox myvm1</span><br><span class="line">docker-machine create --driver virtualbox myvm2</span><br><span class="line">docker-machine create --driver virtualbox myvm3</span><br></pre></td></tr></table></figure>
+<div class="note info"><p>Win10 使用 hyper-V</p></div>
+<ol>
+<li>登陆Hyper-V 管理系统</li>
+<li>点击右边菜单的Virtual Switch Manager</li>
+<li>在External里点击Create Virtual Switch</li>
+<li>给给他一个名字myswitch ,选中该复选框以共享主机的活动网络适配器</li>
+</ol>
+<p>现在，使用我们的节点管理工具docker-machine创建几个vm</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create -d hyperv --hyperv-virtual-switch <span class="string">"myswitch"</span> myvm1</span><br><span class="line">docker-machine create -d hyperv --hyperv-virtual-switch <span class="string">"myswitch"</span> myvm2</span><br><span class="line">docker-machine create -d hyperv --hyperv-virtual-switch <span class="string">"myswitch"</span> myvm3</span><br></pre></td></tr></table></figure>
+<p>接下来我们创建一个部署文件：</p>
+<figure class="highlight yml"><figcaption><span>docker-compose-swarm.yml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">'3.1'</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">    zoo1:</span></span><br><span class="line"><span class="attr">        image:</span> <span class="string">zookeeper</span></span><br><span class="line"><span class="attr">        restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">        hostname:</span> <span class="string">zoo1</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="bullet">            -</span> <span class="number">2181</span><span class="string">:2181</span></span><br><span class="line"><span class="attr">        environment:</span></span><br><span class="line"><span class="attr">            ZOO_MY_ID:</span> <span class="number">1</span></span><br><span class="line"><span class="attr">            ZOO_SERVERS:</span> <span class="string">server.1=zoo1:2888:3888</span> <span class="string">server.2=zoo2:2888:3888</span> <span class="string">server.3=zoo3:2888:3888</span></span><br><span class="line"><span class="attr">        networks:</span></span><br><span class="line"><span class="bullet">            -</span> <span class="string">webnet</span></span><br><span class="line"></span><br><span class="line"><span class="attr">    zoo2:</span></span><br><span class="line"><span class="attr">        image:</span> <span class="string">zookeeper</span></span><br><span class="line"><span class="attr">        restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">        hostname:</span> <span class="string">zoo2</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="bullet">            -</span> <span class="number">2182</span><span class="string">:2181</span></span><br><span class="line"><span class="attr">        environment:</span></span><br><span class="line"><span class="attr">            ZOO_MY_ID:</span> <span class="number">2</span></span><br><span class="line"><span class="attr">            ZOO_SERVERS:</span> <span class="string">server.1=zoo1:2888:3888</span> <span class="string">server.2=zoo2:2888:3888</span> <span class="string">server.3=zoo3:2888:3888</span></span><br><span class="line"><span class="attr">        networks:</span></span><br><span class="line"><span class="bullet">            -</span> <span class="string">webnet</span></span><br><span class="line"></span><br><span class="line"><span class="attr">    zoo3:</span></span><br><span class="line"><span class="attr">        image:</span> <span class="string">zookeeper</span></span><br><span class="line"><span class="attr">        restart:</span> <span class="string">always</span></span><br><span class="line"><span class="attr">        hostname:</span> <span class="string">zoo3</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="bullet">            -</span> <span class="number">2183</span><span class="string">:2181</span></span><br><span class="line"><span class="attr">        environment:</span></span><br><span class="line"><span class="attr">            ZOO_MY_ID:</span> <span class="number">3</span></span><br><span class="line"><span class="attr">            ZOO_SERVERS:</span> <span class="string">server.1=zoo1:2888:3888</span> <span class="string">server.2=zoo2:2888:3888</span> <span class="string">server.3=zoo3:2888:3888</span></span><br><span class="line"><span class="attr">        networks:</span></span><br><span class="line"><span class="bullet">            -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">    visualizer:</span></span><br><span class="line"><span class="attr">        image:</span> <span class="string">dockersamples/visualizer:stable</span></span><br><span class="line"><span class="attr">        ports:</span></span><br><span class="line"><span class="bullet">            -</span> <span class="number">8080</span><span class="string">:8080</span></span><br><span class="line"><span class="attr">        volumes:</span></span><br><span class="line"><span class="bullet">            -</span> <span class="string">"/var/run/docker.sock:/var/run/docker.sock"</span></span><br><span class="line"><span class="attr">        deploy:</span></span><br><span class="line"><span class="attr">            placement:</span></span><br><span class="line"><span class="attr">                constraints:</span> <span class="string">[node.role</span> <span class="string">==</span> <span class="string">manager]</span></span><br><span class="line"><span class="attr">        networks:</span></span><br><span class="line"><span class="bullet">            -</span> <span class="string">webnet</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">    webnet:</span></span><br><span class="line"><span class="attr">        driver:</span> <span class="string">overlay</span></span><br></pre></td></tr></table></figure>
+<p>好了，在我们部署之前，我们需要定义好，myvm1为manager,myvm2和myvm3为worker。所以，我们先登陆到myvm1里去初始化swarm(前面也初始化过swarm,不过是单台机器)，然后把myvm2和myvm3加入到这个swarm中，最后才运行部署文件。具体操作如下：</p>
+<h2 id="设置终端环境"><a href="#设置终端环境" class="headerlink" title="设置终端环境"></a>设置终端环境</h2><p>我们不是要去登陆到myvm1里，而是获取myvm1的终端环境到本机的终端，在本机终端操作，从而操作虚拟机。</p>
+<div class="note info"><h3 id="Mac-Linux"><a href="#Mac-Linux" class="headerlink" title="Mac,Linux"></a>Mac,Linux</h3></div>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">docker-machine env myvm1</span><br><span class="line"></span><br><span class="line"><span class="comment">#按提示，继续输入命令：</span></span><br><span class="line"><span class="built_in">eval</span> $(docker-machine env myvm1)</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看</span></span><br><span class="line">docker-machine ls</span><br><span class="line"></span><br><span class="line">NAME    ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS</span><br><span class="line">myvm1   *        virtualbox   Running   tcp://192.168.99.100:2376           v17.06.2-ce   </span><br><span class="line">myvm2   -        virtualbox   Running   tcp://192.168.99.101:2376           v17.06.2-ce</span><br></pre></td></tr></table></figure>
+<p>在myvm1 旁边多了个星号，表示成功</p>
+<div class="note info"><h3 id="Winodow"><a href="#Winodow" class="headerlink" title="Winodow"></a>Winodow</h3></div>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">docker-machine env myvm1</span><br><span class="line"></span><br><span class="line"><span class="comment">#按提示，继续输入命令：</span></span><br><span class="line">&amp; <span class="string">"C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe"</span> env myvm1 | Invoke-Expression</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看</span></span><br><span class="line">docker-machine ls</span><br><span class="line">NAME    ACTIVE   DRIVER   STATE     URL                          SWARM   DOCKER        ERRORS</span><br><span class="line">myvm1   *        hyperv   Running   tcp://192.168.203.207:2376           v17.06.2-ce</span><br><span class="line">myvm2   -        hyperv   Running   tcp://192.168.200.181:2376           v17.06.2-ce</span><br><span class="line"></span><br><span class="line">在myvm1 旁边多了个星号，表示成功</span><br></pre></td></tr></table></figure>
+<p>我们获取好myvm1终端环境，然后我们初始化swarm</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker swarm init --advertise-addr &lt;myvm1 ip&gt;</span><br><span class="line">Swarm initialized: current node &lt;node ID&gt; is now a manager.</span><br><span class="line"></span><br><span class="line">To add a worker to this swarm, run the following <span class="built_in">command</span>:</span><br><span class="line"></span><br><span class="line">  docker swarm join \</span><br><span class="line">  --token &lt;token&gt; \</span><br><span class="line">  &lt;myvm ip&gt;:&lt;port&gt;</span><br></pre></td></tr></table></figure>
+<p>它这里提示我们登陆到其他的worker里,输入它上面给出的命令。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#获取myvm2的终端环境</span></span><br><span class="line"><span class="built_in">eval</span> $(docker-machine env myvm2)</span><br><span class="line"></span><br><span class="line"><span class="comment">#加入swarm</span></span><br><span class="line">docker swarm join \</span><br><span class="line">  --token &lt;token&gt; \</span><br><span class="line">  &lt;myvm ip&gt;:&lt;port&gt;</span><br></pre></td></tr></table></figure>
+<p>类似的，我们把myvm3也加入swarm来。</p>
+<p>现在我们要登陆到myvm1里，因为它是manager,用它来进行部署</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#登陆myvm1</span></span><br><span class="line"><span class="built_in">eval</span> $(docker-machine env myvm1)</span><br><span class="line"></span><br><span class="line"><span class="comment">#部署</span></span><br><span class="line">docker stack deploy -c docker-compose-swarm.yml zklab</span><br><span class="line"></span><br><span class="line"><span class="comment">#查看</span></span><br><span class="line">docker stack ps zklab</span><br></pre></td></tr></table></figure>
+<p>验证zookeeper</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="built_in">stat</span> | nc &lt;myvm1/2/3 ip&gt; 2181</span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">stat</span> | nc &lt;myvm1/2/3 ip&gt; 2182</span><br><span class="line"><span class="built_in">echo</span> <span class="built_in">stat</span> | nc &lt;myvm1/2/3 ip&gt; 2183</span><br></pre></td></tr></table></figure>
+<p>用浏览器查看：<br><a href="http://myvm1/2/3_ip:8080" target="_blank" rel="noopener">http://myvm1/2/3_ip:8080</a></p>
+
       
     </div>
     
     
     
 
+    
+      <div>
+        
+<div class="my_post_copyright">
+  <script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+  
+  <!-- JS库 sweetalert 可修改路径 -->
+  <script src="https://cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <p><span>本文标题:</span><a href="/2017/12/21/docker-zookeeper/">在docker里部署zookeeper</a></p>
+  <p><span>文章作者:</span><a href="/" title="访问 Dravin 的个人博客">Dravin</a></p>
+  <p><span>发布时间:</span>2017年12月21日 - 11:12</p>
+  <p><span>最后更新:</span>2017年12月22日 - 10:12</p>
+  <p><span>原始链接:</span><a href="/2017/12/21/docker-zookeeper/" title="在docker里部署zookeeper">http://dravinbox.github.io/2017/12/21/docker-zookeeper/</a>
+    <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://dravinbox.github.io/2017/12/21/docker-zookeeper/"  aria-label="复制成功！"></i></span>
+  </p>
+  <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" title="Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)">署名-非商业性使用-禁止演绎 4.0 国际</a> 转载请保留原文链接及作者。</p>  
+</div>
+<script> 
+    var clipboard = new Clipboard('.fa-clipboard');
+      $(".fa-clipboard").click(function(){
+      clipboard.on('success', function(){
+        swal({   
+          title: "",   
+          text: '复制成功',
+          icon: "success", 
+          showConfirmButton: true
+          });
+        });
+    });  
+</script>
+
+      </div>
+    
     
 
     
@@ -680,7 +747,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#部署Zookeeper"><span class="nav-number">1.</span> <span class="nav-text">部署Zookeeper</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单台机器部署3个zookeeper节点"><span class="nav-number">1.1.</span> <span class="nav-text">单台机器部署3个zookeeper节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么使用zkCli-sh登陆客户端呢："><span class="nav-number">1.1.1.</span> <span class="nav-text">怎么使用zkCli.sh登陆客户端呢：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为了验证3个zookeeper之间的数据是互通的"><span class="nav-number">1.1.2.</span> <span class="nav-text">为了验证3个zookeeper之间的数据是互通的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多台机器部署3个zookeeper节点"><span class="nav-number">1.2.</span> <span class="nav-text">多台机器部署3个zookeeper节点</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#部署Zookeeper"><span class="nav-number">1.</span> <span class="nav-text">部署Zookeeper</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单台机器部署3个zookeeper节点"><span class="nav-number">1.1.</span> <span class="nav-text">单台机器部署3个zookeeper节点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#怎么使用zkCli-sh登陆客户端呢："><span class="nav-number">1.1.1.</span> <span class="nav-text">怎么使用zkCli.sh登陆客户端呢：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为了验证3个zookeeper之间的数据是互通的"><span class="nav-number">1.1.2.</span> <span class="nav-text">为了验证3个zookeeper之间的数据是互通的</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多台机器部署3个zookeeper节点"><span class="nav-number">1.2.</span> <span class="nav-text">多台机器部署3个zookeeper节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置终端环境"><span class="nav-number">1.3.</span> <span class="nav-text">设置终端环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Mac-Linux"><span class="nav-number">1.3.1.</span> <span class="nav-text">Mac,Linux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Winodow"><span class="nav-number">1.3.2.</span> <span class="nav-text">Winodow</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

@@ -3,13 +3,9 @@
 
 
     
-    
-    
-    
-    
   <url>
-    <loc>http://yoursite.com/2017/12/21/docker-zookeeper/</loc>
-    <lastmod>2017-12-21T08:21:16.060Z</lastmod>
+    <loc>http://dravinbox.github.io/2017/12/21/docker-zookeeper/</loc>
+    <lastmod>2017-12-22T02:32:12.187Z</lastmod>
     <data>
         <display>
         <title>在docker里部署zookeeper</title>
@@ -22,16 +18,20 @@
          
            
              
-              <breadCrumb title="Docker" url="http://yoursite.com/categories/Docker/"/>
+              <breadCrumb title="Docker" url="http://dravinbox.github.io/categories/Docker/"/>
           
              
-              <breadCrumb title="部署例子" url="http://yoursite.com/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/"/>
+              <breadCrumb title="部署例子" url="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/"/>
           
              
-              <breadCrumb title="Zookeeper" url="http://yoursite.com/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/Zookeeper/"/>
+              <breadCrumb title="Zookeeper" url="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/Zookeeper/"/>
           
         </display>
     </data>
     </url>
 
+    
+    
+    
+    
 </urlset>
