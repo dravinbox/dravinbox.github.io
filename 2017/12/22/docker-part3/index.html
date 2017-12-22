@@ -89,10 +89,15 @@
 <meta property="og:site_name" content="Dravin&#39;s Blog">
 <meta property="og:description" content="关于服务 About services前言本Docker入门系列文章是翻译于Docker官方getStarted文档,如有出入，请跳转查看官方文档 简单介绍 In a distributed application, different pieces of the app are called “services.” For example, if you imagine a video shar">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-12-22T02:59:19.915Z">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fmpkesyoytg30j20cutwa.gif">
+<meta property="og:image" content="https://ws1.sinaimg.cn/large/006tNc79gy1fmpl5et388g30j20cuhdt.gif">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fmplmbl6ekg30j20cu1kx.gif">
+<meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fmplnwmw78g30j20cuqad.gif">
+<meta property="og:updated_time" content="2017-12-22T07:56:40.275Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Docker入门-part3-Services">
 <meta name="twitter:description" content="关于服务 About services前言本Docker入门系列文章是翻译于Docker官方getStarted文档,如有出入，请跳转查看官方文档 简单介绍 In a distributed application, different pieces of the app are called “services.” For example, if you imagine a video shar">
+<meta name="twitter:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fmpkesyoytg30j20cutwa.gif">
 
 
 
@@ -439,6 +444,7 @@
 <li>这里面的5个容器通过负载均衡网络<code>webnet</code>共享80端口</li>
 <li>定义一个默认配置的网络<code>webnet</code>，它是一个负载均衡的网络(load-balanced overlay network)</li>
 </ul>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmpkesyoytg30j20cutwa.gif" alt=""></p>
 <h2 id="运行你的负载均衡APP"><a href="#运行你的负载均衡APP" class="headerlink" title="运行你的负载均衡APP"></a>运行你的负载均衡APP</h2><p>在我们使用<code>docker stack deploy</code>前先执行下面的命令：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm init</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -456,6 +462,7 @@
 <p>以上 看到服务里各个任务id，当然容器对于外部系统来说，也有容器id:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container ls -q</span><br></pre></td></tr></table></figure>
 <p>现在你可以使用<code>curl -4 http://localhost:4000</code>多次执行，或多次浏览该URL，你会发现所有不同，他们真的负载均衡了。你可以看到变得是容器ID,就是上面<code>docker containter ls -q</code>的结果之一。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fmpl5et388g30j20cuhdt.gif" alt=""></p>
 <h2 id="调控你的APP"><a href="#调控你的APP" class="headerlink" title="调控你的APP"></a>调控你的APP</h2><p>你可以修改docker-compose.yml里的replicas的值，然后保存，再次执行：<br>修改前我查看一下容器id列表：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span> container ls -q</span><br><span class="line">6e64e2240278</span><br><span class="line">3ccbef3e8459</span><br><span class="line">985e1fec1482</span><br><span class="line">8c7dbe7aad8d</span><br><span class="line">6633801d7557</span><br></pre></td></tr></table></figure>
 <p>这里我修改replicas为7，然后保存，再次执行以下命令：</p>
@@ -463,10 +470,12 @@
 <p>再查看容器id列表：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span> container ls -q</span><br><span class="line">cc9987a174f1</span><br><span class="line">e4b0337fed8d</span><br><span class="line">6e64e2240278</span><br><span class="line">3ccbef3e8459</span><br><span class="line">985e1fec1482</span><br><span class="line">8c7dbe7aad8d</span><br><span class="line">6633801d7557</span><br></pre></td></tr></table></figure>
 <p>发现它保留了原来的容器，并增加两个新的容器：cc9987a174f1和e4b0337fed8d，说明调控任务数量时，它不会把原来的全部容器杀死，而是一种更新。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmplmbl6ekg30j20cu1kx.gif" alt=""></p>
 <h2 id="关闭你的app和关闭swarm"><a href="#关闭你的app和关闭swarm" class="headerlink" title="关闭你的app和关闭swarm"></a>关闭你的app和关闭swarm</h2><p>关闭app</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack rm getstartedlab</span><br></pre></td></tr></table></figure>
 <p>关闭swarm:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm leave --force</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmplnwmw78g30j20cuqad.gif" alt=""></p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker stack ls                                            <span class="comment"># List stacks or apps</span></span><br><span class="line">docker stack deploy -c &lt;composefile&gt; &lt;appname&gt;  <span class="comment"># Run the specified Compose file</span></span><br><span class="line">docker service ls                 <span class="comment"># List running services associated with an app</span></span><br><span class="line">docker service ps &lt;service&gt;                  <span class="comment"># List tasks associated with an app</span></span><br><span class="line">docker inspect &lt;task or container&gt;                   <span class="comment"># Inspect task or container</span></span><br><span class="line">docker container ls -q                                      <span class="comment"># List container IDs</span></span><br><span class="line">docker stack rm &lt;appname&gt;                             <span class="comment"># Tear down an application</span></span><br><span class="line">docker swarm leave --force      <span class="comment"># Take down a single node swarm from the manager</span></span><br></pre></td></tr></table></figure>
       
     </div>
@@ -486,7 +495,7 @@
   <p><span>本文标题:</span><a href="/2017/12/22/docker-part3/">Docker入门-part3-Services</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Dravin 的个人博客">Dravin</a></p>
   <p><span>发布时间:</span>2017年12月22日 - 10:12</p>
-  <p><span>最后更新:</span>2017年12月22日 - 10:12</p>
+  <p><span>最后更新:</span>2017年12月22日 - 15:12</p>
   <p><span>原始链接:</span><a href="/2017/12/22/docker-part3/" title="Docker入门-part3-Services">http://dravinbox.github.io/2017/12/22/docker-part3/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://dravinbox.github.io/2017/12/22/docker-part3/"  aria-label="复制成功！"></i></span>
   </p>

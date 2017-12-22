@@ -7,6 +7,14 @@
     </url>
 
     <url>
+        <loc>http://dravinbox.github.io/2017/12/22/docker-part3/</loc>
+        <lastmod>2017-12-22T07:56:40.275Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://dravinbox.github.io/2017/12/22/docker-part2/</loc>
         <lastmod>2017-12-22T06:32:30.000Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -33,14 +41,6 @@
     <url>
         <loc>http://dravinbox.github.io/2017/12/22/docker-part4/</loc>
         <lastmod>2017-12-22T03:04:10.161Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.6</priority>
-
-    </url>
-
-    <url>
-        <loc>http://dravinbox.github.io/2017/12/22/docker-part3/</loc>
-        <lastmod>2017-12-22T02:59:19.915Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
