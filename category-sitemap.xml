@@ -7,13 +7,6 @@
     </url>
 
     <url>
-        <loc>http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/</loc>
-        <lastmod>2017-12-22T02:32:12.187Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/Zookeeper/</loc>
         <lastmod>2017-12-22T02:32:12.187Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -21,15 +14,29 @@
     </url>
 
     <url>
-        <loc>http://dravinbox.github.io/categories/Docker/</loc>
+        <loc>http://dravinbox.github.io/categories/Docker/Docker%E5%85%A5%E9%97%A8/</loc>
         <lastmod>2017-12-23T01:23:09.595Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>http://dravinbox.github.io/categories/Docker/Docker%E5%85%A5%E9%97%A8/</loc>
-        <lastmod>2017-12-23T01:23:09.595Z</lastmod>
+        <loc>http://dravinbox.github.io/categories/Docker/</loc>
+        <lastmod>2017-12-23T09:30:37.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/</loc>
+        <lastmod>2017-12-23T09:30:37.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/Jenkins/</loc>
+        <lastmod>2017-12-23T09:30:37.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

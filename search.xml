@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[在docker里运行Jenkins]]></title>
+    <url>%2F2017%2F12%2F23%2Fdocker-jenkins%2F</url>
+    <content type="text"><![CDATA[Jenkins12docker run -d -p "12821:8080" --name jenkins jenkins/jenkins5cc5e09fdea5e9296bd26095b90f770b0d05213d80299d44dd3984db14bdbd85 然后登陆到容器里获取初始化密码: 1234567docker exec -it 5cc5e09fdea5 bash#使用cat 命令查看密码jenkins@5cc5e09fdea5:/$ cat /var/jenkins_home/secrets/initialAdminPassword#然后出来这个密码44fcdb88xxxxxxxxxxx6a2d00c2d 把上面的密码复制到浏览器里http://localhost:12821 里需要密码的地方:]]></content>
+      <categories>
+        <category>Docker</category>
+        <category>部署例子</category>
+        <category>Jenkins</category>
+      </categories>
+      <tags>
+        <tag>Docker</tag>
+        <tag>Jenkins</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[Docker入门-part5-Stacks]]></title>
     <url>%2F2017%2F12%2F22%2Fdocker-part5%2F</url>
     <content type="text"><![CDATA[Stacks前言本Docker入门系列文章是翻译于Docker官方getStarted文档,如有出入，请跳转查看官方文档 简单介绍 A stack is a group of interrelated services that share dependencies, and can be orchestrated and scaled together. 可以理解一个堆里有多个服务，服务之间相互协作。有一些复杂的应用，它可能需要多个堆。 添加一个新的服务并且部署它1.我们打开之前的docker-compose.yml文件，使用下面的代码覆盖它。记得替换那里username/repo:tag 对应的远程库镜像值。 123456789101112131415161718192021222324252627282930version: "3"services: web: # replace username/repo:tag with your name and image details image: username/repo:tag deploy: replicas: 5 restart_policy: condition: on-failure resources: limits: cpus: "0.1" memory: 50M ports: - "80:80" networks: - webnet visualizer: image: dockersamples/visualizer:stable ports: - "8080:8080" volumes: - "/var/run/docker.sock:/var/run/docker.sock" deploy: placement: constraints: [node.role == manager] networks: - webnetnetworks: webnet: 我们可以看到上面的代码里，多了一个服务：visualizer。并且看到一个新的关键字volumes ,它给visualizer容器权限，能访问宿主机的socket文件。还有一个新的关键字placement,定义这个服务只能在swarm manager上运行，不能在worker上。因为这个容器是用来展示Docker的各种服务在一个图表里，它由Docker开发的并且开源。 2.设置你的shell连接上myvm1 ，上部分已经讲过： docker-machine ls docker-machine env myvm1 eval $(docker-machine env myvm1) 3.在manager节点上再次运行docker stack deploy,如下： 1docker stack deploy -c docker-compose.yml getstartedlab 4.我们来看看visualizer先使用docker-machine ls查看各个节点的ip,然后你用浏览访问任何一个ip的8080端口，就可以看到图像化界面，显示各种服务在不同的机器上运行。 我们可以看到,visualizer只运行在manager节点上。 可以使用docker stack ps getstartedlab查看该堆所有服务的任务。 持久化数据让我们添加一个Redis 数据库 用来存储数据 1.我们打开之前的docker-compose.yml文件，使用下面的代码覆盖它。记得替换那里username/repo:tag 对应的远程库镜像值。 123456789101112131415161718192021222324252627282930313233343536373839404142version: "3"services: web: # replace username/repo:tag with your name and image details image: username/repo:tag deploy: replicas: 5 restart_policy: condition: on-failure resources: limits: cpus: "0.1" memory: 50M ports: - "80:80" networks: - webnet visualizer: image: dockersamples/visualizer:stable ports: - "8080:8080" volumes: - "/var/run/docker.sock:/var/run/docker.sock" deploy: placement: constraints: [node.role == manager] networks: - webnet redis: image: redis ports: - "6379:6379" volumes: - /home/docker/data:/data deploy: placement: constraints: [node.role == manager] command: redis-server --appendonly yes networks: - webnetnetworks: webnet: 2.在manager机器上（即myvm1）,创建一个目录：./data 1docker-machine ssh myvm1 "mkdir ./data" 这里注意几点: redis 的远程镜像就是很短：”redis”,不用质疑 redis容器对外服务端口依然是6379,方便其他服务获取。 redis的volumes 的/home/docker/data目录是myvm1的目录，因为下面定义了它只能部署在manager上，所以我们使用docker-machine ssh myvm1 &quot;mkdir ./data&quot; 创建一个/home/docker/data目录。然后冒号后边的/data是redis容器里的路径，这里是redis的工作路径，我们不用管。 3.保证你的shell连接上myvm1 ,前面讲过 4.重新部署,再次执行： 1docker stack deploy -c docker-compose.yml getstartedlab 5.查看服务： 1docker service ls 6.访问你的一个节点机器 http://192.168.99.101 ,我们可以看到Visits在递增，那是因为我们的数据存在Redis上了。我们继续看看http://192.168.99.101:8080]]></content>
