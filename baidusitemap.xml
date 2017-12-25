@@ -4,6 +4,34 @@
 
     
   <url>
+    <loc>http://dravinbox.github.io/2017/12/23/docker-jenkins/</loc>
+    <lastmod>2017-12-25T02:13:12.582Z</lastmod>
+    <data>
+        <display>
+        <title>在docker里运行Jenkins</title>
+        <pubTime>2017-12-23T09:22:32.000Z</pubTime>
+        
+        <tag>Docker</tag>
+         
+        <tag>Jenkins</tag>
+         
+         
+           
+             
+              <breadCrumb title="Docker" url="http://dravinbox.github.io/categories/Docker/"/>
+          
+             
+              <breadCrumb title="部署例子" url="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/"/>
+          
+             
+              <breadCrumb title="Jenkins" url="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/Jenkins/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://dravinbox.github.io/2017/12/25/docker-gui/</loc>
     <lastmod>2017-12-25T02:10:10.000Z</lastmod>
     <data>

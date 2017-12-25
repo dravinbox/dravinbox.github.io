@@ -50,6 +50,37 @@
   </entry>
   
   <entry>
+    <title>在docker里运行Jenkins</title>
+    <link href="http://dravinbox.github.io/2017/12/23/docker-jenkins/"/>
+    <id>http://dravinbox.github.io/2017/12/23/docker-jenkins/</id>
+    <published>2017-12-23T09:22:32.000Z</published>
+    <updated>2017-12-25T02:13:12.582Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#注意/your/home 替换成你创建的目录，保证容器有访问权限</span></span><br><span class="line">docker run -d -p 12821:8080 -p 50000:50000 -v /your/home:/var/jenkins_home  --name jenkins jenkins/jenkins</span><br><span class="line">5cc5e09fdea5e9296bd26095b90f770b0d05213d80299d44dd3984db14bdbd85</span><br></pre></td></tr></table></figure><p>然后登陆到容器里获取初始化密码:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it  5cc5e09fdea5  bash</span><br><span class="line"></span><br><span class="line"><span class="comment">#使用cat 命令查看密码</span></span><br><span class="line">jenkins@5cc5e09fdea5:/$ cat  /var/jenkins_home/secrets/initialAdminPassword</span><br><span class="line"></span><br><span class="line"><span class="comment">#然后出来这个密码</span></span><br><span class="line">44fcdb88xxxxxxxxxxx6a2d00c2d</span><br></pre></td></tr></table></figure><p>把上面的密码复制到浏览器里<a href="http://localhost:12821" target="_blank" rel="noopener">http://localhost:12821</a> 里需要密码的地方:</p><p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fmqurvobr7j30wg0judgi.jpg" alt=""></p><p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fmqusk4makj30wn0hmq2u.jpg" alt=""></p><p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fmquthb410j30yp0kc751.jpg" alt=""></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Jenkins&quot;&gt;&lt;a href=&quot;#Jenkins&quot; class=&quot;headerlink&quot; title=&quot;Jenkins&quot;&gt;&lt;/a&gt;Jenkins&lt;/h1&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;
+      
+    
+    </summary>
+    
+      <category term="Docker" scheme="http://dravinbox.github.io/categories/Docker/"/>
+    
+      <category term="部署例子" scheme="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/"/>
+    
+      <category term="Jenkins" scheme="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/Jenkins/"/>
+    
+    
+      <category term="Docker" scheme="http://dravinbox.github.io/tags/Docker/"/>
+    
+      <category term="Jenkins" scheme="http://dravinbox.github.io/tags/Jenkins/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Docker入门-part5-Stacks</title>
     <link href="http://dravinbox.github.io/2017/12/22/docker-part5/"/>
     <id>http://dravinbox.github.io/2017/12/22/docker-part5/</id>
