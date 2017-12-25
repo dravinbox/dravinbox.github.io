@@ -4,16 +4,18 @@
 
     
   <url>
-    <loc>http://dravinbox.github.io/2017/12/23/docker-jenkins/</loc>
-    <lastmod>2017-12-23T09:30:37.000Z</lastmod>
+    <loc>http://dravinbox.github.io/2017/12/25/docker-gui/</loc>
+    <lastmod>2017-12-25T02:10:10.000Z</lastmod>
     <data>
         <display>
-        <title>在docker里运行Jenkins</title>
-        <pubTime>2017-12-23T09:22:32.000Z</pubTime>
+        <title>docker-gui</title>
+        <pubTime>2017-12-25T01:39:33.000Z</pubTime>
         
         <tag>Docker</tag>
          
-        <tag>Jenkins</tag>
+        <tag>GUI</tag>
+         
+        <tag>FireFox</tag>
          
          
            
@@ -24,7 +26,7 @@
               <breadCrumb title="部署例子" url="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/"/>
           
              
-              <breadCrumb title="Jenkins" url="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/Jenkins/"/>
+              <breadCrumb title="运行GUI应用程序" url="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/%E8%BF%90%E8%A1%8CGUI%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/"/>
           
         </display>
     </data>

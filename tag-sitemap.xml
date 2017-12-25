@@ -10,14 +10,21 @@
 
     <url>
         <loc>http://dravinbox.github.io/tags/Docker/</loc>
-        <lastmod>2017-12-23T09:30:37.000Z</lastmod>
+        <lastmod>2017-12-25T02:10:10.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>http://dravinbox.github.io/tags/Jenkins/</loc>
-        <lastmod>2017-12-23T09:30:37.000Z</lastmod>
+        <loc>http://dravinbox.github.io/tags/GUI/</loc>
+        <lastmod>2017-12-25T02:10:10.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/tags/FireFox/</loc>
+        <lastmod>2017-12-25T02:10:10.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

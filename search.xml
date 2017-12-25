@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title><![CDATA[在docker里运行Jenkins]]></title>
-    <url>%2F2017%2F12%2F23%2Fdocker-jenkins%2F</url>
-    <content type="text"><![CDATA[Jenkins12docker run -d -p "12821:8080" --name jenkins jenkins/jenkins5cc5e09fdea5e9296bd26095b90f770b0d05213d80299d44dd3984db14bdbd85 然后登陆到容器里获取初始化密码: 1234567docker exec -it 5cc5e09fdea5 bash#使用cat 命令查看密码jenkins@5cc5e09fdea5:/$ cat /var/jenkins_home/secrets/initialAdminPassword#然后出来这个密码44fcdb88xxxxxxxxxxx6a2d00c2d 把上面的密码复制到浏览器里http://localhost:12821 里需要密码的地方:]]></content>
+    <title><![CDATA[docker-gui]]></title>
+    <url>%2F2017%2F12%2F25%2Fdocker-gui%2F</url>
+    <content type="text"><![CDATA[在Mac上使用Docker运行GUI应用程序 需要准备的东西： osx系统 docker for mac XQartz 2.7.11 一位国外的美女大神写的Dockerfile osx系统没有就不用看下去docker for mac 自行安装XQuartz使用brew 安装 1brew cask install xquartz 关于Quartz的最新版，可以前往XQuartz官网 运行起来！使用我们本机的终端来打开XQuartz 1open -a XQuartz 我们就运行起来了xquartz的终端，我们打开它的偏好设置 把这个钩上，然后重启XQuartz就生效。 我们在XQuartz的终端输入一下命令,来允许你本机的连接: 12ip=$(ifconfig en0 | grep inet | awk '$1=="inet" &#123;print $2&#125;')xhost + $ip 设置好之后，我们就可以运行一下Jessie大神做的Firefox镜像，她写的dockerfile在这 1docker run -d --name firefox -e DISPLAY=$ip:0 -v /tmp/.X11-unix:/tmp/.X11-unix jess/firefox Merry Christmas]]></content>
       <categories>
         <category>Docker</category>
         <category>部署例子</category>
-        <category>Jenkins</category>
+        <category>运行GUI应用程序</category>
       </categories>
       <tags>
         <tag>Docker</tag>
-        <tag>Jenkins</tag>
+        <tag>GUI</tag>
+        <tag>FireFox</tag>
       </tags>
   </entry>
   <entry>

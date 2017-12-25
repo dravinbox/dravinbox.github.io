@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://dravinbox.github.io/"/>
-  <updated>2017-12-23T09:30:37.000Z</updated>
+  <updated>2017-12-25T02:10:10.000Z</updated>
   <id>http://dravinbox.github.io/</id>
   
   <author>
@@ -17,19 +17,19 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>在docker里运行Jenkins</title>
-    <link href="http://dravinbox.github.io/2017/12/23/docker-jenkins/"/>
-    <id>http://dravinbox.github.io/2017/12/23/docker-jenkins/</id>
-    <published>2017-12-23T09:22:32.000Z</published>
-    <updated>2017-12-23T09:30:37.000Z</updated>
+    <title>docker-gui</title>
+    <link href="http://dravinbox.github.io/2017/12/25/docker-gui/"/>
+    <id>http://dravinbox.github.io/2017/12/25/docker-gui/</id>
+    <published>2017-12-25T01:39:33.000Z</published>
+    <updated>2017-12-25T02:10:10.000Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p <span class="string">"12821:8080"</span> --name jenkins jenkins/jenkins</span><br><span class="line">5cc5e09fdea5e9296bd26095b90f770b0d05213d80299d44dd3984db14bdbd85</span><br></pre></td></tr></table></figure><p>然后登陆到容器里获取初始化密码:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it  5cc5e09fdea5  bash</span><br><span class="line"></span><br><span class="line"><span class="comment">#使用cat 命令查看密码</span></span><br><span class="line">jenkins@5cc5e09fdea5:/$ cat  /var/jenkins_home/secrets/initialAdminPassword</span><br><span class="line"></span><br><span class="line"><span class="comment">#然后出来这个密码</span></span><br><span class="line">44fcdb88xxxxxxxxxxx6a2d00c2d</span><br></pre></td></tr></table></figure><p>把上面的密码复制到浏览器里<a href="http://localhost:12821" target="_blank" rel="noopener">http://localhost:12821</a> 里需要密码的地方:</p><p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fmqtyq0707j30gf0203yb.jpg" alt=""></p>]]></content>
+    <content type="html"><![CDATA[<h1 id="在Mac上使用Docker运行GUI应用程序"><a href="#在Mac上使用Docker运行GUI应用程序" class="headerlink" title="在Mac上使用Docker运行GUI应用程序"></a>在Mac上使用Docker运行GUI应用程序</h1><p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmsrqtspn3j31kw0wl75f.jpg" alt=""></p><p>需要准备的东西：</p><ul><li>osx系统</li><li>docker for mac</li><li>XQartz 2.7.11</li><li>一位国外的美女大神写的Dockerfile</li></ul><h2 id="osx系统没有就不用看下去"><a href="#osx系统没有就不用看下去" class="headerlink" title="osx系统没有就不用看下去"></a>osx系统没有就不用看下去</h2><h2 id="docker-for-mac-自行安装"><a href="#docker-for-mac-自行安装" class="headerlink" title="docker for mac 自行安装"></a>docker for mac 自行安装</h2><h2 id="XQuartz"><a href="#XQuartz" class="headerlink" title="XQuartz"></a>XQuartz</h2><p>使用brew 安装</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew cask install xquartz</span><br></pre></td></tr></table></figure><p>关于Quartz的最新版，可以前往<a href="https://www.xquartz.org/releases/index.html" target="_blank" rel="noopener">XQuartz官网</a></p><h2 id="运行起来！"><a href="#运行起来！" class="headerlink" title="运行起来！"></a>运行起来！</h2><p>使用我们本机的终端来打开XQuartz</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open -a XQuartz</span><br></pre></td></tr></table></figure><p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fmss1a25xrj30qo0js0sp.jpg" alt=""></p><p>我们就运行起来了xquartz的终端，我们打开它的偏好设置</p><p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmss2e5fj6j30qw0k674y.jpg" alt=""></p><p>把这个钩上，然后重启XQuartz就生效。</p><p>我们在XQuartz的终端输入一下命令,来允许你本机的连接:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ip=$(ifconfig en0 | grep inet | awk <span class="string">'$1=="inet" &#123;print $2&#125;'</span>)</span><br><span class="line">xhost + <span class="variable">$ip</span></span><br></pre></td></tr></table></figure><p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmss6q865ej30qs0jq74b.jpg" alt=""></p><p>设置好之后，我们就可以运行一下Jessie大神做的Firefox镜像，她写的dockerfile<a href="https://github.com/jessfraz/dockerfiles/tree/master/firefox" target="_blank" rel="noopener">在这</a></p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name firefox -e DISPLAY=<span class="variable">$ip</span>:0 -v /tmp/.X11-unix:/tmp/.X11-unix jess/firefox</span><br></pre></td></tr></table></figure><h2 id="Merry-Christmas"><a href="#Merry-Christmas" class="headerlink" title="Merry Christmas"></a>Merry Christmas</h2><p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmssiaps7wg30dw0dwwml.gif" alt=""></p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h1 id=&quot;Jenkins&quot;&gt;&lt;a href=&quot;#Jenkins&quot; class=&quot;headerlink&quot; title=&quot;Jenkins&quot;&gt;&lt;/a&gt;Jenkins&lt;/h1&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;
+        &lt;h1 id=&quot;在Mac上使用Docker运行GUI应用程序&quot;&gt;&lt;a href=&quot;#在Mac上使用Docker运行GUI应用程序&quot; class=&quot;headerlink&quot; title=&quot;在Mac上使用Docker运行GUI应用程序&quot;&gt;&lt;/a&gt;在Mac上使用Docker运行GUI应用
       
     
     </summary>
@@ -38,12 +38,14 @@
     
       <category term="部署例子" scheme="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/"/>
     
-      <category term="Jenkins" scheme="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/Jenkins/"/>
+      <category term="运行GUI应用程序" scheme="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/%E8%BF%90%E8%A1%8CGUI%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/"/>
     
     
       <category term="Docker" scheme="http://dravinbox.github.io/tags/Docker/"/>
     
-      <category term="Jenkins" scheme="http://dravinbox.github.io/tags/Jenkins/"/>
+      <category term="GUI" scheme="http://dravinbox.github.io/tags/GUI/"/>
+    
+      <category term="FireFox" scheme="http://dravinbox.github.io/tags/FireFox/"/>
     
   </entry>
   
