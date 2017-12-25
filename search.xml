@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[docker-gui]]></title>
     <url>%2F2017%2F12%2F25%2Fdocker-gui%2F</url>
-    <content type="text"><![CDATA[在Mac上使用Docker运行GUI应用程序 需要准备的东西： osx系统 docker for mac XQartz 2.7.11 一位国外的美女大神写的Dockerfile osx系统没有就不用看下去docker for mac 自行安装XQuartz使用brew 安装 1brew cask install xquartz 关于Quartz的最新版，可以前往XQuartz官网 运行起来！使用我们本机的终端来打开XQuartz 1open -a XQuartz 我们就运行起来了xquartz的终端，我们打开它的偏好设置 把这个钩上，然后重启XQuartz就生效。 我们在XQuartz的终端输入一下命令,来允许你本机的连接: 12ip=$(ifconfig en0 | grep inet | awk '$1=="inet" &#123;print $2&#125;')xhost + $ip 设置好之后，我们就可以运行一下Jessie大神做的Firefox镜像，她写的dockerfile在这 1docker run -d --name firefox -e DISPLAY=$ip:0 -v /tmp/.X11-unix:/tmp/.X11-unix jess/firefox Merry Christmas]]></content>
+    <content type="text"><![CDATA[在Mac上使用Docker运行GUI应用程序firefoxvscode 需要准备的东西： osx系统 docker for mac XQartz 2.7.11 一位国外的美女大神写的Dockerfile osx系统没有就不用看下去docker for mac 自行安装XQuartz使用brew 安装 1brew cask install xquartz 关于Quartz的最新版，可以前往XQuartz官网 运行起来！使用我们本机的终端来打开XQuartz 1open -a XQuartz 我们就运行起来了xquartz的终端，我们打开它的偏好设置 把这个钩上，然后重启XQuartz就生效。 我们在XQuartz的终端输入一下命令,来允许你本机的连接: 12ip=$(ifconfig en0 | grep inet | awk '$1=="inet" &#123;print $2&#125;')xhost + $ip 设置好之后，我们就可以运行一下Jessie大神做的Firefox镜像，她写的dockerfile在这 firefox: 1docker run -d --name firefox -e DISPLAY=$ip:0 -v /tmp/.X11-unix:/tmp/.X11-unix jess/firefox vscode: 1docker run -v /etc/localtime:/etc/localtime:ro -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$ip:0 --name vscode jess/vscode chrome(记得加上–privileged):因为Chrome使用的是沙盒，因此运行一个没权限的沙盒将等到一个错误：Failed to move to new namespace: PID namespaces supported, Network namespace supported, but failed: errno = Operation not permitted使用--privileged可以给容器赋予权限去访问主机的资源，就如主机的进程那样访问主机的资源。 1docker run -d -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$ip:0 -v ~/Downloads:/root/Downloads --privileged --name chrome jess/chrome Merry Christmas]]></content>
       <categories>
         <category>Docker</category>
         <category>部署例子</category>
@@ -13,6 +13,7 @@
         <tag>Docker</tag>
         <tag>GUI</tag>
         <tag>FireFox</tag>
+        <tag>VSCode</tag>
       </tags>
   </entry>
   <entry>

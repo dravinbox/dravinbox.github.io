@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Docker,GUI,FireFox," />
+  <meta name="keywords" content="Docker,GUI,FireFox,VSCode," />
 
 
 
@@ -81,23 +81,24 @@
 
 
 
-<meta name="description" content="在Mac上使用Docker运行GUI应用程序 需要准备的东西：  osx系统 docker for mac XQartz 2.7.11 一位国外的美女大神写的Dockerfile  osx系统没有就不用看下去docker for mac 自行安装XQuartz使用brew 安装 1brew cask install xquartz 关于Quartz的最新版，可以前往XQuartz官网 运行起来！使">
-<meta name="keywords" content="Docker,GUI,FireFox">
+<meta name="description" content="在Mac上使用Docker运行GUI应用程序firefoxvscode 需要准备的东西：  osx系统 docker for mac XQartz 2.7.11 一位国外的美女大神写的Dockerfile  osx系统没有就不用看下去docker for mac 自行安装XQuartz使用brew 安装 1brew cask install xquartz 关于Quartz的最新版，可以前往XQu">
+<meta name="keywords" content="Docker,GUI,FireFox,VSCode">
 <meta property="og:type" content="article">
 <meta property="og:title" content="docker-gui">
 <meta property="og:url" content="http://dravinbox.github.io/2017/12/25/docker-gui/index.html">
 <meta property="og:site_name" content="Dravin&#39;s Blog">
-<meta property="og:description" content="在Mac上使用Docker运行GUI应用程序 需要准备的东西：  osx系统 docker for mac XQartz 2.7.11 一位国外的美女大神写的Dockerfile  osx系统没有就不用看下去docker for mac 自行安装XQuartz使用brew 安装 1brew cask install xquartz 关于Quartz的最新版，可以前往XQuartz官网 运行起来！使">
+<meta property="og:description" content="在Mac上使用Docker运行GUI应用程序firefoxvscode 需要准备的东西：  osx系统 docker for mac XQartz 2.7.11 一位国外的美女大神写的Dockerfile  osx系统没有就不用看下去docker for mac 自行安装XQuartz使用brew 安装 1brew cask install xquartz 关于Quartz的最新版，可以前往XQu">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fmsrqtspn3j31kw0wl75f.jpg">
+<meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fmstzu8y5xj31kw17wdgx.jpg">
 <meta property="og:image" content="https://ws4.sinaimg.cn/large/006tNc79gy1fmss1a25xrj30qo0js0sp.jpg">
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fmss2e5fj6j30qw0k674y.jpg">
 <meta property="og:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fmss6q865ej30qs0jq74b.jpg">
 <meta property="og:image" content="https://ws2.sinaimg.cn/large/006tNc79gy1fmssiaps7wg30dw0dwwml.gif">
-<meta property="og:updated_time" content="2017-12-25T02:10:10.000Z">
+<meta property="og:updated_time" content="2017-12-25T03:08:08.282Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker-gui">
-<meta name="twitter:description" content="在Mac上使用Docker运行GUI应用程序 需要准备的东西：  osx系统 docker for mac XQartz 2.7.11 一位国外的美女大神写的Dockerfile  osx系统没有就不用看下去docker for mac 自行安装XQuartz使用brew 安装 1brew cask install xquartz 关于Quartz的最新版，可以前往XQuartz官网 运行起来！使">
+<meta name="twitter:description" content="在Mac上使用Docker运行GUI应用程序firefoxvscode 需要准备的东西：  osx系统 docker for mac XQartz 2.7.11 一位国外的美女大神写的Dockerfile  osx系统没有就不用看下去docker for mac 自行安装XQuartz使用brew 安装 1brew cask install xquartz 关于Quartz的最新版，可以前往XQu">
 <meta name="twitter:image" content="https://ws3.sinaimg.cn/large/006tNc79gy1fmsrqtspn3j31kw0wl75f.jpg">
 
 
@@ -439,7 +440,7 @@
       
 
       
-        <h1 id="在Mac上使用Docker运行GUI应用程序"><a href="#在Mac上使用Docker运行GUI应用程序" class="headerlink" title="在Mac上使用Docker运行GUI应用程序"></a>在Mac上使用Docker运行GUI应用程序</h1><p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmsrqtspn3j31kw0wl75f.jpg" alt=""></p>
+        <h1 id="在Mac上使用Docker运行GUI应用程序"><a href="#在Mac上使用Docker运行GUI应用程序" class="headerlink" title="在Mac上使用Docker运行GUI应用程序"></a>在Mac上使用Docker运行GUI应用程序</h1><p>firefox<br><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmsrqtspn3j31kw0wl75f.jpg" alt=""><br>vscode<br><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmstzu8y5xj31kw17wdgx.jpg" alt=""></p>
 <p>需要准备的东西：</p>
 <ul>
 <li>osx系统</li>
@@ -460,7 +461,12 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ip=$(ifconfig en0 | grep inet | awk <span class="string">'$1=="inet" &#123;print $2&#125;'</span>)</span><br><span class="line">xhost + <span class="variable">$ip</span></span><br></pre></td></tr></table></figure>
 <p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmss6q865ej30qs0jq74b.jpg" alt=""></p>
 <p>设置好之后，我们就可以运行一下Jessie大神做的Firefox镜像，她写的dockerfile<a href="https://github.com/jessfraz/dockerfiles/tree/master/firefox" target="_blank" rel="noopener">在这</a></p>
+<p>firefox:</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name firefox -e DISPLAY=<span class="variable">$ip</span>:0 -v /tmp/.X11-unix:/tmp/.X11-unix jess/firefox</span><br></pre></td></tr></table></figure>
+<p>vscode:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v /etc/localtime:/etc/localtime:ro -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=<span class="variable">$ip</span>:0 --name vscode jess/vscode</span><br></pre></td></tr></table></figure>
+<p>chrome(记得加上–privileged):<br>因为Chrome使用的是沙盒，因此运行一个没权限的沙盒将等到一个错误：<br>Failed to move to new namespace: PID namespaces supported, Network namespace supported, but failed: errno = Operation not permitted<br>使用<code>--privileged</code>可以给容器赋予权限去访问主机的资源，就如主机的进程那样访问主机的资源。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=<span class="variable">$ip</span>:0 -v ~/Downloads:/root/Downloads --privileged --name chrome jess/chrome</span><br></pre></td></tr></table></figure>
 <h2 id="Merry-Christmas"><a href="#Merry-Christmas" class="headerlink" title="Merry Christmas"></a>Merry Christmas</h2><p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmssiaps7wg30dw0dwwml.gif" alt=""></p>
 
       
@@ -481,7 +487,7 @@
   <p><span>本文标题:</span><a href="/2017/12/25/docker-gui/">docker-gui</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Dravin 的个人博客">Dravin</a></p>
   <p><span>发布时间:</span>2017年12月25日 - 09:12</p>
-  <p><span>最后更新:</span>2017年12月25日 - 10:12</p>
+  <p><span>最后更新:</span>2017年12月25日 - 11:12</p>
   <p><span>原始链接:</span><a href="/2017/12/25/docker-gui/" title="docker-gui">http://dravinbox.github.io/2017/12/25/docker-gui/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://dravinbox.github.io/2017/12/25/docker-gui/"  aria-label="复制成功！"></i></span>
   </p>
@@ -547,6 +553,8 @@
             <a href="/tags/GUI/" rel="tag"><i class="fa fa-tag"></i> GUI</a>
           
             <a href="/tags/FireFox/" rel="tag"><i class="fa fa-tag"></i> FireFox</a>
+          
+            <a href="/tags/VSCode/" rel="tag"><i class="fa fa-tag"></i> VSCode</a>
           
         </div>
       
@@ -673,7 +681,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
