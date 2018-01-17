@@ -7,6 +7,30 @@
     </url>
 
     <url>
+        <loc>http://dravinbox.github.io/2018/01/17/mysql-delete/</loc>
+        <lastmod>2018-01-17T09:39:10.741Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/01/15/maven-nexus/</loc>
+        <lastmod>2018-01-16T09:24:19.101Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/01/16/nginx-proxy/</loc>
+        <lastmod>2018-01-16T09:23:06.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
         <loc>http://dravinbox.github.io/2017/12/25/docker-gui/</loc>
         <lastmod>2017-12-25T03:08:08.282Z</lastmod>
         <changefreq>weekly</changefreq>

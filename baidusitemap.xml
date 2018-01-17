@@ -4,6 +4,76 @@
 
     
   <url>
+    <loc>http://dravinbox.github.io/2018/01/17/mysql-delete/</loc>
+    <lastmod>2018-01-17T09:39:10.741Z</lastmod>
+    <data>
+        <display>
+        <title>mysql中delete语句使用别名</title>
+        <pubTime>2018-01-17T09:34:49.000Z</pubTime>
+        
+        <tag>mysql</tag>
+         
+         
+           
+             
+              <breadCrumb title="mysql" url="http://dravinbox.github.io/categories/mysql/"/>
+          
+             
+              <breadCrumb title="delete" url="http://dravinbox.github.io/categories/mysql/delete/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dravinbox.github.io/2018/01/15/maven-nexus/</loc>
+    <lastmod>2018-01-16T09:24:19.101Z</lastmod>
+    <data>
+        <display>
+        <title>maven nexus 私库配置</title>
+        <pubTime>2018-01-15T08:19:21.000Z</pubTime>
+        
+        <tag>maven</tag>
+         
+        <tag>nexus</tag>
+         
+         
+           
+             
+              <breadCrumb title="maven" url="http://dravinbox.github.io/categories/maven/"/>
+          
+             
+              <breadCrumb title="nexus" url="http://dravinbox.github.io/categories/maven/nexus/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dravinbox.github.io/2018/01/16/nginx-proxy/</loc>
+    <lastmod>2018-01-16T09:23:06.000Z</lastmod>
+    <data>
+        <display>
+        <title>nginx反向代理tomcat</title>
+        <pubTime>2018-01-16T09:18:32.000Z</pubTime>
+        
+        <tag>nginx</tag>
+         
+        <tag>tomcat</tag>
+         
+         
+           
+             
+              <breadCrumb title="nginx" url="http://dravinbox.github.io/categories/nginx/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://dravinbox.github.io/2017/12/25/docker-gui/</loc>
     <lastmod>2017-12-25T03:08:08.282Z</lastmod>
     <data>

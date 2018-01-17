@@ -1,6 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[mysql中delete语句使用别名]]></title>
+    <url>%2F2018%2F01%2F17%2Fmysql-delete%2F</url>
+    <content type="text"><![CDATA[delete语法中使用别名问题1delete from a_table A where A.name = '123'; 但是有一个错误 1You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 解决方法在delete 与from之间加上一个别名 1delete A from a_table A where A.name = '123'; 删除成功!]]></content>
+      <categories>
+        <category>mysql</category>
+        <category>delete</category>
+      </categories>
+      <tags>
+        <tag>mysql</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[nginx反向代理tomcat]]></title>
+    <url>%2F2018%2F01%2F16%2Fnginx-proxy%2F</url>
+    <content type="text"><![CDATA[反向代理tomcat并提供web服务定义了两个server每个server指定一个域名dev.mall.com指向一个web应用api.mall.com反向代理到8080端口tomcat上 123456789101112131415161718192021222324252627server&#123; listen 80; server_name dev.mall.com; access_log /www/wwwlogs/mall-acess_log; location / &#123; root /www/wwwroot/mall; &#125;&#125;server&#123; listen 80; server_name api.mall.com; access_log /www/wwwlogs/mall-api-acess_log; location / &#123; proxy_pass http://127.0.0.1:8080; proxy_read_timeout 300; proxy_connect_timeout 300; proxy_redirect off; proxy_set_header Host $host; proxy_set_header X-Real-IP $remote_addr; proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for; &#125;&#125;]]></content>
+      <categories>
+        <category>nginx</category>
+      </categories>
+      <tags>
+        <tag>nginx</tag>
+        <tag>tomcat</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[maven nexus 私库配置]]></title>
+    <url>%2F2018%2F01%2F15%2Fmaven-nexus%2F</url>
+    <content type="text"><![CDATA[nexus的配置使用docker 安装nexus 1docker run -d -p 32770:8081 --name nexus sonatype/nexus 1.访问http://localhost:32770/nexus2.在节点增加一个用户 setting.xml12345&lt;server&gt; &lt;id&gt;rrg&lt;/id&gt; &lt;username&gt;rrg&lt;/username&gt; &lt;password&gt;rrg88888&lt;/password&gt;&lt;/server&gt; 3.修改central为阿里云的代理4.修改setting文件，包括mirro 和profile setting.xml1234567891011121314151617181920212223242526272829303132333435363738394041424344&lt;!--mirrors节点添加如下：--&gt; &lt;mirror&gt; &lt;id&gt;local-nexus3&lt;/id&gt; &lt;mirrorOf&gt;*&lt;/mirrorOf&gt; &lt;name&gt;local maven3&lt;/name&gt; &lt;url&gt;http://localhost:32770/nexus/content/groups/public/&lt;/url&gt; &lt;/mirror&gt; &lt;!--profiles节点添加如下：--&gt; &lt;profile&gt; &lt;id&gt;dev&lt;/id&gt; &lt;repositories&gt; &lt;repository&gt; &lt;id&gt;central&lt;/id&gt; &lt;name&gt;local-maven-main-repository&lt;/name&gt; &lt;url&gt;http://localhost:32770/nexus/content/groups/public/&lt;/url&gt; &lt;releases&gt; &lt;enabled&gt;true&lt;/enabled&gt; &lt;/releases&gt; &lt;snapshots&gt; &lt;enabled&gt;true&lt;/enabled&gt; &lt;/snapshots&gt; &lt;/repository&gt; &lt;/repositories&gt; &lt;pluginRepositories&gt; &lt;pluginRepository&gt; &lt;id&gt;central&lt;/id&gt; &lt;name&gt;local-maven-plugin-repository&lt;/name&gt; &lt;url&gt;http://localhost:32770/nexus/content/groups/public/&lt;/url&gt; &lt;releases&gt; &lt;enabled&gt;true&lt;/enabled&gt; &lt;/releases&gt; &lt;snapshots&gt; &lt;enabled&gt;false&lt;/enabled&gt; &lt;/snapshots&gt; &lt;/pluginRepository&gt; &lt;/pluginRepositories&gt; &lt;/profile&gt;&lt;!-- 最后激活 --&gt; &lt;activeProfiles&gt; &lt;activeProfile&gt;dev&lt;/activeProfile&gt; &lt;/activeProfiles&gt; 5.发布与部署6.使用7.发布第3方包]]></content>
+      <categories>
+        <category>maven</category>
+        <category>nexus</category>
+      </categories>
+      <tags>
+        <tag>maven</tag>
+        <tag>nexus</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[docker-gui]]></title>
     <url>%2F2017%2F12%2F25%2Fdocker-gui%2F</url>
     <content type="text"><![CDATA[在Mac上使用Docker运行GUI应用程序firefoxvscode 需要准备的东西： osx系统 docker for mac XQartz 2.7.11 一位国外的美女大神写的Dockerfile osx系统没有就不用看下去docker for mac 自行安装XQuartz使用brew 安装 1brew cask install xquartz 关于Quartz的最新版，可以前往XQuartz官网 运行起来！使用我们本机的终端来打开XQuartz 1open -a XQuartz 我们就运行起来了xquartz的终端，我们打开它的偏好设置 把这个钩上，然后重启XQuartz就生效。 我们在XQuartz的终端输入一下命令,来允许你本机的连接: 12ip=$(ifconfig en0 | grep inet | awk '$1=="inet" &#123;print $2&#125;')xhost + $ip 设置好之后，我们就可以运行一下Jessie大神做的Firefox镜像，她写的dockerfile在这 firefox: 1docker run -d --name firefox -e DISPLAY=$ip:0 -v /tmp/.X11-unix:/tmp/.X11-unix jess/firefox vscode: 1docker run -v /etc/localtime:/etc/localtime:ro -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$ip:0 --name vscode jess/vscode chrome(记得加上–privileged):因为Chrome使用的是沙盒，因此运行一个没权限的沙盒将等到一个错误：Failed to move to new namespace: PID namespaces supported, Network namespace supported, but failed: errno = Operation not permitted使用--privileged可以给容器赋予权限去访问主机的资源，就如主机的进程那样访问主机的资源。 1docker run -d -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=$ip:0 -v ~/Downloads:/root/Downloads --privileged --name chrome jess/chrome Merry Christmas]]></content>
