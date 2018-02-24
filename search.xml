@@ -1,6 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[SpringMvc实现RESTful风格]]></title>
+    <url>%2F2018%2F01%2F31%2Frestful%2F</url>
+    <content type="text"><![CDATA[RESTful 什么是RESTful-符合REST约束风格和原则的应用程序或设计就是RESTful. 1234567eg: /emp/1 HTTP GET 查询id=1的emp /emp/1 HTTP DELETE 删除id=1的emp,实验中直接删除会报405错误，但是采用$.ajax异步删除就没问题 /emp/1 HTTP PUT 跟新emp /emp/add HTTP POST 新增emp Spring对RESTful的支持 Spring MVC 对 RESTful应用提供了以下支持 利用@RequestMapping 指定要处理请求的URI模板和HTTP请求的动作类型 利用@PathVariable讲URI请求模板中的变量映射到处理方法参数上 利用Ajax,在客户端发出PUT、DELETE动作的请求 123@RequestMapping(value = "/&#123;id&#125;", method = RequestMethod.GET) public String toUpdate(@PathVariable("id") Integer id, Model model) &#123;&#125; RequestMapping的一般应用格式@RequestMapping(value = “/{id}”, method = RequestMethod.GET) @RequestMapping(value = “/{id}”, method = RequestMethod.POST) @RequestMapping(value = “/{id}”, method = RequestMethod.DELETE) // 因为这个需要Ajax请求，所有返回的是个json @ResponseBody @RequestMapping(value = “/{id}”, method = RequestMethod.PUT) 客户端发送PUT，DELETE请求 , 可以采用Ajax方式发送PUT和DELETE请求123456789$.ajax( &#123; type : "DELETE", url : "/spring_crud_restful/emp/deleteEmp/" + id, dataType : "json", success : function(data) &#123; alert(data); location.href = "/spring_crud_restful/emp/listEmp/1"; &#125; &#125;); 静态资源访问处理采用RESTful架构后，需要将web.xml中控制器拦截的请求设置为/，这样会将css,js等静态资源进行拦截，发送404错误。 解决方法： –配置123&lt;mvc:resources/&gt; &lt;mvc:resources mapping=&quot;请求URI&quot; location=&quot;资源位置&quot; /&gt; –配置123&lt;mvc:default-servlet-handler/&gt; &lt;mvc:default-servlet-handler/&gt;]]></content>
+      <categories>
+        <category>Spring</category>
+        <category>SpringMvc</category>
+      </categories>
+      <tags>
+        <tag>RESTful</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[微信支付-服务商下的公众号支付]]></title>
+    <url>%2F2018%2F01%2F20%2Fweixin-subapp-pay%2F</url>
+    <content type="text"><![CDATA[服务商下的公众号支付在服务商模式下，必须传本公众号和用户的openid 给服务商来生成jsapi支付参数。最近有个坑，前端怎么调都是没法支付，只是转一下就没了。最后发现是服务商那里没有配置该子商户的公众号支付的域名：登陆服务商的微信商户后台，找到该子商户，点击配置，添加一个域名。 单例页面的微信支付之前一直都是 http://xxxx/#/paypage改为http://xxxx/#/pay/paypage 就可以 也就是说如果是单例页面如vue ,就微信后台后台配置http://xxxx/#/pay/这里就是要求支付必须在2级目录里，paypage.vue得放在pay目录里。]]></content>
+      <categories>
+        <category>微信支付</category>
+        <category>服务商下</category>
+        <category>公众号支付</category>
+      </categories>
+      <tags>
+        <tag>微信支付</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[微信网页授权]]></title>
+    <url>%2F2018%2F01%2F18%2Fweixin-auth%2F</url>
+    <content type="text"><![CDATA[微信网页授权最近做前后台分离，发现微信授权登陆做的很烦。域名跳来跳去的，跳晕了。微信的网页授权文档传送门 微信官方给出的步骤:1 第一步：用户同意授权，获取code 2 第二步：通过code换取网页授权access_token 3 第三步：刷新access_token（如果需要） 4 第四步：拉取用户信息(需scope为 snsapi_userinfo) 5 附：检验授权凭证（access_token）是否有效 实践思考前端判断用户的cookie为空，并且是微信浏览器，就跳转到长链接： 1https://open.weixin.qq.com/connect/oauth2/authorize?appid=公众号APPID&amp;redirect_uri=后台地址&amp;response_type=code&amp;scope=SCOPE&amp;state=前端拼接的随机字符串#wechat_redirect 用户的体验是：他打开了前端的一个网页，然后跳转到open.weixin.qq.com的网页，然后又杯重定向到后台的一个地址。最后，后台获取用户信息后，又重定向到前端的某一个页面。 我门可以思考一个这样的场景，你的朋友分享了一个商城的商品详情页面给你。你打开之后，有了以上的跳转体验，是不是很晕，但是用户用微信浏览器打开的时候是看不到地址的变化，只看到上面有一个绿色的进度条，加载了又加载了…。我们要的效果就是，用户打开这个商品详情页面就静默授权，然后回跳到该页面。 实现前端的实现： 前端在跳转前，使用cookie保存当前的请求的地址ori_path，还要保存一个md5(时间+随机数) 的值md5_str，拼到长链接里。 1https://open.weixin.qq.com/connect/oauth2/authorize?appid=公众号APPID&amp;redirect_uri=后台地址&amp;response_type=code&amp;scope=SCOPE&amp;state=md5_str#wechat_redirect 拼好后，跳转！ -》微信官方-》后台-》前端某一个具体的地址/auth 这时候，前端在/auth的页面里，cookie拿出md5_str,去异步请求后台获取用户数据，再拿出之前存的地址ori_path去跳转。 后台的实现： 做一个controller,接受微信官方的请求，微信会带来code 和state (md5_str)拿到code就可以拿到用户信息，具体查看微信公众号文档传送门,然后，用户数据和state(md5_str)保存起来 再做一个controller，接受前端发来的md5_str,去拿用户数据]]></content>
+      <categories>
+        <category>微信公众号</category>
+        <category>网页授权</category>
+      </categories>
+      <tags>
+        <tag>微信公众号</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[微信公众号支付]]></title>
+    <url>%2F2018%2F01%2F18%2Fweixin-mppay%2F</url>
+    <content type="text"><![CDATA[微信公众号支付如果是服务商下的公众号发起公众号支付，必须有以下参数用户在子公众号下的openid 开发者调试的时候找不到子公众号的openid1.开发者先关注该服务商下的被服务的公众号（这里叫子公众号）2.在子公众号里的用户管理下，新建一个标签“开发”,把开发人员拉进去3.在线上调试工具先获取access_token,4.在微信文档-标签,先调用获取公众号已创建的标签，再调用获取标签下粉丝列表5.如果你想查询一下该openid的具体用户信息，请调用微信文档-用户信息里的获取用户基本信息]]></content>
+      <categories>
+        <category>微信支付</category>
+        <category>公众号支付</category>
+      </categories>
+      <tags>
+        <tag>微信支付</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[mysql中delete语句使用别名]]></title>
     <url>%2F2018%2F01%2F17%2Fmysql-delete%2F</url>
     <content type="text"><![CDATA[delete语法中使用别名问题1delete from a_table A where A.name = '123'; 但是有一个错误 1You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 解决方法在delete 与from之间加上一个别名 1delete A from a_table A where A.name = '123'; 删除成功!]]></content>

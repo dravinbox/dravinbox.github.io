@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://dravinbox.github.io/"/>
-  <updated>2018-01-17T09:39:10.741Z</updated>
+  <updated>2018-01-31T02:20:04.000Z</updated>
   <id>http://dravinbox.github.io/</id>
   
   <author>
@@ -17,11 +17,122 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>SpringMvc实现RESTful风格</title>
+    <link href="http://dravinbox.github.io/2018/01/31/restful/"/>
+    <id>http://dravinbox.github.io/2018/01/31/restful/</id>
+    <published>2018-01-31T02:14:13.000Z</published>
+    <updated>2018-01-31T02:20:04.000Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="RESTful"><a href="#RESTful" class="headerlink" title="RESTful"></a>RESTful</h1><p><img src="https://ws2.sinaimg.cn/large/006tNc79ly1fnzklg5hlyj30fk07ojrf.jpg" alt="图片"></p><h2 id="什么是RESTful"><a href="#什么是RESTful" class="headerlink" title="什么是RESTful"></a>什么是RESTful</h2><p>-符合REST约束风格和原则的应用程序或设计就是RESTful.</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">eg:  /emp/1  HTTP GET      查询id=1的emp</span><br><span class="line"></span><br><span class="line">      /emp/1  HTTP DELETE    删除id=1的emp,实验中直接删除会报405错误，但是采用$.ajax异步删除就没问题</span><br><span class="line"></span><br><span class="line">      /emp/1  HTTP PUT    跟新emp</span><br><span class="line"></span><br><span class="line">      /emp/add  HTTP POST     新增emp</span><br></pre></td></tr></table></figure><h2 id="Spring对RESTful的支持"><a href="#Spring对RESTful的支持" class="headerlink" title="Spring对RESTful的支持"></a>Spring对RESTful的支持</h2><ul><li><p>Spring MVC 对 RESTful应用提供了以下支持</p></li><li><p>利用@RequestMapping 指定要处理请求的URI模板和HTTP请求的动作类型</p></li><li><p>利用@PathVariable讲URI请求模板中的变量映射到处理方法参数上</p></li><li><p>利用Ajax,在客户端发出PUT、DELETE动作的请求</p></li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value = <span class="string">"/&#123;id&#125;"</span>, method = RequestMethod.GET)</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> String <span class="title">toUpdate</span><span class="params">(@PathVariable(<span class="string">"id"</span>)</span> Integer id, Model model) </span>&#123;&#125;</span><br></pre></td></tr></table></figure><h2 id="RequestMapping的一般应用格式"><a href="#RequestMapping的一般应用格式" class="headerlink" title="RequestMapping的一般应用格式"></a>RequestMapping的一般应用格式</h2><p>@RequestMapping(value = “/{id}”, method = RequestMethod.GET)</p><p> @RequestMapping(value = “/{id}”, method = RequestMethod.POST)</p><p> @RequestMapping(value = “/{id}”, method = RequestMethod.DELETE)   // 因为这个需要Ajax请求，所有返回的是个json</p><p> @ResponseBody</p><p> @RequestMapping(value = “/{id}”, method = RequestMethod.PUT)</p><h2 id="客户端发送PUT，DELETE请求-可以采用Ajax方式发送PUT和DELETE请求"><a href="#客户端发送PUT，DELETE请求-可以采用Ajax方式发送PUT和DELETE请求" class="headerlink" title="客户端发送PUT，DELETE请求 , 可以采用Ajax方式发送PUT和DELETE请求"></a>客户端发送PUT，DELETE请求 , 可以采用Ajax方式发送PUT和DELETE请求</h2><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$.ajax( &#123;  </span><br><span class="line">        type : <span class="string">"DELETE"</span>,  </span><br><span class="line">        url : <span class="string">"/spring_crud_restful/emp/deleteEmp/"</span> + id,  </span><br><span class="line">        dataType : <span class="string">"json"</span>,  </span><br><span class="line">        success : <span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;  </span><br><span class="line">            alert(data);  </span><br><span class="line">            location.href = <span class="string">"/spring_crud_restful/emp/listEmp/1"</span>;  </span><br><span class="line">        &#125;  </span><br><span class="line">    &#125;);</span><br></pre></td></tr></table></figure><h2 id="静态资源访问处理"><a href="#静态资源访问处理" class="headerlink" title="静态资源访问处理"></a>静态资源访问处理</h2><p>采用RESTful架构后，需要将web.xml中控制器拦截的请求设置为/，这样会将css,js等静态资源进行拦截，发送404错误。</p><p>解决方法：</p><p>–配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;mvc:resources/&gt; </span><br><span class="line"></span><br><span class="line">&lt;mvc:resources mapping=&quot;请求URI&quot; location=&quot;资源位置&quot; /&gt;</span><br></pre></td></tr></table></figure></p><p>–配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&lt;mvc:default-servlet-handler/&gt;</span><br><span class="line"></span><br><span class="line"> &lt;mvc:default-servlet-handler/&gt;</span><br></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;RESTful&quot;&gt;&lt;a href=&quot;#RESTful&quot; class=&quot;headerlink&quot; title=&quot;RESTful&quot;&gt;&lt;/a&gt;RESTful&lt;/h1&gt;&lt;p&gt;&lt;img src=&quot;https://ws2.sinaimg.cn/large/006tNc79ly1
+      
+    
+    </summary>
+    
+      <category term="Spring" scheme="http://dravinbox.github.io/categories/Spring/"/>
+    
+      <category term="SpringMvc" scheme="http://dravinbox.github.io/categories/Spring/SpringMvc/"/>
+    
+    
+      <category term="RESTful" scheme="http://dravinbox.github.io/tags/RESTful/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>微信支付-服务商下的公众号支付</title>
+    <link href="http://dravinbox.github.io/2018/01/20/weixin-subapp-pay/"/>
+    <id>http://dravinbox.github.io/2018/01/20/weixin-subapp-pay/</id>
+    <published>2018-01-20T03:08:58.000Z</published>
+    <updated>2018-01-20T09:08:56.197Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="服务商下的公众号支付"><a href="#服务商下的公众号支付" class="headerlink" title="服务商下的公众号支付"></a>服务商下的公众号支付</h1><p>在服务商模式下，必须传本公众号和用户的openid 给服务商来生成jsapi支付参数。<br>最近有个坑，前端怎么调都是没法支付，只是转一下就没了。<br>最后发现是服务商那里没有配置该子商户的公众号支付的域名：<br>登陆服务商的微信商户后台，找到该子商户，点击配置，添加一个域名。</p><h2 id="单例页面的微信支付"><a href="#单例页面的微信支付" class="headerlink" title="单例页面的微信支付"></a>单例页面的微信支付</h2><p>之前一直都是 <a href="http://xxxx/#/paypage" target="_blank" rel="noopener">http://xxxx/#/paypage</a><br>改为<a href="http://xxxx/#/pay/paypage" target="_blank" rel="noopener">http://xxxx/#/pay/paypage</a> 就可以</p><p>也就是说<br>如果是单例页面如vue ,就微信后台后台配置http://xxxx/#/pay/<br>这里就是要求支付必须在2级目录里，paypage.vue得放在pay目录里。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;服务商下的公众号支付&quot;&gt;&lt;a href=&quot;#服务商下的公众号支付&quot; class=&quot;headerlink&quot; title=&quot;服务商下的公众号支付&quot;&gt;&lt;/a&gt;服务商下的公众号支付&lt;/h1&gt;&lt;p&gt;在服务商模式下，必须传本公众号和用户的openid 给服务商来生成jsapi
+      
+    
+    </summary>
+    
+      <category term="微信支付" scheme="http://dravinbox.github.io/categories/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98/"/>
+    
+      <category term="服务商下" scheme="http://dravinbox.github.io/categories/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98/%E6%9C%8D%E5%8A%A1%E5%95%86%E4%B8%8B/"/>
+    
+      <category term="公众号支付" scheme="http://dravinbox.github.io/categories/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98/%E6%9C%8D%E5%8A%A1%E5%95%86%E4%B8%8B/%E5%85%AC%E4%BC%97%E5%8F%B7%E6%94%AF%E4%BB%98/"/>
+    
+    
+      <category term="微信支付" scheme="http://dravinbox.github.io/tags/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>微信网页授权</title>
+    <link href="http://dravinbox.github.io/2018/01/18/weixin-auth/"/>
+    <id>http://dravinbox.github.io/2018/01/18/weixin-auth/</id>
+    <published>2018-01-18T03:15:34.000Z</published>
+    <updated>2018-01-18T03:36:09.450Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="微信网页授权"><a href="#微信网页授权" class="headerlink" title="微信网页授权"></a>微信网页授权</h1><p>最近做前后台分离，发现微信授权登陆做的很烦。域名跳来跳去的，跳晕了。<br>微信的网页授权文档<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842" target="_blank" rel="noopener">传送门</a></p><p>微信官方给出的步骤:<br>1 第一步：用户同意授权，获取code</p><p>2 第二步：通过code换取网页授权access_token</p><p>3 第三步：刷新access_token（如果需要）</p><p>4 第四步：拉取用户信息(需scope为 snsapi_userinfo)</p><p>5 附：检验授权凭证（access_token）是否有效</p><h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>前端判断用户的cookie为空，并且是微信浏览器，就跳转到长链接：</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://open.weixin.qq.com/connect/oauth2/authorize?appid=公众号APPID&amp;redirect_uri=后台地址&amp;response_type=code&amp;scope=SCOPE&amp;state=前端拼接的随机字符串#wechat_redirect</span><br></pre></td></tr></table></figure><p>用户的体验是：他打开了前端的一个网页，然后跳转到open.weixin.qq.com的网页，然后又杯重定向到后台的一个地址。最后，后台获取用户信息后，又重定向到前端的某一个页面。</p><p>我门可以思考一个这样的场景，你的朋友分享了一个商城的商品详情页面给你。你打开之后，有了以上的跳转体验，是不是很晕，但是用户用微信浏览器打开的时候是看不到地址的变化，只看到上面有一个绿色的进度条，加载了又加载了…。我们要的效果就是，用户打开这个商品详情页面就静默授权，然后回跳到该页面。</p><h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>前端的实现：</p><p>前端在跳转前，使用cookie保存当前的请求的地址ori_path，还要保存一个md5(时间+随机数) 的值md5_str，拼到长链接里。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://open.weixin.qq.com/connect/oauth2/authorize?appid=公众号APPID&amp;redirect_uri=后台地址&amp;response_type=code&amp;scope=SCOPE&amp;state=md5_str#wechat_redirect</span><br></pre></td></tr></table></figure><p>拼好后，跳转！ -》微信官方-》后台-》前端某一个具体的地址/auth</p><p>这时候，前端在/auth的页面里，cookie拿出md5_str,去异步请求后台获取用户数据，再拿出之前存的地址ori_path去跳转。</p><p>后台的实现：</p><p>做一个controller,接受微信官方的请求，微信会带来code 和state (md5_str)<br>拿到code就可以拿到用户信息，具体查看微信公众号文档<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842" target="_blank" rel="noopener">传送门</a>,然后，用户数据和state(md5_str)保存起来</p><p>再做一个controller，接受前端发来的md5_str,去拿用户数据</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;微信网页授权&quot;&gt;&lt;a href=&quot;#微信网页授权&quot; class=&quot;headerlink&quot; title=&quot;微信网页授权&quot;&gt;&lt;/a&gt;微信网页授权&lt;/h1&gt;&lt;p&gt;最近做前后台分离，发现微信授权登陆做的很烦。域名跳来跳去的，跳晕了。&lt;br&gt;微信的网页授权文档&lt;a href
+      
+    
+    </summary>
+    
+      <category term="微信公众号" scheme="http://dravinbox.github.io/categories/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7/"/>
+    
+      <category term="网页授权" scheme="http://dravinbox.github.io/categories/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7/%E7%BD%91%E9%A1%B5%E6%8E%88%E6%9D%83/"/>
+    
+    
+      <category term="微信公众号" scheme="http://dravinbox.github.io/tags/%E5%BE%AE%E4%BF%A1%E5%85%AC%E4%BC%97%E5%8F%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>微信公众号支付</title>
+    <link href="http://dravinbox.github.io/2018/01/18/weixin-mppay/"/>
+    <id>http://dravinbox.github.io/2018/01/18/weixin-mppay/</id>
+    <published>2018-01-18T03:00:04.000Z</published>
+    <updated>2018-01-18T03:14:11.183Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="微信公众号支付"><a href="#微信公众号支付" class="headerlink" title="微信公众号支付"></a>微信公众号支付</h1><p>如果是服务商下的公众号发起公众号支付，必须有以下参数<br>用户在子公众号下的openid</p><h2 id="开发者调试的时候找不到子公众号的openid"><a href="#开发者调试的时候找不到子公众号的openid" class="headerlink" title="开发者调试的时候找不到子公众号的openid"></a>开发者调试的时候找不到子公众号的openid</h2><p>1.开发者先关注该服务商下的被服务的公众号（这里叫子公众号）<br>2.在子公众号里的用户管理下，新建一个标签“开发”,把开发人员拉进去<br>3.在<a href="https://mp.weixin.qq.com/debug/" target="_blank" rel="noopener">线上调试工具</a>先获取access_token,<br>4.在<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140837" target="_blank" rel="noopener">微信文档-标签</a>,先调用获取公众号已创建的标签，再调用获取标签下粉丝列表<br>5.如果你想查询一下该openid的具体用户信息，请调用<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140839" target="_blank" rel="noopener">微信文档-用户信息</a>里的获取用户基本信息</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;微信公众号支付&quot;&gt;&lt;a href=&quot;#微信公众号支付&quot; class=&quot;headerlink&quot; title=&quot;微信公众号支付&quot;&gt;&lt;/a&gt;微信公众号支付&lt;/h1&gt;&lt;p&gt;如果是服务商下的公众号发起公众号支付，必须有以下参数&lt;br&gt;用户在子公众号下的openid&lt;/p&gt;
+
+      
+    
+    </summary>
+    
+      <category term="微信支付" scheme="http://dravinbox.github.io/categories/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98/"/>
+    
+      <category term="公众号支付" scheme="http://dravinbox.github.io/categories/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98/%E5%85%AC%E4%BC%97%E5%8F%B7%E6%94%AF%E4%BB%98/"/>
+    
+    
+      <category term="微信支付" scheme="http://dravinbox.github.io/tags/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98/"/>
+    
+  </entry>
+  
+  <entry>
     <title>mysql中delete语句使用别名</title>
     <link href="http://dravinbox.github.io/2018/01/17/mysql-delete/"/>
     <id>http://dravinbox.github.io/2018/01/17/mysql-delete/</id>
     <published>2018-01-17T09:34:49.000Z</published>
-    <updated>2018-01-17T09:39:10.741Z</updated>
+    <updated>2018-01-18T03:00:38.181Z</updated>
     
     <content type="html"><![CDATA[<h1 id="delete语法中使用别名"><a href="#delete语法中使用别名" class="headerlink" title="delete语法中使用别名"></a>delete语法中使用别名</h1><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> a_table A <span class="keyword">where</span> A.name = <span class="string">'123'</span>;</span><br></pre></td></tr></table></figure><p>但是有一个错误</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You have an error <span class="keyword">in</span> your SQL syntax; check the manual that corresponds to your MySQL server version <span class="keyword">for</span> the right syntax to use near</span><br></pre></td></tr></table></figure><h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>在delete 与from之间加上一个别名</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> A <span class="keyword">from</span> a_table A <span class="keyword">where</span> A.name = <span class="string">'123'</span>;</span><br></pre></td></tr></table></figure><p>删除成功!</p>]]></content>
     
