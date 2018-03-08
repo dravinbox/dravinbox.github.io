@@ -321,6 +321,771 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/02/26/java-concurrent-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/26/java-concurrent-1/" itemprop="url">java并发编程第一篇</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-26T08:26:02+08:00">
+                2018-02-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/" itemprop="url" rel="index">
+                    <span itemprop="name">java</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/java/concurrent/" itemprop="url" rel="index">
+                    <span itemprop="name">concurrent</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>1.1并发编程的目的<br>1.2线程安全<br>1.3对象锁的同步和异步<br>1.4脏读<br>1.5synchronized的其他概念<br>1.6synchronized代码块<br>1.7volatile关键字</p>
+<hr>
+<h2 id="1-1-并发编程的目的"><a href="#1-1-并发编程的目的" class="headerlink" title="1.1 并发编程的目的"></a>1.1 并发编程的目的</h2><p>第一：面试非常重要<br>第二：知识拓展<br>第三：在以后的分布式系统中，你都可以找到类似的并发，分布式，并行处理的问题</p>
+<p>多线程中：<br>synchronized  同步的<br>volatile   爆炸性，挥发性<br>ReentrantLock  重进入锁<br>concurrent  并发的；一致的；同时发生的</p>
+<hr>
+<h2 id="1-2-线程安全"><a href="#1-2-线程安全" class="headerlink" title="1.2 线程安全"></a>1.2 线程安全</h2><h3 id="1-2-1-概念"><a href="#1-2-1-概念" class="headerlink" title="1.2.1 概念"></a>1.2.1 概念</h3><p>当多个线程访问某一个类（对象或方法）时，这个类始终都能表现出正确的行为，那么这个类（对象或方法）就是线程安全的。</p>
+<p>synchronized:可以在任意对象及方法上加锁，而加锁的这段代码称为“互斥区”或“临界区”</p>
+<h3 id="1-2-2-多线程与多个锁"><a href="#1-2-2-多线程与多个锁" class="headerlink" title="1.2.2 多线程与多个锁"></a>1.2.2 多线程与多个锁</h3><p>关键字synchronized 是对象锁，多个对象相当于有多个锁。所以说当多个线程操作的是不同的对象时，就相当于使用多把锁，多线程之间互不影响。</p>
+<p>注意，当synchronized修饰的是静态方法时，这把锁是类锁，无论有多少个对象，它们公用一把锁，因此会产生锁竞争</p>
+<hr>
+<h2 id="1-3-对象锁的同步和异步"><a href="#1-3-对象锁的同步和异步" class="headerlink" title="1.3 对象锁的同步和异步"></a>1.3 对象锁的同步和异步</h2><p>同步：synchronized<br>    同步概念就是共享，共享资源。</p>
+<p>异步：asynchronized<br>    异步的概念就是独立，相互之间不受任何制约。</p>
+<p>同步需要线程安全。需要两个特性：</p>
+<p>1.原子性（同步）</p>
+<p>2.可见性</p>
+<h3 id="1-3-1-对象锁的必要性"><a href="#1-3-1-对象锁的必要性" class="headerlink" title="1.3.1 对象锁的必要性"></a>1.3.1 对象锁的必要性</h3><h4 id="案例1"><a href="#案例1" class="headerlink" title="案例1"></a>案例1</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> mytest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span>  <span class="keyword">double</span> money=<span class="number">1000</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//取钱</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span>   <span class="keyword">double</span> <span class="title">getMoney</span><span class="params">(<span class="keyword">double</span> get_money)</span></span>&#123;</span><br><span class="line">		money=money-get_money;</span><br><span class="line">		System.out.println(<span class="string">"取钱后，总金额："</span>+money);</span><br><span class="line">		<span class="keyword">return</span> get_money ;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//存钱</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span>   <span class="keyword">double</span> <span class="title">putMoney</span><span class="params">(<span class="keyword">double</span> put_money)</span></span>&#123;</span><br><span class="line">		money+=put_money;</span><br><span class="line">		System.out.println(<span class="string">"存钱后，总金额："</span>+money);</span><br><span class="line">		<span class="keyword">return</span> money;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">		Bank bank= <span class="keyword">new</span> Bank();</span><br><span class="line">		Thread t1=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				bank.getMoney(<span class="number">100</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t1"</span>);</span><br><span class="line">		Thread t2=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				bank.putMoney(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t2"</span>);</span><br><span class="line">		</span><br><span class="line">		t1.start();</span><br><span class="line">		t2.start();</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：<br>取钱后，总金额：1000.0<br>存钱后，总金额：1000.0</p>
+<p>我们期待的结果应该是<br>“取钱后，总金额：900.0<br>存钱后，总金额：1000.0”，那是因为线程1和线程2的代码经过排列之后才给cpu处理，有可能排列的是这样的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//有可能排序成这样，依次让cpu处理:</span></span><br><span class="line">money=money-get_money;<span class="comment">//线程1的代码</span></span><br><span class="line">money+=put_money;<span class="comment">//线程2的代码</span></span><br><span class="line">System.out.println(<span class="string">"取钱后，总金额："</span>+money);<span class="comment">//线程1的代码</span></span><br><span class="line">System.out.println(<span class="string">"存钱后，总金额："</span>+money);<span class="comment">//线程2的代码</span></span><br></pre></td></tr></table></figure>
+<p>所以有可能出现以上结果</p>
+<h4 id="改进代码"><a href="#改进代码" class="headerlink" title="改进代码"></a>改进代码</h4><p>加上synchronized,使得getMoney和putMoney的方法拥有原子性，就是说，里面的代码是一个整体，在cpu排序处理时，不可插入其他线程的代码。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> mytest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span>  <span class="keyword">double</span> money=<span class="number">1000</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//取钱</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span>   <span class="keyword">double</span> <span class="title">getMoney</span><span class="params">(<span class="keyword">double</span> get_money)</span></span>&#123;</span><br><span class="line">		money=money-get_money;</span><br><span class="line">		System.out.println(<span class="string">"取钱后，总金额："</span>+money);</span><br><span class="line">		<span class="keyword">return</span> get_money ;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//存钱</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span>   <span class="keyword">synchronized</span>  <span class="keyword">double</span> <span class="title">putMoney</span><span class="params">(<span class="keyword">double</span> put_money)</span></span>&#123;</span><br><span class="line">		money+=put_money;</span><br><span class="line">		System.out.println(<span class="string">"存钱后，总金额："</span>+money);</span><br><span class="line">		<span class="keyword">return</span> money;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">		Bank bank= <span class="keyword">new</span> Bank();</span><br><span class="line">		Thread t1=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				bank.getMoney(<span class="number">100</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t1"</span>);</span><br><span class="line">		Thread t2=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				bank.putMoney(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t2"</span>);</span><br><span class="line">		</span><br><span class="line">		t1.start();</span><br><span class="line">		t2.start();</span><br><span class="line">	</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>结果：<br>取钱后，总金额：900.0<br>存钱后，总金额：1000.0</p>
+<h4 id="对象锁"><a href="#对象锁" class="headerlink" title="对象锁"></a>对象锁</h4><p>被synchronzied修饰的方法叫同步方法，否则叫异步方法。<strong>当某一线程调用该对象的同步方法时，其他线程无法调用该对象的其他同步方法，但是可以调用该对象的异步方法</strong>。也就是说，无论多少个synchronized方法，一个对象一把锁，使用了一把锁，其他的线程只能等待锁释放，才能访问同步方法。</p>
+<h4 id="案例2"><a href="#案例2" class="headerlink" title="案例2"></a>案例2</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> mytest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">double</span> money=<span class="number">1000</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//同步方法，取钱</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span>  <span class="keyword">double</span> <span class="title">getMoney</span><span class="params">(<span class="keyword">double</span> get_money)</span></span>&#123;</span><br><span class="line">		money=money-get_money;</span><br><span class="line">		System.out.println(<span class="string">"取钱后，总金额："</span>+money);</span><br><span class="line"><span class="comment">//		return get_money ;</span></span><br><span class="line">		<span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">			System.out.println(Thread.currentThread().getName()+<span class="string">"拿着把锁"</span>);</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//异步方法，存钱</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span>  <span class="keyword">double</span> <span class="title">putMoney</span><span class="params">(<span class="keyword">double</span> put_money)</span></span>&#123;</span><br><span class="line">		money+=put_money;</span><br><span class="line">		System.out.println(<span class="string">"存钱后，总金额："</span>+money);</span><br><span class="line">		<span class="keyword">return</span> money;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//异步方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span>  <span class="keyword">void</span> <span class="title">getm</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">		System.out.println(<span class="string">"异步方法，============总金额："</span>+money);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">		Bank bank= <span class="keyword">new</span> Bank();</span><br><span class="line">		Thread t1=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="comment">//访问同步方法</span></span><br><span class="line">				bank.getMoney(<span class="number">100</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t1"</span>);</span><br><span class="line">		Thread t2=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="comment">//访问同步方法</span></span><br><span class="line">				bank.putMoney(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t2"</span>);</span><br><span class="line">		Thread t3=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="comment">//访问异步方法</span></span><br><span class="line">				bank.getm();</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t3"</span>);</span><br><span class="line">		</span><br><span class="line">		t1.start();</span><br><span class="line">		t2.start();</span><br><span class="line">		t3.start();</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果：<br>t1拿着把锁<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>t1拿着把锁<br>t1拿着把锁<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>t1拿着把锁<br>t1拿着把锁<br>异步方法，============总金额：900.0</p>
+<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>当线程持续拿着一把对象锁(bank)不放时，其他线程就不能访问该对象锁(bank)，但是能访问bank的异步方法。</p>
+<hr>
+<h2 id="1-4-脏读"><a href="#1-4-脏读" class="headerlink" title="1.4 脏读"></a>1.4 脏读</h2><p>对于对象的同步和异步的方法，我们在设计自己的程序时候，一定要考虑问题的整体(<strong>原子性</strong>)，不然会出现数据不一致的错误。</p>
+<p>例子：<br>set/get方法都加上synchronized的修饰。</p>
+<p>synchronized能保证函数的<strong>原子性</strong></p>
+<hr>
+<h2 id="1-5-synchronized的其他概念"><a href="#1-5-synchronized的其他概念" class="headerlink" title="1.5 synchronized的其他概念"></a>1.5 synchronized的其他概念</h2><h3 id="锁重入概念"><a href="#锁重入概念" class="headerlink" title="锁重入概念"></a>锁重入概念</h3><p>关键字synchronized 拥有锁重入的功能，也就是在使用synchronized时，当一个线程得到一个对象的锁后，再次调用此对象时就是可以再次获得该对象的锁。</p>
+<ul>
+<li>锁重入形式1:对于某一线程操作某一对象时，在该类函数中，不同的同步方法相互调用，形成锁重入。</li>
+<li>锁重入形式2:对于某一线程操作某一对象时，在父子类函数中，不同类的不同的同步方法相互调用，形成锁重入。</li>
+</ul>
+<h3 id="synchronized的异常处理"><a href="#synchronized的异常处理" class="headerlink" title="synchronized的异常处理"></a>synchronized的异常处理</h3><p>当synchronized处理过程中，抛出异常时会丢失锁，因此要好好的处理异常，不然业务逻辑就发生严重错误。</p>
+<hr>
+<h2 id="1-6-synchronized代码块"><a href="#1-6-synchronized代码块" class="headerlink" title="1.6 synchronized代码块"></a>1.6 synchronized代码块</h2><h3 id="对象锁-1"><a href="#对象锁-1" class="headerlink" title="对象锁"></a>对象锁</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//修改对象里的属性时，不会释放锁。</span></span><br></pre></td></tr></table></figure>
+<h3 id="字符串-它也是对象-锁："><a href="#字符串-它也是对象-锁：" class="headerlink" title="字符串(它也是对象)锁："></a>字符串(它也是对象)锁：</h3><p>1.使用常量字符串作为锁<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(“ssss”)&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">        <span class="comment">//这种形式某一线程不会释放锁,此序使用"ssss"对象锁</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>2.使用new String(“sss”)作为锁,每次访问该代码块，都使用新的字符串作为锁<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(<span class="keyword">new</span> String(“sss”))&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">        <span class="comment">//这种形式任意线程不会释放锁,此序使用各自new 出来的"ssss"对象锁,相互不影响</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>3.修改对象的引用，导致释放锁<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> lockstr=’ssss’;</span><br><span class="line"><span class="keyword">synchronized</span>(lockstr)&#123;</span><br><span class="line">    lockstr=“aaa”;</span><br><span class="line">    <span class="comment">//这种形式，当线程在改变的瞬间释放锁，导致其他线程进来</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="死锁："><a href="#死锁：" class="headerlink" title="死锁："></a>死锁：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//线程1执行的代码块：</span></span><br><span class="line"><span class="keyword">synchronized</span>(object1)&#123;</span><br><span class="line">    <span class="comment">//尝试获取object2锁</span></span><br><span class="line">    <span class="keyword">synchronized</span>(object2)&#123;</span><br><span class="line">    ..</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//线程2执行的代码块：</span></span><br><span class="line"><span class="keyword">synchronized</span>(object2)&#123;</span><br><span class="line">    <span class="comment">//尝试获取object1锁</span></span><br><span class="line">    <span class="keyword">synchronized</span>(object1)&#123;</span><br><span class="line">    ..</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>以上是双方互持有对方的锁，形成了死锁</p>
+<hr>
+<h2 id="1-7-volatile关键字"><a href="#1-7-volatile关键字" class="headerlink" title="1.7 volatile关键字"></a>1.7 volatile关键字</h2><p>volatile 关键字主要作用是使变量在多个线程间可见</p>
+<blockquote>
+<p>下面这段话摘自《深入理解Java虚拟机》：<br>“观察加入volatile关键字和没有加入volatile关键字时所生成的汇编代码发现，加入volatile关键字时，会多出一个lock前缀指令”<br>　　lock前缀指令实际上相当于一个内存屏障（也成内存栅栏），内存屏障会提供3个功能：<br>　　1）它确保指令重排序时不会把其后面的指令排到内存屏障之前的位置，也不会把前面的指令排到内存屏障的后面；即在执行到内存屏障这句指令时，在它前面的操作已经全部完成；<br>　　2）它会强制将对缓存的修改操作立即写入主存；<br>　　3）如果是写操作，它会导致其他CPU中对应的缓存行无效。</p>
+</blockquote>
+<h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p>当一个共享变量被volatile修饰时，它会保证修改的值会立即被更新到主存，当有其他线程需要读取时，它会去内存中读取新值。<br>　　而普通的共享变量不能保证可见性，因为普通共享变量被修改之后，什么时候被写入主存是不确定的，当其他线程去读取时，此时内存中可能还是原来的旧值，因此无法保证可见性。<br>　　另外，通过synchronized和Lock也能够保证可见性，synchronized和Lock能保证同一时刻只有一个线程获取锁然后执行同步代码，并且在释放锁之前会将对变量的修改刷新到主存当中。因此可以保证可见性。</p>
+<p>使用volatile关键字的话，当线程2进行修改时，会导致线程1的工作内存中缓存变量stop的缓存行无效（反映到硬件层的话，就是CPU的L1或者L2缓存中对应的缓存行无效）；由于线程1的工作内存中缓存变量stop的缓存行无效，所以线程1再次读取变量stop的值时会去主存读取。</p>
+<p><strong>综上所述，volatile能保证可见性,synchronized和Lock也能保证可见性</strong></p>
+<h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">10</span>;         <span class="comment">//语句1</span></span><br><span class="line">y = x;         <span class="comment">//语句2</span></span><br><span class="line">x++;           <span class="comment">//语句3</span></span><br><span class="line">x = x + <span class="number">1</span>;     <span class="comment">//语句4</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>语句1 是直接将数值10赋值给x，也就是说线程执行这个语句的会直接将数值10写入到工作内存中。</li>
+<li>语句2 实际上包含2个操作，它先要去读取x的值，再将x的值写入工作内存，虽然读取x的值以及 将x的值写入工作内存 这2个操作都是原子性操作，但是合起来就不是原子性操作了。</li>
+<li>同样的，x++和 x = x+1包括3个操作：读取x的值，进行加1操作，写入新的值。</li>
+</ul>
+<p><strong>所以上面4个语句只有语句1的操作具备原子性。</strong></p>
+<p><strong>volatile 能保证可见性，但不能保证原子性</strong><br><strong>synchronized，Lock,java.util.concurrent.atomic*能保证原子性</strong></p>
+<h3 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h3><p>在前面提到volatile关键字能禁止指令重排序，所以volatile能在一定程度上保证有序性。</p>
+<p>　　volatile关键字禁止指令重排序有两层意思：</p>
+<ol>
+<li><p>当程序执行到volatile变量的读操作或者写操作时，在其前面的操作的更改肯定全部已经进行，且结果已经对后面的操作可见；在其后面的操作肯定还没有进行；</p>
+</li>
+<li><p>在进行指令优化时，不能将在对volatile变量访问的语句放在其后面执行，也不能把volatile变量后面的语句放到其前面执行。</p>
+</li>
+</ol>
+<p>　　可能上面说的比较绕，举个简单的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//x、y为非volatile变量</span></span><br><span class="line"><span class="comment">//flag为volatile变量</span></span><br><span class="line"> </span><br><span class="line">x = <span class="number">2</span>;        <span class="comment">//语句1</span></span><br><span class="line">y = <span class="number">0</span>;        <span class="comment">//语句2</span></span><br><span class="line">flag = <span class="keyword">true</span>;  <span class="comment">//语句3</span></span><br><span class="line">x = <span class="number">4</span>;         <span class="comment">//语句4</span></span><br><span class="line">y = -<span class="number">1</span>;       <span class="comment">//语句5</span></span><br></pre></td></tr></table></figure></p>
+<p>　由于flag变量为volatile变量，那么在进行指令重排序的过程的时候，不会将语句3放到语句1、语句2前面，也不会讲语句3放到语句4、语句5后面。但是要注意语句1和语句2的顺序、语句4和语句5的顺序是不作任何保证的。</p>
+<p>　　并且volatile关键字能保证，执行到语句3时，语句1和语句2必定是执行完毕了的，且语句1和语句2的执行结果对语句3、语句4、语句5是可见的。</p>
+<p>一个例子：　<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//线程1:</span></span><br><span class="line">context = loadContext();   <span class="comment">//语句1</span></span><br><span class="line">inited = <span class="keyword">true</span>;             <span class="comment">//语句2</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">//线程2:</span></span><br><span class="line"><span class="keyword">while</span>(!inited )&#123;</span><br><span class="line">  sleep() </span><br><span class="line">&#125;</span><br><span class="line">doSomethingwithconfig(context);</span><br></pre></td></tr></table></figure></p>
+<p>前面举这个例子的时候，提到有可能语句2会在语句1之前执行，那么久可能导致context还没被初始化，而线程2中就使用未初始化的context去进行操作，导致程序出错。</p>
+<p>　　这里如果用volatile关键字对inited变量进行修饰，就不会出现这种问题了，因为当执行到语句2时，必定能保证context已经初始化完毕。</p>
+<h3 id="volatile应用场景"><a href="#volatile应用场景" class="headerlink" title="volatile应用场景"></a>volatile应用场景</h3><p>ynchronized关键字是防止多个线程同时执行一段代码，那么就会很影响程序执行效率，而volatile关键字在某些情况下性能要优于synchronized，但是要注意volatile关键字是无法替代synchronized关键字的，因为volatile关键字无法保证操作的原子性。通常来说，使用volatile必须具备以下2个条件：</p>
+<p>　　1）对变量的写操作不依赖于当前值</p>
+<p>　　2）该变量没有包含在具有其他变量的不变式中</p>
+<p>　　实际上，这些条件表明，可以被写入 volatile 变量的这些有效值独立于任何程序的状态，包括变量的当前状态。</p>
+<p>　　事实上，我的理解就是上面的2个条件需要保证操作是原子性操作，才能保证使用volatile关键字的程序在并发时能够正确执行。</p>
+<p>　　下面列举几个Java中使用volatile的几个场景。
+　　</p>
+<h3 id="状态标记量"><a href="#状态标记量" class="headerlink" title="状态标记量"></a>状态标记量</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//例1</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line"> <span class="comment">//线程1</span></span><br><span class="line"><span class="keyword">while</span>(!flag)&#123;</span><br><span class="line">    doSomething();</span><br><span class="line">&#125;</span><br><span class="line"> <span class="comment">//线程2</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFlag</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    flag = <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line">setFlag();</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//例2</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="keyword">boolean</span> inited = <span class="keyword">false</span>;</span><br><span class="line"><span class="comment">//线程1:</span></span><br><span class="line">context = loadContext();  </span><br><span class="line">inited = <span class="keyword">true</span>;            </span><br><span class="line"> </span><br><span class="line"><span class="comment">//线程2:</span></span><br><span class="line"><span class="keyword">while</span>(!inited )&#123;</span><br><span class="line">sleep()</span><br><span class="line">&#125;</span><br><span class="line">doSomethingwithconfig(context);</span><br></pre></td></tr></table></figure>
+<p><strong>就是在两个线程之间，一个线程的循环状态被两外一线程通过inited的值来控制</strong></p>
+<h3 id="double-check"><a href="#double-check" class="headerlink" title="double check"></a>double check</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//例3</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">null</span>;</span><br><span class="line">     </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         </span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(instance==<span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span>(instance==<span class="keyword">null</span>)</span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>double-check的应用就是：多线程取得单例时，先只允许同步获取单例，一旦单例被实例化出来，其他的线程就无须来竞争锁都可以异步获取单例。</strong></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/02/25/socket-io-3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/25/socket-io-3/" itemprop="url">Socket网络编程第三篇</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-25T15:26:38+08:00">
+                2018-02-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Socket/" itemprop="url" rel="index">
+                    <span itemprop="name">Socket</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Socket/Socket-03/" itemprop="url" rel="index">
+                    <span itemprop="name">Socket-03</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>代码：<a href="https://github.com/dravinbox/SocketIO_03" target="_blank" rel="noopener">https://github.com/dravinbox/SocketIO_03</a></p>
+<ol>
+<li>最佳实践（数据通信，心跳检测）</li>
+<li>netty实现文件服务器（基于Http协议）</li>
+<li>mina入门基础</li>
+</ol>
+<h2 id="1-1-最佳实践-数据通信"><a href="#1-1-最佳实践-数据通信" class="headerlink" title="1.1 最佳实践 - 数据通信"></a>1.1 最佳实践 - 数据通信</h2><p>考虑机器应该如何使用netty通信：</p>
+<ol>
+<li>第一种，使用长连接，如果服务器的性能足够好，并且我们的客户端的数量也比较少的情况下，推荐这种</li>
+<li>第二种，一次性批量提交数据，采用短连接；又或者定时任务轮询提交，在对于实时性不高的应用程序中可以推荐使用。</li>
+<li>第三种，我们可以使用特殊的长连接，超时时断开连接，下次需要发送请求时，再次建立连接。</li>
+</ol>
+<h2 id="1-2最佳实践-心跳检测"><a href="#1-2最佳实践-心跳检测" class="headerlink" title="1.2最佳实践 - 心跳检测"></a>1.2最佳实践 - 心跳检测</h2><p>我们使用Socket 通信一般经常会处理多个服务器之间的心跳检测，一般来说我们去维护服务器集群，肯定有一台或几台服务主机（Master),然后还有N台（Slave）,那么我们的主机肯定要时时刻刻知道自己下面的从服务器的各种情况，然后进行实时监控的功能，这个在分布式架构里叫做心跳检测或心跳监控，最佳处理方案是使用一下通信框架进行实践如Netty</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/02/24/socket-io-2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/24/socket-io-2/" itemprop="url">Socket网络编程第二篇</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-24T14:53:01+08:00">
+                2018-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Socket/" itemprop="url" rel="index">
+                    <span itemprop="name">Socket</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Socket/Socket-02/" itemprop="url" rel="index">
+                    <span itemprop="name">Socket-02</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>代码：<a href="https://github.com/dravinbox/SocketIO_02" target="_blank" rel="noopener">https://github.com/dravinbox/SocketIO_02</a></p>
+<p>1.Netty初步<br>2.HelloWorld<br>3.Netty核心技术之（TCP拆包和粘包问题）<br>4.Netty核心技术之（编解码技术）<br>5.Netty的UDP实现<br>6.Netty的WebSocket实现</p>
+<h2 id="1-1-为什么选择Netty"><a href="#1-1-为什么选择Netty" class="headerlink" title="1.1 为什么选择Netty"></a>1.1 为什么选择Netty</h2><p>我们已经了解了Socket通信/IO/NIO/AIO编程，对于通信模型已经有了一个初步的认识。其实我们之前所学习的仅仅是一个模型，如果把这些真正的用于实际工作中去，那么还需要不断的完善，扩展和优化。比如很经典的TCP读包写包问题，或者是数据接收的大小，实际的通信读取与应答的处理逻辑等等一些细节问题需要我们认真的去思考，而这些我们都需要大量的时间和经历，以及丰富的经验。所以想学好socket通信不是件容易的事情，那么现在，我们就要学习一门新的技术Netty，我们为什么选择Netty，原因无他，简单！<strong>我们再也不必要去编写复杂的代码逻辑去实现通信，我们再也不需要去考虑性能问题，不需要考虑便解码问题，半包读写问题等</strong>，这些强大的Netty已经帮我们实现好了，我们只需要使用即可。</p>
+<p>Netty是最流行的NIO框架，他的健壮性，功能，性能，可定制性和可扩展性在同类的框架都是首屈一指。它已经得到成千上万个商业/商用项目验证，如Hadoop的RPC框架Avro,以及我们之后学的JMS框架，强大的RocketMQ消息中间件，还有主流的分布式通信框架Dubbox等等。</p>
+<h2 id="1-4-Netty简介"><a href="#1-4-Netty简介" class="headerlink" title="1.4 Netty简介"></a>1.4 Netty简介</h2><p>Netty是基于Java NIO 的网络应用框架<br>Netty是一个NIO Client-Server(客户端服务器)框架，使用Netty 可以是快速开发网络应用，例如服务器和客户端协议。Netty提供了一种新的方式来开发网络应用程序，这种新的方式使得它很容易使用和很强的扩展性。Netty的内部实现是很复杂的，但是netty提供了简单易用的api从网络处理代码中解耦业务逻辑。Netty是完全基于NIO实现的，所以整个Netty都是异步的。<br>网络应用程序通常要求较高的可扩展性，无论是Netty还是其他基于Java NIO 的框架，都会提供可扩展性的解决方案。Netty中一个关键的组成部分是它的异步特性，本章将讨论同步（阻塞）和异步（非阻塞）的IO来说明为什么使用异步代码来解决扩展性问题已经如何使用异步。</p>
+<h2 id="1-5-Netty架构组成"><a href="#1-5-Netty架构组成" class="headerlink" title="1.5 Netty架构组成"></a>1.5 Netty架构组成</h2><p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fosvki1yiqj30os0e640c.jpg" alt=""></p>
+<h2 id="1-6-Netty特性"><a href="#1-6-Netty特性" class="headerlink" title="1.6 Netty特性"></a>1.6 Netty特性</h2><p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fosvmgdjguj30p00ey40x.jpg" alt=""></p>
+<hr>
+<h2 id="2-1-Helloworld"><a href="#2-1-Helloworld" class="headerlink" title="2.1 Helloworld"></a>2.1 Helloworld</h2><p>Netty实现通信的步骤：<br>1.创建两个NIO的线程组，一个专门用于网络事件处理（接收客户端的连接），另一个则进行网络通信读写。<br>2.创建一个ServerBootstrap对象，配置Netty的一系列参数，例如接受传出的缓存大小等等。<br>3.创建一个实际处理数据的类ChannelInitializer，进行初始化的准备工作，比如设置接受传出数据的字符集，格式，已经实际处理数据启动即可。<br>4.绑定端口，执行同步阻塞方法等待服务器启动即可。</p>
+<p>具体的Helloworld入门请查看：<br><a href="http://ifeve.com/netty5-user-guide/" target="_blank" rel="noopener">http://ifeve.com/netty5-user-guide/</a></p>
+<p>服务类<br><figure class="highlight java"><figcaption><span>DiscardServer.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> zry.netty.discard;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.netty.bootstrap.ServerBootstrap;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelFuture;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelInitializer;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelOption;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.EventLoopGroup;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.nio.NioEventLoopGroup;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.socket.SocketChannel;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.socket.nio.NioServerSocketChannel;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DiscardServer</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> port;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">DiscardServer</span><span class="params">(<span class="keyword">int</span> port)</span></span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.port=port;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> InterruptedException</span>&#123;</span><br><span class="line">		EventLoopGroup bossGroup=<span class="keyword">new</span> NioEventLoopGroup();</span><br><span class="line">		EventLoopGroup workGroup=<span class="keyword">new</span> NioEventLoopGroup();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			ServerBootstrap bootstrap= <span class="keyword">new</span> ServerBootstrap();</span><br><span class="line">			bootstrap.group(bossGroup,workGroup)</span><br><span class="line">			.channel(NioServerSocketChannel.class)</span><br><span class="line">			.childHandler(<span class="keyword">new</span> ChannelInitializer&lt;SocketChannel&gt;() &#123;</span><br><span class="line"></span><br><span class="line">				<span class="meta">@Override</span></span><br><span class="line">				<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initChannel</span><span class="params">(SocketChannel sc)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">					sc.pipeline().addLast(<span class="keyword">new</span> DiscardHandler());</span><br><span class="line">					</span><br><span class="line">				&#125;</span><br><span class="line"></span><br><span class="line">			&#125;)</span><br><span class="line">			.option(ChannelOption.SO_BACKLOG, <span class="number">128</span>)</span><br><span class="line">			.childOption(ChannelOption.SO_KEEPALIVE, <span class="keyword">true</span>);</span><br><span class="line">			</span><br><span class="line">			ChannelFuture cf = bootstrap.bind(port).sync();</span><br><span class="line">			cf.channel().closeFuture().sync();</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			workGroup.shutdownGracefully();</span><br><span class="line">			bossGroup.shutdownGracefully();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">		<span class="keyword">int</span> port=<span class="number">8765</span>;</span><br><span class="line">		<span class="keyword">new</span> DiscardServer(port).run();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>服务端处理类<br><figure class="highlight java"><figcaption><span>DiscardHandler.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> zry.netty.discard;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelHandlerAdapter;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelHandlerContext;</span><br><span class="line"><span class="keyword">import</span> io.netty.util.ReferenceCountUtil;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">DiscardHandler</span> <span class="keyword">extends</span> <span class="title">ChannelHandlerAdapter</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">channelRead</span><span class="params">(ChannelHandlerContext ctx, Object msg)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"><span class="comment">//		try &#123;</span></span><br><span class="line">			ctx.write(msg);</span><br><span class="line">			ctx.flush();</span><br><span class="line"><span class="comment">//		&#125; finally &#123;</span></span><br><span class="line"><span class="comment">//			ReferenceCountUtil.release(msg);</span></span><br><span class="line"><span class="comment">//		&#125;</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(ChannelHandlerContext ctx, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		cause.printStackTrace();</span><br><span class="line">		ctx.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>客户端<br><figure class="highlight java"><figcaption><span>Client.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> zry.netty.discard;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.netty.bootstrap.Bootstrap;</span><br><span class="line"><span class="keyword">import</span> io.netty.buffer.Unpooled;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelFuture;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelInitializer;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelOption;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.EventLoopGroup;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.nio.NioEventLoopGroup;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.socket.SocketChannel;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.socket.nio.NioSocketChannel;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> InterruptedException </span>&#123;</span><br><span class="line">		EventLoopGroup workGroup=<span class="keyword">new</span> NioEventLoopGroup();</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			</span><br><span class="line">			Bootstrap bootstrap= <span class="keyword">new</span> Bootstrap();</span><br><span class="line">			bootstrap.group(workGroup)</span><br><span class="line">			.channel(NioSocketChannel.class)</span><br><span class="line">			.handler(<span class="keyword">new</span> ChannelInitializer&lt;SocketChannel&gt;() &#123;</span><br><span class="line"></span><br><span class="line">				<span class="meta">@Override</span></span><br><span class="line">				<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initChannel</span><span class="params">(SocketChannel sc)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">					sc.pipeline().addLast(<span class="keyword">new</span> ClientHandler());</span><br><span class="line">					</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;)</span><br><span class="line">			.option(ChannelOption.SO_KEEPALIVE, <span class="keyword">true</span>);</span><br><span class="line">			</span><br><span class="line">			ChannelFuture channelFuture=bootstrap.connect(<span class="string">"127.0.0.1"</span>,<span class="number">8765</span>).sync();</span><br><span class="line">			channelFuture.channel().write(Unpooled.copiedBuffer(<span class="string">"hello,world"</span>.getBytes()));</span><br><span class="line">			channelFuture.channel().flush();</span><br><span class="line">			</span><br><span class="line">			</span><br><span class="line">			channelFuture.channel().closeFuture().sync();</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			<span class="comment">// <span class="doctag">TODO:</span> handle finally clause</span></span><br><span class="line">			workGroup.shutdownGracefully();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>客户端处理器<br><figure class="highlight java"><figcaption><span>ClientHandler.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> zry.netty.discard;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.netty.buffer.ByteBuf;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelHandlerAdapter;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelHandlerContext;</span><br><span class="line"><span class="keyword">import</span> io.netty.util.ReferenceCountUtil;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClientHandler</span> <span class="keyword">extends</span> <span class="title">ChannelHandlerAdapter</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">channelRead</span><span class="params">(ChannelHandlerContext ctx, Object msg)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			ByteBuf b=(ByteBuf)msg;</span><br><span class="line">			<span class="keyword">byte</span>[] m=<span class="keyword">new</span> <span class="keyword">byte</span>[b.readableBytes()];</span><br><span class="line">			b.readBytes(m);</span><br><span class="line">			String data_str=<span class="keyword">new</span> String(m,  <span class="string">"utf-8"</span>);</span><br><span class="line">			System.out.println(<span class="string">"getFromServer: "</span>+data_str);</span><br><span class="line"></span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			ReferenceCountUtil.release(msg);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(ChannelHandlerContext ctx, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		cause.printStackTrace();</span><br><span class="line">		ctx.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>完成了一个hello程序。</p>
+<hr>
+<h2 id="3-1-TCP粘包，拆包问题"><a href="#3-1-TCP粘包，拆包问题" class="headerlink" title="3.1 TCP粘包，拆包问题"></a>3.1 TCP粘包，拆包问题</h2><p>我们发的一个完整的包可能会被TCP分成多个包进行发送，也可能把多个小包封装成一个大的数据包发送出去，这就是所谓的TCP粘包，拆包问题。</p>
+<p>分析产生的原因：<br>    1.应用程序write写入的字节大小 大于套接字口发送缓冲区的大小<br>    2.进行MSS大小的TCP分段<br>    3.以太帧的payload大于MTU进行IP分片</p>
+<h2 id="3-2-TCP粘包，拆包问题解决方案"><a href="#3-2-TCP粘包，拆包问题解决方案" class="headerlink" title="3.2 TCP粘包，拆包问题解决方案"></a>3.2 TCP粘包，拆包问题解决方案</h2><p>粘包拆包问题的解决方案，根据业界主流协议，的有三中方案：<br>1.在包尾部添加特殊的字符进行分割，例如加回车等<br>2.消息定长，例如每个报文的大小固定为200个字节，如果不够，空位补空格。<br>3.将消息分为消息头和消息体，在消息头中包含表示消息总长度的字段，然后进行业务逻辑的处理</p>
+<h2 id="3-3-Netty如何解决粘包，拆包问题"><a href="#3-3-Netty如何解决粘包，拆包问题" class="headerlink" title="3.3 Netty如何解决粘包，拆包问题"></a>3.3 Netty如何解决粘包，拆包问题</h2><p>1.使用自定义分隔符类 DelimiterBasedFrameDecoder<br>2.使用定长类 FixedLengthFrameDecoder</p>
+<p>服务类：使用了分隔符类,定义了分隔符为$<em> ByteBuf buf = Unpooled.copiedBuffer(“$</em>“.getBytes());使用分隔符类new DelimiterBasedFrameDecoder(1024, buf))并使用支付串解码类new StringDecoder()</p>
+<figure class="highlight java"><figcaption><span>Server.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bhz.netty.ende1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.nio.ByteBuffer;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.netty.bootstrap.ServerBootstrap;</span><br><span class="line"><span class="keyword">import</span> io.netty.buffer.ByteBuf;</span><br><span class="line"><span class="keyword">import</span> io.netty.buffer.Unpooled;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelFuture;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelInitializer;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelOption;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.EventLoopGroup;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.nio.NioEventLoopGroup;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.socket.SocketChannel;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.socket.nio.NioServerSocketChannel;</span><br><span class="line"><span class="keyword">import</span> io.netty.handler.codec.DelimiterBasedFrameDecoder;</span><br><span class="line"><span class="keyword">import</span> io.netty.handler.codec.FixedLengthFrameDecoder;</span><br><span class="line"><span class="keyword">import</span> io.netty.handler.codec.string.StringDecoder;</span><br><span class="line"><span class="keyword">import</span> io.netty.handler.codec.string.StringEncoder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Server</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception</span>&#123;</span><br><span class="line">		<span class="comment">//1 创建2个线程，一个是负责接收客户端的连接。一个是负责进行数据传输的</span></span><br><span class="line">		EventLoopGroup pGroup = <span class="keyword">new</span> NioEventLoopGroup();</span><br><span class="line">		EventLoopGroup cGroup = <span class="keyword">new</span> NioEventLoopGroup();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//2 创建服务器辅助类</span></span><br><span class="line">		ServerBootstrap b = <span class="keyword">new</span> ServerBootstrap();</span><br><span class="line">		b.group(pGroup, cGroup)</span><br><span class="line">		 .channel(NioServerSocketChannel.class)</span><br><span class="line">		 .option(ChannelOption.SO_BACKLOG, <span class="number">1024</span>)</span><br><span class="line">		 .option(ChannelOption.SO_SNDBUF, <span class="number">32</span>*<span class="number">1024</span>)</span><br><span class="line">		 .option(ChannelOption.SO_RCVBUF, <span class="number">32</span>*<span class="number">1024</span>)</span><br><span class="line">		 .childHandler(<span class="keyword">new</span> ChannelInitializer&lt;SocketChannel&gt;() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initChannel</span><span class="params">(SocketChannel sc)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">				<span class="comment">//设置特殊分隔符</span></span><br><span class="line">				ByteBuf buf = Unpooled.copiedBuffer(<span class="string">"$_"</span>.getBytes());</span><br><span class="line">				sc.pipeline().addLast(<span class="keyword">new</span> DelimiterBasedFrameDecoder(<span class="number">1024</span>, buf));</span><br><span class="line">				<span class="comment">//设置字符串形式的解码</span></span><br><span class="line">				sc.pipeline().addLast(<span class="keyword">new</span> StringDecoder());</span><br><span class="line">				sc.pipeline().addLast(<span class="keyword">new</span> ServerHandler());</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//4 绑定连接</span></span><br><span class="line">		ChannelFuture cf = b.bind(<span class="number">8765</span>).sync();</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//等待服务器监听端口关闭</span></span><br><span class="line">		cf.channel().closeFuture().sync();</span><br><span class="line">		pGroup.shutdownGracefully();</span><br><span class="line">		cGroup.shutdownGracefully();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>服务端处理器：直接转化msg为字符串，返回数据时也跟上$_结尾</p>
+<figure class="highlight java"><figcaption><span>ServerHandler.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bhz.netty.ende1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.netty.buffer.Unpooled;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelHandlerAdapter;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelHandlerContext;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServerHandler</span> <span class="keyword">extends</span> <span class="title">ChannelHandlerAdapter</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">channelActive</span><span class="params">(ChannelHandlerContext ctx)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">" server channel active... "</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">channelRead</span><span class="params">(ChannelHandlerContext ctx, Object msg)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		String request = (String)msg;</span><br><span class="line">		System.out.println(<span class="string">"Server :"</span> + msg);</span><br><span class="line">		String response = <span class="string">"服务器响应："</span> + msg + <span class="string">"$_"</span>;</span><br><span class="line">		ctx.writeAndFlush(Unpooled.copiedBuffer(response.getBytes()));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">channelReadComplete</span><span class="params">(ChannelHandlerContext ctx)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(ChannelHandlerContext ctx, Throwable t)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		ctx.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>客户端：同样使用分隔符</p>
+<figure class="highlight java"><figcaption><span>Client.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bhz.netty.ende1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.netty.bootstrap.Bootstrap;</span><br><span class="line"><span class="keyword">import</span> io.netty.buffer.ByteBuf;</span><br><span class="line"><span class="keyword">import</span> io.netty.buffer.Unpooled;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelFuture;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelInitializer;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.EventLoopGroup;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.nio.NioEventLoopGroup;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.socket.SocketChannel;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.socket.nio.NioSocketChannel;</span><br><span class="line"><span class="keyword">import</span> io.netty.handler.codec.DelimiterBasedFrameDecoder;</span><br><span class="line"><span class="keyword">import</span> io.netty.handler.codec.FixedLengthFrameDecoder;</span><br><span class="line"><span class="keyword">import</span> io.netty.handler.codec.string.StringDecoder;</span><br><span class="line"><span class="keyword">import</span> io.netty.handler.codec.string.StringEncoder;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		</span><br><span class="line">		EventLoopGroup group = <span class="keyword">new</span> NioEventLoopGroup();</span><br><span class="line">		</span><br><span class="line">		Bootstrap b = <span class="keyword">new</span> Bootstrap();</span><br><span class="line">		b.group(group)</span><br><span class="line">		 .channel(NioSocketChannel.class)</span><br><span class="line">		 .handler(<span class="keyword">new</span> ChannelInitializer&lt;SocketChannel&gt;() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">initChannel</span><span class="params">(SocketChannel sc)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">				<span class="comment">//</span></span><br><span class="line">				ByteBuf buf = Unpooled.copiedBuffer(<span class="string">"$_"</span>.getBytes());</span><br><span class="line">				sc.pipeline().addLast(<span class="keyword">new</span> DelimiterBasedFrameDecoder(<span class="number">1024</span>, buf));</span><br><span class="line">				sc.pipeline().addLast(<span class="keyword">new</span> StringDecoder());</span><br><span class="line">				sc.pipeline().addLast(<span class="keyword">new</span> ClientHandler());</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">		</span><br><span class="line">		ChannelFuture cf = b.connect(<span class="string">"127.0.0.1"</span>, <span class="number">8765</span>).sync();</span><br><span class="line">		</span><br><span class="line">		cf.channel().writeAndFlush(Unpooled.wrappedBuffer(<span class="string">"bbbb$_"</span>.getBytes()));</span><br><span class="line">		cf.channel().writeAndFlush(Unpooled.wrappedBuffer(<span class="string">"cccc$_"</span>.getBytes()));</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		<span class="comment">//等待客户端端口关闭</span></span><br><span class="line">		cf.channel().closeFuture().sync();</span><br><span class="line">		group.shutdownGracefully();</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><figcaption><span>ClientHandler.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bhz.netty.ende1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelHandlerAdapter;</span><br><span class="line"><span class="keyword">import</span> io.netty.channel.ChannelHandlerContext;</span><br><span class="line"><span class="keyword">import</span> io.netty.util.ReferenceCountUtil;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ClientHandler</span> <span class="keyword">extends</span> <span class="title">ChannelHandlerAdapter</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">channelActive</span><span class="params">(ChannelHandlerContext ctx)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		System.out.println(<span class="string">"client channel active... "</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">channelRead</span><span class="params">(ChannelHandlerContext ctx, Object msg)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			String response = (String)msg;</span><br><span class="line">			System.out.println(<span class="string">"Client: "</span> + response);</span><br><span class="line">		&#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">			ReferenceCountUtil.release(msg);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">channelReadComplete</span><span class="params">(ChannelHandlerContext ctx)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">exceptionCaught</span><span class="params">(ChannelHandlerContext ctx, Throwable cause)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		ctx.close();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="4-1-Netty-编解码技术"><a href="#4-1-Netty-编解码技术" class="headerlink" title="4.1 Netty 编解码技术"></a>4.1 Netty 编解码技术</h2><p>编解码技术，说白了就是java序列化技术，序列化的目的：1.进行网络传输 2.对象持久化</p>
+<p>虽然我们可以使用java进行对象序列化，netty去传输，但是java序列化的硬伤太多，比如java序列化无法跨语言，序列化后码流太大，序列化性能太低等等。</p>
+<p>主流的编解码框架：<br>    JBoss的Marshalling包<br>    Google的Protobuf<br>    基于Protobuf的Kyro<br>    MessagePack框架</p>
+<h2 id="4-2-JBoss-Marshalling-序列化框架"><a href="#4-2-JBoss-Marshalling-序列化框架" class="headerlink" title="4.2 JBoss Marshalling 序列化框架"></a>4.2 JBoss Marshalling 序列化框架</h2><p>JBoss Marshalling是一个java对象序列化包，对JDK默认的序列化框架进行了优化，但保持跟java.io.Serializable接口的兼容，同是增加了一些可调的参数和附加特性。<br>JBoss Marshalling与Netty结合后进行序列化对象的代码编写非常简单。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/02/24/socket-io/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/24/socket-io/" itemprop="url">Socket网络编程第一篇</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-24T13:24:18+08:00">
+                2018-02-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Socket/" itemprop="url" rel="index">
+                    <span itemprop="name">Socket</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Socket/Socket-01/" itemprop="url" rel="index">
+                    <span itemprop="name">Socket-01</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>代码：<a href="https://github.com/dravinbox/SocketIO_01" target="_blank" rel="noopener">https://github.com/dravinbox/SocketIO_01</a></p>
+<p>1.学习基本概念，传统的同步阻塞式I/O编程,伪异步IO实现<br>2.学习基于NIO的同步非阻塞式编程<br>3.了解NIO2.0(jdk1.7以后)的异步非阻塞式(AIO)编程</p>
+<h2 id="1-1-基本概念"><a href="#1-1-基本概念" class="headerlink" title="1.1 基本概念"></a>1.1 基本概念</h2><p>Socket 又称套接字，应用程序通常通过“套接字”向网络发出请求或应答网络请求。套接字之间的连接过程可以分为四个步骤：<br>（1）服务器监听：等待连接的状态，实时监控网络状态<br>（2）客户端请求服务器：客户端的套接字提出连接请求，要连接的目标是服务器的套接字，为此，客户端的套接字必须首先描述他要连接的服务器的套接字，指出服务器套接字的地址和端口号，然后向服务器套接字提出连续的请求。<br>（3）服务器确认：当服务器套接字监听到或者说接受到客户端套接字的连接请求，他就会响应客户端套接字的请求，建立一个新的线程，把服务器套接字的描述发给客户端。<br>（4）客户端确认：一点客户端确认该描述，连接就建立好了，双方开始进行通信，而服务器套接字继续处于监听的状态，继续接受其他客户端套接字的连接请求。<br>进行通信</p>
+<h2 id="1-2-概念"><a href="#1-2-概念" class="headerlink" title="1.2 概念"></a>1.2 概念</h2><p><em>IO(BIO)和NIO的区别</em>：其本质就是阻塞和非阻塞的区别<br>    阻塞概念：应用程序再获取网络数据的时候，如果网络传输的数据很慢，那么程序就一直等待，直到传输完毕为止。<br>    非阻塞概念：应用程序直接可以获取已经准备就绪好的数据，无需等待<br>BIO为同步阻塞形式，NIO为同步非阻塞形式，NIO并没有实现异步，再JDK1.7之后，升级了NIO库包，支持异步非阻塞通信模型即NIO2.0（AIO）</p>
+<p><em>同步和异步</em>：同步和异步一般是面向操作系统与应用程序对IO操作的层面上来区别的。<br>    同步：应用程序会直接参与IO读写操作，并且我们的应用程序会直接阻塞到某一个方法上，直到数据准备就绪；或者采用轮询的策略实时检查数据的就绪状态，如果就绪则获取数据。<br>    异步：所有的IO读写操作交给操作系统处理，与我们的应用程序没有直接关系，我们程序不需要关心IO读写，当操作系统完成了IO读写操作时，会给我们应用程序发送通知，我们的应用程序直接拿走数据即可。</p>
+<p>同步是说你的server服务端的执行方式<br>阻塞是说具体的技术，接受数据的方式，状态（IO,NIO)</p>
+<h2 id="1-3-传统的BIO编程（com-bjsxt-bio）"><a href="#1-3-传统的BIO编程（com-bjsxt-bio）" class="headerlink" title="1.3 传统的BIO编程（com.bjsxt.bio）"></a>1.3 传统的BIO编程（com.bjsxt.bio）</h2><p>网络编程的基本模型是Client/Server模型，也就是两个进程直接进行相互通信，其中服务端提供配置信息（绑定的ip地址和监听端口），客户端通过连接操作向服务端监听地址发起连接请求，通过<strong>3次</strong>的握手建立连接，如果连接成功，则双方既可以进行通信</p>
+<h2 id="1-4-伪异步IO"><a href="#1-4-伪异步IO" class="headerlink" title="1.4 伪异步IO"></a>1.4 伪异步IO</h2><p>采用线程池和任务队列可以实现一种伪异步的IO通信框架。<br>就是将客户端的socket封装城一个task任务（实现runnable接口的类）然后投递到线程池中，配置相应的队列进行实现。</p>
+<h2 id="2-1-NIO编程介绍"><a href="#2-1-NIO编程介绍" class="headerlink" title="2.1 NIO编程介绍"></a>2.1 NIO编程介绍</h2><p>学习NIO编程，首先了解几个概念：<br>Buffer（缓冲区），Channel(管道，通道)，Selector（选择器，多路复用器）</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1forw1t66tzj316y0hgady.jpg" alt=""></p>
+<p>服务器运行的是ServerSocketChannel，客户端运行的是SocketChannel，可以理解为是对Socket的封装，数据呢就存在Buffer缓冲区里，而不是直接的InputStream和OutputStream的直接方式。</p>
+<p>客户端的通道需要注册在服务端里的Selector里，Selector就会轮询所有注册的通道，根据通道的状态，来执行相关的操作。这里有4种通道状态，连接状态Connect，阻塞状态Accept，可读状态Read，可写状态Write。</p>
+<h2 id="2-2-Buffer"><a href="#2-2-Buffer" class="headerlink" title="2.2 Buffer"></a>2.2 Buffer</h2><p>Buffer 是一个对象，它包含一些要写入或者读取的数据，在NIO类库中加入Buffer对象，体现新库与原IO的一个重要的区别。在面向流的IO中，可以将数据直接写入或者读取到Stream对象中，在NIO库中，所有数据都是用缓冲区处理的（读写）。缓冲区实质是一个数组，通常它是一个字节数组（ByteBuffer），也可以使用其他类型的数组。这个数组为缓冲区提供了数据的访问读写等操作属性，如位置，容量，上限等概念。参考api文档。<br>Buffer类型：我们最常用的就是ByteBuffer，实际上每一种java基本类型都对应了一种缓存区（除了Boolean类型）<br>ByteBuffer<br>CharBuffer<br>ShorBuffer<br>IntBuffer<br>LongBuffer<br>FloatBuffer<br>DoubleBuffer</p>
+<h2 id="2-3-Channel"><a href="#2-3-Channel" class="headerlink" title="2.3 Channel"></a>2.3 Channel</h2><p>通道（Channel），他就像自来水管道一样，网络数据通过Channel读取和写入，通道与流不同之处在于管道是双向的，而流只是一个方向上的移动（一个流必须是InputSteam或者OutputStream的子类），而管道可以用于读/写或者二者同时进行，最关键的是可以与多路复用器结合起来，有多种的状态位，方便多路复用器去识别。事实上通道分为两大类，一类是网络读写的（SelectableChannel),一类是用于文件操作(FileChannel),我们使用的是SocketChannel和ServerSockerChannel都是SelectableChannel的子类。</p>
+<h2 id="2-4-Selector-一"><a href="#2-4-Selector-一" class="headerlink" title="2.4 Selector(一)"></a>2.4 Selector(一)</h2><p>多路复用器（selector），他是NIO编程的基础，非常重要，多路复用器提供选择已经就绪的任务的能力。简单来说，就是Selector会不断地轮询注册在其上的通道（Channel），如果某个通道发生了读写操作，这个通道就处于就绪状态，会被Selector轮询出来，然后通过SelectionKey可以取得就绪的Channel集合，从而进行后续的IO操作。<br>一个多路复用器可以复杂成千上万Channel通道，没有上限，这也是JDK使用epoll替代传统的select实现，获得连接句柄没有限制，这也就意味着我们只要一个线程Selector的轮询，就可以接入成千上万个客户端，这个是JDK NIO的巨大进步。</p>
+<h2 id="2-5-Selector-二"><a href="#2-5-Selector-二" class="headerlink" title="2.5 Selector(二)"></a>2.5 Selector(二)</h2><p>Selector线程类似一个管理者（Master），管理成千上万的个管道，然后轮询哪一个管道的数据已经准备好，通知Cpu值执行IO的读取获取写入操作。</p>
+<p>每个管道都会对选择器进行注册不用的时间状态，以便选择器查找。<br>SelectionKey.OP_CONNECT<br>SelectionKey.OP_ACCEPT<br>SelectionKey.OP_READ<br>SelectionKey.OP_WRITE</p>
+<h2 id="3-1-AIO"><a href="#3-1-AIO" class="headerlink" title="3.1 AIO"></a>3.1 AIO</h2><p>AIO编程，在NIO基础之上引入了异步通道的该你那，并提供了异步文件和异步套接字通道的实现，从而在真正意义上实现了异步非阻塞，之前我们学习的NIO只是非阻塞而并非异步。而AIO它不需要通过多路复用器对注册的通道进行轮询操作即可实现异步读写。从而简化了NIO编程模型。也可以称之为NIO2.0，这种模型才可以真正的属于我们异步非阻塞的模型.<br>AsynchronousServerSocketChannel<br>AsynchronousSocketChannel</p>
+<p>AIO隐藏了对Channel的操作，只需定义一个线程缓存池，重写好handler的接口函数即可。每一个客户端连接都会递归调用服务器的accept方法，保证一个客户端可以连接上来。</p>
+<figure class="highlight java"><figcaption><span>Server.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bhz.aio;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.net.InetSocketAddress;</span><br><span class="line"><span class="keyword">import</span> java.nio.channels.AsynchronousChannelGroup;</span><br><span class="line"><span class="keyword">import</span> java.nio.channels.AsynchronousServerSocketChannel;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutorService;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.Executors;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Server</span> </span>&#123;</span><br><span class="line">	<span class="comment">//线程池</span></span><br><span class="line">	<span class="keyword">private</span> ExecutorService executorService;</span><br><span class="line">	<span class="comment">//线程组</span></span><br><span class="line">	<span class="keyword">private</span> AsynchronousChannelGroup threadGroup;</span><br><span class="line">	<span class="comment">//服务器通道</span></span><br><span class="line">	<span class="keyword">public</span> AsynchronousServerSocketChannel assc;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Server</span><span class="params">(<span class="keyword">int</span> port)</span></span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			<span class="comment">//创建一个缓存池</span></span><br><span class="line">			executorService = Executors.newCachedThreadPool();</span><br><span class="line">			<span class="comment">//创建线程组</span></span><br><span class="line">			threadGroup = AsynchronousChannelGroup.withCachedThreadPool(executorService, <span class="number">1</span>);</span><br><span class="line">			<span class="comment">//创建服务器通道</span></span><br><span class="line">			assc = AsynchronousServerSocketChannel.open(threadGroup);</span><br><span class="line">			<span class="comment">//进行绑定</span></span><br><span class="line">			assc.bind(<span class="keyword">new</span> InetSocketAddress(port));</span><br><span class="line">			</span><br><span class="line">			System.out.println(<span class="string">"server start , port : "</span> + port);</span><br><span class="line">			<span class="comment">//进行阻塞</span></span><br><span class="line">			assc.accept(<span class="keyword">this</span>, <span class="keyword">new</span> ServerCompletionHandler());</span><br><span class="line">			<span class="comment">//一直阻塞 不让服务器停止</span></span><br><span class="line">			Thread.sleep(Integer.MAX_VALUE);</span><br><span class="line">			</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">		Server server = <span class="keyword">new</span> Server(<span class="number">8765</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><figcaption><span>ServerCompletionHandler.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bhz.aio;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.nio.ByteBuffer;</span><br><span class="line"><span class="keyword">import</span> java.nio.channels.AsynchronousSocketChannel;</span><br><span class="line"><span class="keyword">import</span> java.nio.channels.CompletionHandler;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutionException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ServerCompletionHandler</span> <span class="keyword">implements</span> <span class="title">CompletionHandler</span>&lt;<span class="title">AsynchronousSocketChannel</span>, <span class="title">Server</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">completed</span><span class="params">(AsynchronousSocketChannel asc, Server attachment)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//当有下一个客户端接入的时候 直接调用Server的accept方法，这样反复执行下去，保证多个客户端都可以阻塞</span></span><br><span class="line">		attachment.assc.accept(attachment, <span class="keyword">this</span>);</span><br><span class="line">		read(asc);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">(<span class="keyword">final</span> AsynchronousSocketChannel asc)</span> </span>&#123;</span><br><span class="line">		<span class="comment">//读取数据</span></span><br><span class="line">		ByteBuffer buf = ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line">		asc.read(buf, buf, <span class="keyword">new</span> CompletionHandler&lt;Integer, ByteBuffer&gt;() &#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">completed</span><span class="params">(Integer resultSize, ByteBuffer attachment)</span> </span>&#123;</span><br><span class="line">				<span class="comment">//进行读取之后,重置标识位</span></span><br><span class="line">				attachment.flip();</span><br><span class="line">				<span class="comment">//获得读取的字节数</span></span><br><span class="line">				System.out.println(<span class="string">"Server -&gt; "</span> + <span class="string">"收到客户端的数据长度为:"</span> + resultSize);</span><br><span class="line">				<span class="comment">//获取读取的数据</span></span><br><span class="line">				String resultData = <span class="keyword">new</span> String(attachment.array()).trim();</span><br><span class="line">				System.out.println(<span class="string">"Server -&gt; "</span> + <span class="string">"收到客户端的数据信息为:"</span> + resultData);</span><br><span class="line">				String response = <span class="string">"服务器响应, 收到了客户端发来的数据: "</span> + resultData;</span><br><span class="line">				write(asc, response);</span><br><span class="line">			&#125;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">failed</span><span class="params">(Throwable exc, ByteBuffer attachment)</span> </span>&#123;</span><br><span class="line">				exc.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(AsynchronousSocketChannel asc, String response)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			ByteBuffer buf = ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line">			buf.put(response.getBytes());</span><br><span class="line">			buf.flip();</span><br><span class="line">			asc.write(buf).get();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">failed</span><span class="params">(Throwable exc, Server attachment)</span> </span>&#123;</span><br><span class="line">		exc.printStackTrace();</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><figcaption><span>Client.java</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> bhz.aio;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.UnsupportedEncodingException;</span><br><span class="line"><span class="keyword">import</span> java.net.InetSocketAddress;</span><br><span class="line"><span class="keyword">import</span> java.nio.ByteBuffer;</span><br><span class="line"><span class="keyword">import</span> java.nio.channels.AsynchronousSocketChannel;</span><br><span class="line"><span class="keyword">import</span> java.util.concurrent.ExecutionException;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Client</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">private</span> AsynchronousSocketChannel asc ;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Client</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		asc = AsynchronousSocketChannel.open();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">connect</span><span class="params">()</span></span>&#123;</span><br><span class="line">		asc.connect(<span class="keyword">new</span> InetSocketAddress(<span class="string">"127.0.0.1"</span>, <span class="number">8765</span>));</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">write</span><span class="params">(String request)</span></span>&#123;</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			asc.write(ByteBuffer.wrap(request.getBytes())).get();</span><br><span class="line">			read();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">read</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		ByteBuffer buf = ByteBuffer.allocate(<span class="number">1024</span>);</span><br><span class="line">		<span class="keyword">try</span> &#123;</span><br><span class="line">			asc.read(buf).get();</span><br><span class="line">			buf.flip();</span><br><span class="line">			<span class="keyword">byte</span>[] respByte = <span class="keyword">new</span> <span class="keyword">byte</span>[buf.remaining()];</span><br><span class="line">			buf.get(respByte);</span><br><span class="line">			System.out.println(<span class="keyword">new</span> String(respByte,<span class="string">"utf-8"</span>).trim());</span><br><span class="line">		&#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125; <span class="keyword">catch</span> (UnsupportedEncodingException e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="meta">@Override</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">		Client c1 = <span class="keyword">new</span> Client();</span><br><span class="line">		c1.connect();</span><br><span class="line">		</span><br><span class="line">		Client c2 = <span class="keyword">new</span> Client();</span><br><span class="line">		c2.connect();</span><br><span class="line">		</span><br><span class="line">		Client c3 = <span class="keyword">new</span> Client();</span><br><span class="line">		c3.connect();</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">new</span> Thread(c1, <span class="string">"c1"</span>).start();</span><br><span class="line">		<span class="keyword">new</span> Thread(c2, <span class="string">"c2"</span>).start();</span><br><span class="line">		<span class="keyword">new</span> Thread(c3, <span class="string">"c3"</span>).start();</span><br><span class="line">		</span><br><span class="line">		Thread.sleep(<span class="number">1000</span>);</span><br><span class="line">		</span><br><span class="line">		c1.write(<span class="string">"c1 aaa"</span>);</span><br><span class="line">		c2.write(<span class="string">"c2 bbbb"</span>);</span><br><span class="line">		c3.write(<span class="string">"c3 ccccc"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/01/31/restful/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1280,719 +2045,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/01/15/maven-nexus/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dravin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dravin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/15/maven-nexus/" itemprop="url">maven nexus 私库配置</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-15T16:19:21+08:00">
-                2018-01-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/maven/" itemprop="url" rel="index">
-                    <span itemprop="name">maven</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/maven/nexus/" itemprop="url" rel="index">
-                    <span itemprop="name">nexus</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="nexus的配置"><a href="#nexus的配置" class="headerlink" title="nexus的配置"></a>nexus的配置</h1><p>使用docker 安装nexus</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 32770:8081 --name nexus sonatype/nexus</span><br></pre></td></tr></table></figure>
-<p>1.访问<a href="http://localhost:32770/nexus" target="_blank" rel="noopener">http://localhost:32770/nexus</a><br>2.在<servers>节点增加一个用户</servers></p>
-<figure class="highlight xml"><figcaption><span>setting.xml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span>&gt;</span>rrg<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">username</span>&gt;</span>rrg<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">password</span>&gt;</span>rrg88888<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>3.修改central为阿里云的代理<br>4.修改setting文件，包括mirro 和profile</p>
-<figure class="highlight xml"><figcaption><span>setting.xml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--mirrors节点添加如下：--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>local-nexus3<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>local maven3<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://localhost:32770/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mirror</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--profiles节点添加如下：--&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">id</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">id</span>&gt;</span>central<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>local-maven-main-repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://localhost:32770/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line"></span><br><span class="line">         <span class="tag">&lt;<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">id</span>&gt;</span>central<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">name</span>&gt;</span>local-maven-plugin-repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://localhost:32770/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;/<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 最后激活 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">activeProfile</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">activeProfile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">activeProfiles</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<p>5.发布与部署<br>6.使用<br>7.发布第3方包</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2017/12/25/docker-gui/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dravin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dravin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/25/docker-gui/" itemprop="url">docker-gui</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-25T09:39:33+08:00">
-                2017-12-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/部署例子/" itemprop="url" rel="index">
-                    <span itemprop="name">部署例子</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/部署例子/运行GUI应用程序/" itemprop="url" rel="index">
-                    <span itemprop="name">运行GUI应用程序</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="在Mac上使用Docker运行GUI应用程序"><a href="#在Mac上使用Docker运行GUI应用程序" class="headerlink" title="在Mac上使用Docker运行GUI应用程序"></a>在Mac上使用Docker运行GUI应用程序</h1><p>firefox<br><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmsrqtspn3j31kw0wl75f.jpg" alt=""><br>vscode<br><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmstzu8y5xj31kw17wdgx.jpg" alt=""></p>
-<p>需要准备的东西：</p>
-<ul>
-<li>osx系统</li>
-<li>docker for mac</li>
-<li>XQartz 2.7.11</li>
-<li>一位国外的美女大神写的Dockerfile</li>
-</ul>
-<h2 id="osx系统没有就不用看下去"><a href="#osx系统没有就不用看下去" class="headerlink" title="osx系统没有就不用看下去"></a>osx系统没有就不用看下去</h2><h2 id="docker-for-mac-自行安装"><a href="#docker-for-mac-自行安装" class="headerlink" title="docker for mac 自行安装"></a>docker for mac 自行安装</h2><h2 id="XQuartz"><a href="#XQuartz" class="headerlink" title="XQuartz"></a>XQuartz</h2><p>使用brew 安装</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew cask install xquartz</span><br></pre></td></tr></table></figure>
-<p>关于Quartz的最新版，可以前往<a href="https://www.xquartz.org/releases/index.html" target="_blank" rel="noopener">XQuartz官网</a></p>
-<h2 id="运行起来！"><a href="#运行起来！" class="headerlink" title="运行起来！"></a>运行起来！</h2><p>使用我们本机的终端来打开XQuartz</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open -a XQuartz</span><br></pre></td></tr></table></figure>
-<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fmss1a25xrj30qo0js0sp.jpg" alt=""></p>
-<p>我们就运行起来了xquartz的终端，我们打开它的偏好设置</p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmss2e5fj6j30qw0k674y.jpg" alt=""></p>
-<p>把这个钩上，然后重启XQuartz就生效。</p>
-<p>我们在XQuartz的终端输入一下命令,来允许你本机的连接:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ip=$(ifconfig en0 | grep inet | awk <span class="string">'$1=="inet" &#123;print $2&#125;'</span>)</span><br><span class="line">xhost + <span class="variable">$ip</span></span><br></pre></td></tr></table></figure>
-<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmss6q865ej30qs0jq74b.jpg" alt=""></p>
-<p>设置好之后，我们就可以运行一下Jessie大神做的Firefox镜像，她写的dockerfile<a href="https://github.com/jessfraz/dockerfiles/tree/master/firefox" target="_blank" rel="noopener">在这</a></p>
-<p>firefox:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name firefox -e DISPLAY=<span class="variable">$ip</span>:0 -v /tmp/.X11-unix:/tmp/.X11-unix jess/firefox</span><br></pre></td></tr></table></figure>
-<p>vscode:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v /etc/localtime:/etc/localtime:ro -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=<span class="variable">$ip</span>:0 --name vscode jess/vscode</span><br></pre></td></tr></table></figure>
-<p>chrome(记得加上–privileged):<br>因为Chrome使用的是沙盒，因此运行一个没权限的沙盒将等到一个错误：<br>Failed to move to new namespace: PID namespaces supported, Network namespace supported, but failed: errno = Operation not permitted<br>使用<code>--privileged</code>可以给容器赋予权限去访问主机的资源，就如主机的进程那样访问主机的资源。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=<span class="variable">$ip</span>:0 -v ~/Downloads:/root/Downloads --privileged --name chrome jess/chrome</span><br></pre></td></tr></table></figure>
-<h2 id="Merry-Christmas"><a href="#Merry-Christmas" class="headerlink" title="Merry Christmas"></a>Merry Christmas</h2><p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmssiaps7wg30dw0dwwml.gif" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2017/12/23/docker-jenkins/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dravin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dravin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/23/docker-jenkins/" itemprop="url">在docker里运行Jenkins</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-23T17:22:32+08:00">
-                2017-12-23
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/部署例子/" itemprop="url" rel="index">
-                    <span itemprop="name">部署例子</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/部署例子/Jenkins/" itemprop="url" rel="index">
-                    <span itemprop="name">Jenkins</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#注意/your/home 替换成你创建的目录，保证容器有访问权限</span></span><br><span class="line">docker run -d -p 12821:8080 -p 50000:50000 -v /your/home:/var/jenkins_home  --name jenkins jenkins/jenkins</span><br><span class="line">5cc5e09fdea5e9296bd26095b90f770b0d05213d80299d44dd3984db14bdbd85</span><br></pre></td></tr></table></figure>
-<p>然后登陆到容器里获取初始化密码:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it  5cc5e09fdea5  bash</span><br><span class="line"></span><br><span class="line"><span class="comment">#使用cat 命令查看密码</span></span><br><span class="line">jenkins@5cc5e09fdea5:/$ cat  /var/jenkins_home/secrets/initialAdminPassword</span><br><span class="line"></span><br><span class="line"><span class="comment">#然后出来这个密码</span></span><br><span class="line">44fcdb88xxxxxxxxxxx6a2d00c2d</span><br></pre></td></tr></table></figure>
-<p>把上面的密码复制到浏览器里<a href="http://localhost:12821" target="_blank" rel="noopener">http://localhost:12821</a> 里需要密码的地方:</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fmqurvobr7j30wg0judgi.jpg" alt=""></p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fmqusk4makj30wn0hmq2u.jpg" alt=""></p>
-<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fmquthb410j30yp0kc751.jpg" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2017/12/22/docker-part5/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dravin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dravin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/12/22/docker-part5/" itemprop="url">Docker入门-part5-Stacks</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-22T11:04:34+08:00">
-                2017-12-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Docker/Docker入门/" itemprop="url" rel="index">
-                    <span itemprop="name">Docker入门</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Stacks"><a href="#Stacks" class="headerlink" title="Stacks"></a>Stacks</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本Docker入门系列文章是翻译于Docker官方getStarted文档,如有出入，请跳转查看<a href="https://docs.docker.com/get-started/" target="_blank" rel="noopener">官方文档</a></p>
-<h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><blockquote>
-<p>A stack is a group of interrelated services that share dependencies, and can be orchestrated and scaled together. </p>
-</blockquote>
-<p>可以理解一个堆里有多个服务，服务之间相互协作。有一些复杂的应用，它可能需要多个堆。</p>
-<h2 id="添加一个新的服务并且部署它"><a href="#添加一个新的服务并且部署它" class="headerlink" title="添加一个新的服务并且部署它"></a>添加一个新的服务并且部署它</h2><p>1.我们打开之前的<code>docker-compose.yml</code>文件，使用下面的代码覆盖它。记得替换那里<code>username/repo:tag</code> 对应的远程库镜像值。</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  web:</span></span><br><span class="line">    <span class="comment"># replace username/repo:tag with your name and image details</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">username/repo:tag</span></span><br><span class="line"><span class="attr">    deploy:</span></span><br><span class="line"><span class="attr">      replicas:</span> <span class="number">5</span></span><br><span class="line"><span class="attr">      restart_policy:</span></span><br><span class="line"><span class="attr">        condition:</span> <span class="string">on-failure</span></span><br><span class="line"><span class="attr">      resources:</span></span><br><span class="line"><span class="attr">        limits:</span></span><br><span class="line"><span class="attr">          cpus:</span> <span class="string">"0.1"</span></span><br><span class="line"><span class="attr">          memory:</span> <span class="number">50</span><span class="string">M</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"80:80"</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">  visualizer:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">dockersamples/visualizer:stable</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"8080:8080"</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"/var/run/docker.sock:/var/run/docker.sock"</span></span><br><span class="line"><span class="attr">    deploy:</span></span><br><span class="line"><span class="attr">      placement:</span></span><br><span class="line"><span class="attr">        constraints:</span> <span class="string">[node.role</span> <span class="string">==</span> <span class="string">manager]</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">  webnet:</span></span><br></pre></td></tr></table></figure>
-<p>我们可以看到上面的代码里，多了一个服务：visualizer。并且看到一个新的关键字<code>volumes</code> ,它给visualizer容器权限，能访问宿主机的socket文件。还有一个新的关键字<code>placement</code>,定义这个服务只能在swarm manager上运行，不能在worker上。因为这个容器是用来展示Docker的各种服务在一个图表里，它由Docker开发的并且开源。</p>
-<p>2.设置你的shell连接上myvm1 ，上部分已经讲过：</p>
-<ul>
-<li>docker-machine ls</li>
-<li>docker-machine env myvm1</li>
-<li>eval $(docker-machine env myvm1)</li>
-</ul>
-<p>3.在manager节点上再次运行<code>docker stack deploy</code>,如下：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
-<p>4.我们来看看visualizer<br>先使用<code>docker-machine ls</code>查看各个节点的ip,然后你用浏览访问任何一个ip的8080端口，就可以看到图像化界面，显示各种服务在不同的机器上运行。</p>
-<p>我们可以看到,visualizer只运行在manager节点上。 可以使用<code>docker stack ps getstartedlab</code>查看该堆所有服务的任务。</p>
-<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmpozwsezyg30j20cux6p.gif" alt=""></p>
-<h2 id="持久化数据"><a href="#持久化数据" class="headerlink" title="持久化数据"></a>持久化数据</h2><p>让我们添加一个Redis 数据库 用来存储数据</p>
-<p>1.我们打开之前的<code>docker-compose.yml</code>文件，使用下面的代码覆盖它。记得替换那里<code>username/repo:tag</code> 对应的远程库镜像值。</p>
-<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  web:</span></span><br><span class="line">    <span class="comment"># replace username/repo:tag with your name and image details</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">username/repo:tag</span></span><br><span class="line"><span class="attr">    deploy:</span></span><br><span class="line"><span class="attr">      replicas:</span> <span class="number">5</span></span><br><span class="line"><span class="attr">      restart_policy:</span></span><br><span class="line"><span class="attr">        condition:</span> <span class="string">on-failure</span></span><br><span class="line"><span class="attr">      resources:</span></span><br><span class="line"><span class="attr">        limits:</span></span><br><span class="line"><span class="attr">          cpus:</span> <span class="string">"0.1"</span></span><br><span class="line"><span class="attr">          memory:</span> <span class="number">50</span><span class="string">M</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"80:80"</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">  visualizer:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">dockersamples/visualizer:stable</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"8080:8080"</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"/var/run/docker.sock:/var/run/docker.sock"</span></span><br><span class="line"><span class="attr">    deploy:</span></span><br><span class="line"><span class="attr">      placement:</span></span><br><span class="line"><span class="attr">        constraints:</span> <span class="string">[node.role</span> <span class="string">==</span> <span class="string">manager]</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">  redis:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"6379:6379"</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/home/docker/data:/data</span></span><br><span class="line"><span class="attr">    deploy:</span></span><br><span class="line"><span class="attr">      placement:</span></span><br><span class="line"><span class="attr">        constraints:</span> <span class="string">[node.role</span> <span class="string">==</span> <span class="string">manager]</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-server</span> <span class="bullet">--appendonly</span> <span class="literal">yes</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">  webnet:</span></span><br></pre></td></tr></table></figure>
-<p>2.在manager机器上（即myvm1）,创建一个目录：<code>./data</code></p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-machine ssh myvm1 <span class="string">"mkdir ./data"</span></span><br></pre></td></tr></table></figure>
-<p>这里注意几点:</p>
-<ul>
-<li>redis 的远程镜像就是很短：”redis”,不用质疑</li>
-<li>redis容器对外服务端口依然是6379,方便其他服务获取。</li>
-<li>redis的volumes 的/home/docker/data目录是myvm1的目录，因为下面定义了它只能部署在manager上，所以我们使用<code>docker-machine ssh myvm1 &quot;mkdir ./data&quot;</code> 创建一个/home/docker/data目录。然后冒号后边的/data是redis容器里的路径，这里是redis的工作路径，我们不用管。</li>
-</ul>
-<p>3.保证你的shell连接上myvm1 ,前面讲过</p>
-<p>4.重新部署,再次执行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
-<p>5.查看服务：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker service ls</span><br></pre></td></tr></table></figure>
-<p>6.访问你的一个节点机器 <a href="http://192.168.99.101" target="_blank" rel="noopener">http://192.168.99.101</a> ,我们可以看到Visits在递增，那是因为我们的数据存在Redis上了。我们继续看看<a href="http://192.168.99.101:8080" target="_blank" rel="noopener">http://192.168.99.101:8080</a></p>
-<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fmqfwsmkprg30j20cu1kz.gif" alt=""></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2047,7 +2099,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2058,7 +2110,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2069,7 +2121,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

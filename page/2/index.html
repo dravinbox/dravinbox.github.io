@@ -321,6 +321,719 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/01/15/maven-nexus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/15/maven-nexus/" itemprop="url">maven nexus 私库配置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-15T16:19:21+08:00">
+                2018-01-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/maven/" itemprop="url" rel="index">
+                    <span itemprop="name">maven</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/maven/nexus/" itemprop="url" rel="index">
+                    <span itemprop="name">nexus</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="nexus的配置"><a href="#nexus的配置" class="headerlink" title="nexus的配置"></a>nexus的配置</h1><p>使用docker 安装nexus</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 32770:8081 --name nexus sonatype/nexus</span><br></pre></td></tr></table></figure>
+<p>1.访问<a href="http://localhost:32770/nexus" target="_blank" rel="noopener">http://localhost:32770/nexus</a><br>2.在<servers>节点增加一个用户</servers></p>
+<figure class="highlight xml"><figcaption><span>setting.xml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span>&gt;</span>rrg<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">username</span>&gt;</span>rrg<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">password</span>&gt;</span>rrg88888<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>3.修改central为阿里云的代理<br>4.修改setting文件，包括mirro 和profile</p>
+<figure class="highlight xml"><figcaption><span>setting.xml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--mirrors节点添加如下：--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>local-nexus3<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>local maven3<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://localhost:32770/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mirror</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--profiles节点添加如下：--&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">id</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">id</span>&gt;</span>central<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>local-maven-main-repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://localhost:32770/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line"></span><br><span class="line">         <span class="tag">&lt;<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">id</span>&gt;</span>central<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">name</span>&gt;</span>local-maven-plugin-repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://localhost:32770/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;/<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 最后激活 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">activeProfile</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">activeProfile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">activeProfiles</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>5.发布与部署<br>6.使用<br>7.发布第3方包</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2017/12/25/docker-gui/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/25/docker-gui/" itemprop="url">docker-gui</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-25T09:39:33+08:00">
+                2017-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/部署例子/" itemprop="url" rel="index">
+                    <span itemprop="name">部署例子</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/部署例子/运行GUI应用程序/" itemprop="url" rel="index">
+                    <span itemprop="name">运行GUI应用程序</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="在Mac上使用Docker运行GUI应用程序"><a href="#在Mac上使用Docker运行GUI应用程序" class="headerlink" title="在Mac上使用Docker运行GUI应用程序"></a>在Mac上使用Docker运行GUI应用程序</h1><p>firefox<br><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmsrqtspn3j31kw0wl75f.jpg" alt=""><br>vscode<br><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmstzu8y5xj31kw17wdgx.jpg" alt=""></p>
+<p>需要准备的东西：</p>
+<ul>
+<li>osx系统</li>
+<li>docker for mac</li>
+<li>XQartz 2.7.11</li>
+<li>一位国外的美女大神写的Dockerfile</li>
+</ul>
+<h2 id="osx系统没有就不用看下去"><a href="#osx系统没有就不用看下去" class="headerlink" title="osx系统没有就不用看下去"></a>osx系统没有就不用看下去</h2><h2 id="docker-for-mac-自行安装"><a href="#docker-for-mac-自行安装" class="headerlink" title="docker for mac 自行安装"></a>docker for mac 自行安装</h2><h2 id="XQuartz"><a href="#XQuartz" class="headerlink" title="XQuartz"></a>XQuartz</h2><p>使用brew 安装</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew cask install xquartz</span><br></pre></td></tr></table></figure>
+<p>关于Quartz的最新版，可以前往<a href="https://www.xquartz.org/releases/index.html" target="_blank" rel="noopener">XQuartz官网</a></p>
+<h2 id="运行起来！"><a href="#运行起来！" class="headerlink" title="运行起来！"></a>运行起来！</h2><p>使用我们本机的终端来打开XQuartz</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open -a XQuartz</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fmss1a25xrj30qo0js0sp.jpg" alt=""></p>
+<p>我们就运行起来了xquartz的终端，我们打开它的偏好设置</p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmss2e5fj6j30qw0k674y.jpg" alt=""></p>
+<p>把这个钩上，然后重启XQuartz就生效。</p>
+<p>我们在XQuartz的终端输入一下命令,来允许你本机的连接:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ip=$(ifconfig en0 | grep inet | awk <span class="string">'$1=="inet" &#123;print $2&#125;'</span>)</span><br><span class="line">xhost + <span class="variable">$ip</span></span><br></pre></td></tr></table></figure>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmss6q865ej30qs0jq74b.jpg" alt=""></p>
+<p>设置好之后，我们就可以运行一下Jessie大神做的Firefox镜像，她写的dockerfile<a href="https://github.com/jessfraz/dockerfiles/tree/master/firefox" target="_blank" rel="noopener">在这</a></p>
+<p>firefox:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name firefox -e DISPLAY=<span class="variable">$ip</span>:0 -v /tmp/.X11-unix:/tmp/.X11-unix jess/firefox</span><br></pre></td></tr></table></figure>
+<p>vscode:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v /etc/localtime:/etc/localtime:ro -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=<span class="variable">$ip</span>:0 --name vscode jess/vscode</span><br></pre></td></tr></table></figure>
+<p>chrome(记得加上–privileged):<br>因为Chrome使用的是沙盒，因此运行一个没权限的沙盒将等到一个错误：<br>Failed to move to new namespace: PID namespaces supported, Network namespace supported, but failed: errno = Operation not permitted<br>使用<code>--privileged</code>可以给容器赋予权限去访问主机的资源，就如主机的进程那样访问主机的资源。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=<span class="variable">$ip</span>:0 -v ~/Downloads:/root/Downloads --privileged --name chrome jess/chrome</span><br></pre></td></tr></table></figure>
+<h2 id="Merry-Christmas"><a href="#Merry-Christmas" class="headerlink" title="Merry Christmas"></a>Merry Christmas</h2><p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmssiaps7wg30dw0dwwml.gif" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2017/12/23/docker-jenkins/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/23/docker-jenkins/" itemprop="url">在docker里运行Jenkins</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-23T17:22:32+08:00">
+                2017-12-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/部署例子/" itemprop="url" rel="index">
+                    <span itemprop="name">部署例子</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/部署例子/Jenkins/" itemprop="url" rel="index">
+                    <span itemprop="name">Jenkins</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#注意/your/home 替换成你创建的目录，保证容器有访问权限</span></span><br><span class="line">docker run -d -p 12821:8080 -p 50000:50000 -v /your/home:/var/jenkins_home  --name jenkins jenkins/jenkins</span><br><span class="line">5cc5e09fdea5e9296bd26095b90f770b0d05213d80299d44dd3984db14bdbd85</span><br></pre></td></tr></table></figure>
+<p>然后登陆到容器里获取初始化密码:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">exec</span> -it  5cc5e09fdea5  bash</span><br><span class="line"></span><br><span class="line"><span class="comment">#使用cat 命令查看密码</span></span><br><span class="line">jenkins@5cc5e09fdea5:/$ cat  /var/jenkins_home/secrets/initialAdminPassword</span><br><span class="line"></span><br><span class="line"><span class="comment">#然后出来这个密码</span></span><br><span class="line">44fcdb88xxxxxxxxxxx6a2d00c2d</span><br></pre></td></tr></table></figure>
+<p>把上面的密码复制到浏览器里<a href="http://localhost:12821" target="_blank" rel="noopener">http://localhost:12821</a> 里需要密码的地方:</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fmqurvobr7j30wg0judgi.jpg" alt=""></p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNbRwgy1fmqusk4makj30wn0hmq2u.jpg" alt=""></p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNbRwgy1fmquthb410j30yp0kc751.jpg" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2017/12/22/docker-part5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/22/docker-part5/" itemprop="url">Docker入门-part5-Stacks</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-22T11:04:34+08:00">
+                2017-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/Docker入门/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker入门</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Stacks"><a href="#Stacks" class="headerlink" title="Stacks"></a>Stacks</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本Docker入门系列文章是翻译于Docker官方getStarted文档,如有出入，请跳转查看<a href="https://docs.docker.com/get-started/" target="_blank" rel="noopener">官方文档</a></p>
+<h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><blockquote>
+<p>A stack is a group of interrelated services that share dependencies, and can be orchestrated and scaled together. </p>
+</blockquote>
+<p>可以理解一个堆里有多个服务，服务之间相互协作。有一些复杂的应用，它可能需要多个堆。</p>
+<h2 id="添加一个新的服务并且部署它"><a href="#添加一个新的服务并且部署它" class="headerlink" title="添加一个新的服务并且部署它"></a>添加一个新的服务并且部署它</h2><p>1.我们打开之前的<code>docker-compose.yml</code>文件，使用下面的代码覆盖它。记得替换那里<code>username/repo:tag</code> 对应的远程库镜像值。</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  web:</span></span><br><span class="line">    <span class="comment"># replace username/repo:tag with your name and image details</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">username/repo:tag</span></span><br><span class="line"><span class="attr">    deploy:</span></span><br><span class="line"><span class="attr">      replicas:</span> <span class="number">5</span></span><br><span class="line"><span class="attr">      restart_policy:</span></span><br><span class="line"><span class="attr">        condition:</span> <span class="string">on-failure</span></span><br><span class="line"><span class="attr">      resources:</span></span><br><span class="line"><span class="attr">        limits:</span></span><br><span class="line"><span class="attr">          cpus:</span> <span class="string">"0.1"</span></span><br><span class="line"><span class="attr">          memory:</span> <span class="number">50</span><span class="string">M</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"80:80"</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">  visualizer:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">dockersamples/visualizer:stable</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"8080:8080"</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"/var/run/docker.sock:/var/run/docker.sock"</span></span><br><span class="line"><span class="attr">    deploy:</span></span><br><span class="line"><span class="attr">      placement:</span></span><br><span class="line"><span class="attr">        constraints:</span> <span class="string">[node.role</span> <span class="string">==</span> <span class="string">manager]</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">  webnet:</span></span><br></pre></td></tr></table></figure>
+<p>我们可以看到上面的代码里，多了一个服务：visualizer。并且看到一个新的关键字<code>volumes</code> ,它给visualizer容器权限，能访问宿主机的socket文件。还有一个新的关键字<code>placement</code>,定义这个服务只能在swarm manager上运行，不能在worker上。因为这个容器是用来展示Docker的各种服务在一个图表里，它由Docker开发的并且开源。</p>
+<p>2.设置你的shell连接上myvm1 ，上部分已经讲过：</p>
+<ul>
+<li>docker-machine ls</li>
+<li>docker-machine env myvm1</li>
+<li>eval $(docker-machine env myvm1)</li>
+</ul>
+<p>3.在manager节点上再次运行<code>docker stack deploy</code>,如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
+<p>4.我们来看看visualizer<br>先使用<code>docker-machine ls</code>查看各个节点的ip,然后你用浏览访问任何一个ip的8080端口，就可以看到图像化界面，显示各种服务在不同的机器上运行。</p>
+<p>我们可以看到,visualizer只运行在manager节点上。 可以使用<code>docker stack ps getstartedlab</code>查看该堆所有服务的任务。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmpozwsezyg30j20cux6p.gif" alt=""></p>
+<h2 id="持久化数据"><a href="#持久化数据" class="headerlink" title="持久化数据"></a>持久化数据</h2><p>让我们添加一个Redis 数据库 用来存储数据</p>
+<p>1.我们打开之前的<code>docker-compose.yml</code>文件，使用下面的代码覆盖它。记得替换那里<code>username/repo:tag</code> 对应的远程库镜像值。</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  web:</span></span><br><span class="line">    <span class="comment"># replace username/repo:tag with your name and image details</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">username/repo:tag</span></span><br><span class="line"><span class="attr">    deploy:</span></span><br><span class="line"><span class="attr">      replicas:</span> <span class="number">5</span></span><br><span class="line"><span class="attr">      restart_policy:</span></span><br><span class="line"><span class="attr">        condition:</span> <span class="string">on-failure</span></span><br><span class="line"><span class="attr">      resources:</span></span><br><span class="line"><span class="attr">        limits:</span></span><br><span class="line"><span class="attr">          cpus:</span> <span class="string">"0.1"</span></span><br><span class="line"><span class="attr">          memory:</span> <span class="number">50</span><span class="string">M</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"80:80"</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">  visualizer:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">dockersamples/visualizer:stable</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"8080:8080"</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"/var/run/docker.sock:/var/run/docker.sock"</span></span><br><span class="line"><span class="attr">    deploy:</span></span><br><span class="line"><span class="attr">      placement:</span></span><br><span class="line"><span class="attr">        constraints:</span> <span class="string">[node.role</span> <span class="string">==</span> <span class="string">manager]</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">  redis:</span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">redis</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"6379:6379"</span></span><br><span class="line"><span class="attr">    volumes:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">/home/docker/data:/data</span></span><br><span class="line"><span class="attr">    deploy:</span></span><br><span class="line"><span class="attr">      placement:</span></span><br><span class="line"><span class="attr">        constraints:</span> <span class="string">[node.role</span> <span class="string">==</span> <span class="string">manager]</span></span><br><span class="line"><span class="attr">    command:</span> <span class="string">redis-server</span> <span class="bullet">--appendonly</span> <span class="literal">yes</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">  webnet:</span></span><br></pre></td></tr></table></figure>
+<p>2.在manager机器上（即myvm1）,创建一个目录：<code>./data</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-machine ssh myvm1 <span class="string">"mkdir ./data"</span></span><br></pre></td></tr></table></figure>
+<p>这里注意几点:</p>
+<ul>
+<li>redis 的远程镜像就是很短：”redis”,不用质疑</li>
+<li>redis容器对外服务端口依然是6379,方便其他服务获取。</li>
+<li>redis的volumes 的/home/docker/data目录是myvm1的目录，因为下面定义了它只能部署在manager上，所以我们使用<code>docker-machine ssh myvm1 &quot;mkdir ./data&quot;</code> 创建一个/home/docker/data目录。然后冒号后边的/data是redis容器里的路径，这里是redis的工作路径，我们不用管。</li>
+</ul>
+<p>3.保证你的shell连接上myvm1 ,前面讲过</p>
+<p>4.重新部署,再次执行：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
+<p>5.查看服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker service ls</span><br></pre></td></tr></table></figure>
+<p>6.访问你的一个节点机器 <a href="http://192.168.99.101" target="_blank" rel="noopener">http://192.168.99.101</a> ,我们可以看到Visits在递增，那是因为我们的数据存在Redis上了。我们继续看看<a href="http://192.168.99.101:8080" target="_blank" rel="noopener">http://192.168.99.101:8080</a></p>
+<p><img src="https://ws3.sinaimg.cn/large/006tNbRwgy1fmqfwsmkprg30j20cu1kz.gif" alt=""></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2017/12/22/docker-part4/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1367,7 +2080,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">19</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1378,7 +2091,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1389,7 +2102,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">14</span>
+                  <span class="site-state-item-count">22</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
