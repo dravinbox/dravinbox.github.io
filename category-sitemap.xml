@@ -49,13 +49,6 @@
     </url>
 
     <url>
-        <loc>http://dravinbox.github.io/categories/nginx/</loc>
-        <lastmod>2018-01-16T09:23:06.000Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://dravinbox.github.io/categories/maven/</loc>
         <lastmod>2018-01-16T09:24:19.101Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -177,6 +170,48 @@
     <url>
         <loc>http://dravinbox.github.io/categories/Socket/Socket-03/</loc>
         <lastmod>2018-03-08T11:56:27.843Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/nginx/</loc>
+        <lastmod>2018-03-11T03:10:29.230Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/nginx/nginx-php5-6/</loc>
+        <lastmod>2018-03-11T03:10:29.230Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/Kali/aircrack-ng/</loc>
+        <lastmod>2018-03-11T14:24:28.857Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/Kali/</loc>
+        <lastmod>2018-03-14T01:24:04.138Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/Kali/sqlmap/</loc>
+        <lastmod>2018-03-14T01:24:04.138Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/JVM/</loc>
+        <lastmod>2018-03-16T00:49:51.290Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
