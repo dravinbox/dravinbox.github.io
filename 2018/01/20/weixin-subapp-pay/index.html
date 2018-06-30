@@ -89,7 +89,7 @@
 <meta property="og:site_name" content="Dravin&#39;s Blog">
 <meta property="og:description" content="服务商下的公众号支付在服务商模式下，必须传本公众号和用户的openid 给服务商来生成jsapi支付参数。最近有个坑，前端怎么调都是没法支付，只是转一下就没了。最后发现是服务商那里没有配置该子商户的公众号支付的域名：登陆服务商的微信商户后台，找到该子商户，点击配置，添加一个域名。 单例页面的微信支付之前一直都是 http://xxxx/#/paypage改为http://xxxx/#/pay/pa">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-01-20T09:08:56.197Z">
+<meta property="og:updated_time" content="2018-06-30T22:31:01.666Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="微信支付-服务商下的公众号支付">
 <meta name="twitter:description" content="服务商下的公众号支付在服务商模式下，必须传本公众号和用户的openid 给服务商来生成jsapi支付参数。最近有个坑，前端怎么调都是没法支付，只是转一下就没了。最后发现是服务商那里没有配置该子商户的公众号支付的域名：登陆服务商的微信商户后台，找到该子商户，点击配置，添加一个域名。 单例页面的微信支付之前一直都是 http://xxxx/#/paypage改为http://xxxx/#/pay/pa">
@@ -436,6 +436,7 @@
         <h1 id="服务商下的公众号支付"><a href="#服务商下的公众号支付" class="headerlink" title="服务商下的公众号支付"></a>服务商下的公众号支付</h1><p>在服务商模式下，必须传本公众号和用户的openid 给服务商来生成jsapi支付参数。<br>最近有个坑，前端怎么调都是没法支付，只是转一下就没了。<br>最后发现是服务商那里没有配置该子商户的公众号支付的域名：<br>登陆服务商的微信商户后台，找到该子商户，点击配置，添加一个域名。</p>
 <h2 id="单例页面的微信支付"><a href="#单例页面的微信支付" class="headerlink" title="单例页面的微信支付"></a>单例页面的微信支付</h2><p>之前一直都是 <a href="http://xxxx/#/paypage" target="_blank" rel="noopener">http://xxxx/#/paypage</a><br>改为<a href="http://xxxx/#/pay/paypage" target="_blank" rel="noopener">http://xxxx/#/pay/paypage</a> 就可以</p>
 <p>也就是说<br>如果是单例页面如vue ,就微信后台后台配置http://xxxx/#/pay/<br>这里就是要求支付必须在2级目录里，paypage.vue得放在pay目录里。</p>
+<h2 id="微信分享出去的页面"><a href="#微信分享出去的页面" class="headerlink" title="微信分享出去的页面"></a>微信分享出去的页面</h2><p>经过分销出去的页面都带有这样的from 参数 ：<br><a href="http://xxxx/?from=groupmessage#/paypage" target="_blank" rel="noopener">http://xxxx/?from=groupmessage#/paypage</a> 或 <a href="http://xxxx/?from=singlemessage#/paypage" target="_blank" rel="noopener">http://xxxx/?from=singlemessage#/paypage</a> 这个from参数直接影响支付的！！！，会报get_brand_wcpay_request:fail错误。<br>解决方法：在这些页面里，跳转至后台，后台再重定向回前端来过滤掉from 参数。（2018年7月1日一个通宵遇到的坑）</p>
 
       
     </div>
@@ -455,7 +456,7 @@
   <p><span>本文标题:</span><a href="/2018/01/20/weixin-subapp-pay/">微信支付-服务商下的公众号支付</a></p>
   <p><span>文章作者:</span><a href="/" title="访问 Dravin 的个人博客">Dravin</a></p>
   <p><span>发布时间:</span>2018年01月20日 - 11:01</p>
-  <p><span>最后更新:</span>2018年01月20日 - 17:01</p>
+  <p><span>最后更新:</span>2018年07月01日 - 06:07</p>
   <p><span>原始链接:</span><a href="/2018/01/20/weixin-subapp-pay/" title="微信支付-服务商下的公众号支付">http://dravinbox.github.io/2018/01/20/weixin-subapp-pay/</a>
     <span class="copy-path"  title="点击复制文章链接"><i class="fa fa-clipboard" data-clipboard-text="http://dravinbox.github.io/2018/01/20/weixin-subapp-pay/"  aria-label="复制成功！"></i></span>
   </p>
@@ -625,7 +626,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -636,7 +637,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -647,7 +648,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -709,7 +710,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#服务商下的公众号支付"><span class="nav-number">1.</span> <span class="nav-text">服务商下的公众号支付</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单例页面的微信支付"><span class="nav-number">1.1.</span> <span class="nav-text">单例页面的微信支付</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#服务商下的公众号支付"><span class="nav-number">1.</span> <span class="nav-text">服务商下的公众号支付</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#单例页面的微信支付"><span class="nav-number">1.1.</span> <span class="nav-text">单例页面的微信支付</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#微信分享出去的页面"><span class="nav-number">1.2.</span> <span class="nav-text">微信分享出去的页面</span></a></li></ol></li></ol></div>
             
 
           </div>

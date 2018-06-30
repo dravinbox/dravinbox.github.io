@@ -321,6 +321,219 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2017/12/22/docker-part4/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/22/docker-part4/" itemprop="url">Docker入门-part4-Swarms</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-22T10:58:51+08:00">
+                2017-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/Docker入门/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker入门</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Swarms"><a href="#Swarms" class="headerlink" title="Swarms"></a>Swarms</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本Docker入门系列文章是翻译于Docker官方getStarted文档,如有出入，请跳转查看<a href="https://docs.docker.com/get-started/" target="_blank" rel="noopener">官方文档</a></p>
+<h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><blockquote>
+<p>Here in part 4, you deploy this application onto a cluster, running it on multiple machines. Multi-container, multi-machine applications are made possible by joining multiple machines into a “Dockerized” cluster called a swarm.</p>
+</blockquote>
+<p>可以理解swarm 是一个种多宿主机器，多容器组成的机器群体。</p>
+<p>你可以通过 Swarm manager来控制这种多容器，多机器组成的集群。这里的机器可以是真实的也可以是虚拟的。一旦加入了swarm ，就称为一个节点node。</p>
+<h2 id="建立你的swarm"><a href="#建立你的swarm" class="headerlink" title="建立你的swarm"></a>建立你的swarm</h2><p>在你的机器上执行<code>docker swarm init</code>去启动swarm 模式，且成为swarm manager。使用其他的机器执行<code>docker swarm join</code>加入刚刚的swarm 群里成为worker。<br>这里 我们使用虚拟机模拟一个由两台机器组成的集群。</p>
+<h3 id="创建cluster"><a href="#创建cluster" class="headerlink" title="创建cluster"></a>创建cluster</h3><blockquote>
+<p>MAC, LINUX</p>
+</blockquote>
+<p>先在宿主机上安装<a href="https://www.virtualbox.org/wiki/Downloads" target="_blank" rel="noopener">VirtualBox</a></p>
+<p>使用<code>docker-machine</code> 命令，和VirtualBox的驱动：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create --driver virtualbox myvm1</span><br><span class="line">docker-machine create --driver virtualbox myvm2</span><br></pre></td></tr></table></figure>
+<p><strong>使用以下命令获得机器列表和他们的ip</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span>-machine ls</span><br><span class="line"></span><br><span class="line">NAME    ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS</span><br><span class="line">myvm1   -        virtualbox   Running   tcp://192.168.99.100:2376           v17.11.0-ce   </span><br><span class="line">myvm2   -        virtualbox   Running   tcp://192.168.99.101:2376           v17.11.0-ce</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fmpnhpa9i6g30j20cuatr.gif" alt=""></p>
+<p><strong>初始化swarm 和添加节点</strong></p>
+<p>我们让myvm1成为manger,myvm2成为worker<br>可以使用<code>docker-machine ssh</code>向 myvm1 发送<code>docker swarm init</code>命令<br>格式是<code>docker-machine ssh myvm1 &quot;docker swarm init --advertise-addr &lt;myvm1 ip&gt;&quot;</code></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> $ docker-machine ssh myvm1 <span class="string">"docker swarm init --advertise-addr 192.168.99.100"</span></span><br><span class="line">Swarm initialized: current node (qkxdnhw56ibpdwqt22jpvxtj6) is now a manager.</span><br><span class="line"></span><br><span class="line">To add a worker to this swarm, run the following <span class="built_in">command</span>:</span><br><span class="line"></span><br><span class="line">    docker swarm join --token SWMTKN-1-547x8uwxy9kjkf31c46q9bx74jb92v16y2ruoo6aabvv5rhq1r-36qjytbfe7i3dxu8tdp9fyfnr 192.168.99.100:2377</span><br><span class="line"></span><br><span class="line">To add a manager to this swarm, run <span class="string">'docker swarm join-token manager'</span> and follow the instructions.</span><br></pre></td></tr></table></figure>
+<p>同样地，我们向myvm2发送命令加入swarm,格式是：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker-machine ssh myvm2 <span class="string">"docker swarm join \</span></span><br><span class="line"><span class="string">--token &lt;token&gt; \</span></span><br><span class="line"><span class="string">&lt;ip&gt;:2377"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ssh myvm2 <span class="string">"docker swarm join --token SWMTKN-1-547x8uwxy9kjkf31c46q9bx74jb92v16y2ruoo6aabvv5rhq1r-36qjytbfe7i3dxu8tdp9fyfnr 192.168.99.100:2377"</span></span><br><span class="line"></span><br><span class="line">This node joined a swarm as a worker.</span><br></pre></td></tr></table></figure>
+<p>恭喜，你成功建立你的第一个swarm<br>执行<code>docker node ls</code> 查看你的swarm中的各种节点:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ssh myvm1 <span class="string">"docker node ls"</span></span><br><span class="line"></span><br><span class="line">ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS</span><br><span class="line">qkxdnhw56ibpdwqt22jpvxtj6 *   myvm1               Ready               Active              Leader</span><br><span class="line">plax8po1p26hs67f693yqm5c7     myvm2               Ready               Active</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fmpnre3z2dg30j20cu7q6.gif" alt=""></p>
+<h2 id="在你的swarm-集群部署你的APP"><a href="#在你的swarm-集群部署你的APP" class="headerlink" title="在你的swarm 集群部署你的APP"></a>在你的swarm 集群部署你的APP</h2><p>上面艰难的步骤已经完了，接下来就简单了，重复Part3的步骤来部署在你新的swarm上，你只要记住，你的myvm1是管理者，只用来执行命令的，worker节点只是容纳过来的。他们都可以工作。</p>
+<h3 id="配置你的shell给swarm-manager（可以理解为登陆到某个节点，不需要每次都docker-machine-ssh）"><a href="#配置你的shell给swarm-manager（可以理解为登陆到某个节点，不需要每次都docker-machine-ssh）" class="headerlink" title="配置你的shell给swarm manager（可以理解为登陆到某个节点，不需要每次都docker-machine ssh）"></a>配置你的shell给swarm manager（可以理解为登陆到某个节点，不需要每次都docker-machine ssh）</h3><blockquote>
+<p>这里提供mac / Linux的方法</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine env myvm1</span><br><span class="line"><span class="built_in">export</span> DOCKER_TLS_VERIFY=<span class="string">"1"</span></span><br><span class="line"><span class="built_in">export</span> DOCKER_HOST=<span class="string">"tcp://192.168.99.100:2376"</span></span><br><span class="line"><span class="built_in">export</span> DOCKER_CERT_PATH=<span class="string">"/Users/sam/.docker/machine/machines/myvm1"</span></span><br><span class="line"><span class="built_in">export</span> DOCKER_MACHINE_NAME=<span class="string">"myvm1"</span></span><br><span class="line"><span class="comment"># Run this command to configure your shell:</span></span><br><span class="line"><span class="comment"># eval $(docker-machine env myvm1)</span></span><br></pre></td></tr></table></figure>
+<p>然后运行</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> $(docker-machine env myvm1)</span><br></pre></td></tr></table></figure>
+<p>现在你的shell已经登陆到myvm1上了，可以使用docker-machine ls 查看myvm1 的ACTIVE端是不是有个*号，表示你的shell登陆上这台机器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ docker-machine ls</span><br><span class="line">NAME    ACTIVE   DRIVER       STATE     URL                         SWARM   DOCKER        ERRORS</span><br><span class="line">myvm1   *        virtualbox   Running   tcp://192.168.99.100:2376           v17.11.0-ce   </span><br><span class="line">myvm2   -        virtualbox   Running   tcp://192.168.99.101:2376           v17.11.0-ce</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmpnuvqzz4g30j20cuwqx.gif" alt=""></p>
+<h3 id="在swarm-manager机器上部署你的APP"><a href="#在swarm-manager机器上部署你的APP" class="headerlink" title="在swarm manager机器上部署你的APP"></a>在swarm manager机器上部署你的APP</h3><p>虽然你现在的shell已经登陆上myvm1 了，但是还是可以访问本机的文件，这里我们部署app就需要之前写的docker-compose.yml文件。我们使用以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span> stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
+<p>我们成功部署了APP，在这个集群上。使用以下查看详细的部署：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">$ docker stack ps getstartedlab</span><br><span class="line"></span><br><span class="line">ID                  NAME                  IMAGE                         NODE                DESIRED STATE       CURRENT STATE              ERROR               PORTS</span><br><span class="line">l546oo0pmewz        getstartedlab_web.1   dk5664280/get-started:part2   myvm1               Running             Preparing 25 seconds ago                       </span><br><span class="line">vdym3ibcbhku        getstartedlab_web.2   dk5664280/get-started:part2   myvm2               Running             Preparing 25 seconds ago                       </span><br><span class="line">x4gx5wzj7pp6        getstartedlab_web.3   dk5664280/get-started:part2   myvm2               Running             Preparing 25 seconds ago                       </span><br><span class="line">imw4urn7oo9d        getstartedlab_web.4   dk5664280/get-started:part2   myvm1               Running             Preparing 26 seconds ago                       </span><br><span class="line">ios5s8yejbhj        getstartedlab_web.5   dk5664280/get-started:part2   myvm2               Running             Preparing 25 seconds ago                       </span><br><span class="line">vhkwaz09n4q8        getstartedlab_web.6   dk5664280/get-started:part2   myvm1               Running             Preparing 25 seconds ago                       </span><br><span class="line">qybf5fd0ueij        getstartedlab_web.7   dk5664280/get-started:part2   myvm2               Running             Preparing 25 seconds ago</span><br></pre></td></tr></table></figure>
+<p>看到了，我们的app在补同的机器myvm1和myvm2上部署，它们组成了一个集群.</p>
+<h3 id="访问我们的集群"><a href="#访问我们的集群" class="headerlink" title="访问我们的集群"></a>访问我们的集群</h3><p>你可以访问myvm1或myvm2,例如 <a href="http://192.168.99.100:4000或http://192.168.99.101:4000" target="_blank" rel="noopener">http://192.168.99.100:4000或http://192.168.99.101:4000</a> ,你都可以得到返回结果，并且每次结果不一样，因为它们使用了swarm的一个负载均衡器。</p>
+<p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fmpo3ufw12g30j20cu4qp.gif" alt=""></p>
+<h3 id="重新调配你的app"><a href="#重新调配你的app" class="headerlink" title="重新调配你的app"></a>重新调配你的app</h3><p>你可以修改你的docker-compose.yml,然后再运行 </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
+<h2 id="清除和重启"><a href="#清除和重启" class="headerlink" title="清除和重启"></a>清除和重启</h2><h3 id="stacks-和swarms"><a href="#stacks-和swarms" class="headerlink" title="stacks 和swarms"></a>stacks 和swarms</h3><p>清除 stacks:<br><code>docker stack rm getstartedlab</code></p>
+<p>我们先不敢掉swarms,因为下一个Part 5,我们还用先保留以下。</p>
+<blockquote>
+<p>如果你真想敢掉swarms,执行<code>docker-machine ssh myvm2 &quot;docker swarm leave</code>这样能使work机里开该swarm集群，<code>docker-machine ssh myvm1 &quot;docker swarm leave --force</code> 能使manager离开swarm </p>
+</blockquote>
+<h3 id="关掉所有机器"><a href="#关掉所有机器" class="headerlink" title="关掉所有机器"></a>关掉所有机器</h3><p>执行下面的命令停止所有的机器：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span>-machine stop $(docker-machine ls -q)</span><br></pre></td></tr></table></figure>
+<h3 id="清除shell配置"><a href="#清除shell配置" class="headerlink" title="清除shell配置"></a>清除shell配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">eval</span> $(docker-machine env -u)</span><br></pre></td></tr></table></figure>
+<p>这样就可以中断连接虚拟机了。<br>可以使用<code>docker-machine ls</code>查看，已经没有ACTIVE的机器了。</p>
+<h3 id="启动机器"><a href="#启动机器" class="headerlink" title="启动机器"></a>启动机器</h3><p>使用下面的代码启动机器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker-machine start &lt;machine-name&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmpo8sy0y1g30j20cu1bv.gif" alt=""></p>
+<blockquote>
+<p>socker是我打错了，ctrl+c 中断了该命令</p>
+</blockquote>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">docker-machine create --driver virtualbox myvm1 <span class="comment"># Create a VM (Mac, Win7, Linux)</span></span><br><span class="line">docker-machine create -d hyperv --hyperv-virtual-switch <span class="string">"myswitch"</span> myvm1 <span class="comment"># Win10</span></span><br><span class="line">docker-machine env myvm1                <span class="comment"># View basic information about your node</span></span><br><span class="line">docker-machine ssh myvm1 <span class="string">"docker node ls"</span>         <span class="comment"># List the nodes in your swarm</span></span><br><span class="line">docker-machine ssh myvm1 <span class="string">"docker node inspect &lt;node ID&gt;"</span>        <span class="comment"># Inspect a node</span></span><br><span class="line">docker-machine ssh myvm1 <span class="string">"docker swarm join-token -q worker"</span>   <span class="comment"># View join token</span></span><br><span class="line">docker-machine ssh myvm1   <span class="comment"># Open an SSH session with the VM; type "exit" to end</span></span><br><span class="line">docker node ls                <span class="comment"># View nodes in swarm (while logged on to manager)</span></span><br><span class="line">docker-machine ssh myvm2 <span class="string">"docker swarm leave"</span>  <span class="comment"># Make the worker leave the swarm</span></span><br><span class="line">docker-machine ssh myvm1 <span class="string">"docker swarm leave -f"</span> <span class="comment"># Make master leave, kill swarm</span></span><br><span class="line">docker-machine ls <span class="comment"># list VMs, asterisk shows which VM this shell is talking to</span></span><br><span class="line">docker-machine start myvm1            <span class="comment"># Start a VM that is currently not running</span></span><br><span class="line">docker-machine env myvm1      <span class="comment"># show environment variables and command for myvm1</span></span><br><span class="line"><span class="built_in">eval</span> $(docker-machine env myvm1)         <span class="comment"># Mac command to connect shell to myvm1</span></span><br><span class="line">&amp; <span class="string">"C:\Program Files\Docker\Docker\Resources\bin\docker-machine.exe"</span> env myvm1 | Invoke-Expression   <span class="comment"># Windows command to connect shell to myvm1</span></span><br><span class="line">docker stack deploy -c &lt;file&gt; &lt;app&gt;  <span class="comment"># Deploy an app; command shell must be set to talk to manager (myvm1), uses local Compose file</span></span><br><span class="line">docker-machine scp docker-compose.yml myvm1:~ <span class="comment"># Copy file to node's home dir (only required if you use ssh to connect to manager and deploy the app)</span></span><br><span class="line">docker-machine ssh myvm1 <span class="string">"docker stack deploy -c &lt;file&gt; &lt;app&gt;"</span>   <span class="comment"># Deploy an app using ssh (you must have first copied the Compose file to myvm1)</span></span><br><span class="line"><span class="built_in">eval</span> $(docker-machine env -u)     <span class="comment"># Disconnect shell from VMs, use native docker</span></span><br><span class="line">docker-machine stop $(docker-machine ls -q)               <span class="comment"># Stop all running VMs</span></span><br><span class="line">docker-machine rm $(docker-machine ls -q) <span class="comment"># Delete all VMs and their disk images</span></span><br></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2017/12/22/docker-part3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1154,7 +1367,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1165,7 +1378,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">30</span>
+                  <span class="site-state-item-count">32</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -1176,7 +1389,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">26</span>
+                  <span class="site-state-item-count">27</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
