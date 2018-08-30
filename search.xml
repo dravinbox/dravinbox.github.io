@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[php-fpm]]></title>
+    <url>%2F2018%2F08%2F30%2Fphp-fpm%2F</url>
+    <content type="text"><![CDATA[php问题集问题：每次容器重启后，php.ini 中的display_errors 恢复Offphp.ini 中的display_errors在nginx+php-fpm 组成的docker容器重启时，display_errors恢复为Off ，对开发极为不便，可以在docker容器中/etc/supervisord.conf 中添加php-fpm 的启动参数display_errors1234567891011```conf[program:php5-fpm]command=/usr/sbin/php-fpm5.6 -c /etc/php/5.6/fpm -d display_errors=Onautostart=trueautorestart=truepriority=5stdout_logfile=/dev/stdoutstdout_logfile_maxbytes=0stderr_logfile=/dev/stderrstderr_logfile_maxbytes=0 问题：php 的tmpfile()函数无法操作容器中/tmpnginx+php-fpm ，如果无法操作/tmp路径，会报一下错误 123456Warning: Unknown: open_basedir restriction in effect. File(/tmp) is not within the allowed path(s): (/var/www) in Unknown on line 0Warning: File upload error - unable to create a temporary file in Unknown on line 0Warning: unlink(.jpg): No such file or directory in /var/www/App/Admin/Controller/UploadFiles.php on line 61&#123;&quot;status&quot;:false,&quot;msg&quot;:&quot;\u4e34\u65f6\u6587\u4ef6\u65e0\u6cd5\u8bfb\u53d6&quot;&#125; 解决方法：在nginx的配置文件中加上如下配置： 1fastcgi_param PHP_VALUE &quot;open_basedir=$document_root:/tmp&quot;; 这样子，php就可以操作网站根目录($document_root)和/tmp目录了]]></content>
+      <tags>
+        <tag>php</tag>
+        <tag>php-fpm</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[redis-passwd]]></title>
     <url>%2F2018%2F04%2F21%2Fredis-passwd%2F</url>
     <content type="text"><![CDATA[redis 修改登录密码redis没有实现访问控制这个功能，但是它提供了一个轻量级的认证方式，可以编辑redis.conf配置来启用认证。 1、初始化Redis密码： 在配置文件中有个参数： requirepass 这个就是配置redis访问密码的参数； 比如 requirepass test123； （Ps:需重启Redis才能生效） redis的查询速度是非常快的，外部用户一秒内可以尝试多大150K个密码；所以密码要尽量长（对于DBA 没有必要必须记住密码）； 2、不重启Redis设置密码： 在配置文件中配置requirepass的密码（当redis重启时密码依然有效）。 redis 127.0.0.1:6379&gt; config set requirepass test123 查询密码： redis 127.0.0.1:6379&gt; config get requirepass (error) ERR operation not permitted 密码验证： redis 127.0.0.1:6379&gt; auth test123 OK 再次查询： redis 127.0.0.1:6379&gt; config get requirepass 1) “requirepass” 2) “test123” PS：如果配置文件中没添加密码 那么redis重启后，密码失效； 3、登陆有密码的Redis： 在登录的时候的时候输入密码： redis-cli -p 6379 -a test123 先登陆后验证： redis-cli -p 6379 redis 127.0.0.1:6379&gt; auth test123 OK AUTH命令跟其他redis命令一样，是没有加密的；阻止不了攻击者在网络上窃取你的密码； 认证层的目标是提供多一层的保护。如果防火墙或者用来保护redis的系统防御外部攻击失败的话，外部用户如果没有通过密码认证还是无法访问redis的]]></content>
