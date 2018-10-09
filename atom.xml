@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://dravinbox.github.io/"/>
-  <updated>2018-09-09T09:44:20.020Z</updated>
+  <updated>2018-09-25T06:53:31.834Z</updated>
   <id>http://dravinbox.github.io/</id>
   
   <author>
@@ -15,6 +15,65 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>qt-update-ui</title>
+    <link href="http://dravinbox.github.io/2018/09/25/qt-update-ui/"/>
+    <id>http://dravinbox.github.io/2018/09/25/qt-update-ui/</id>
+    <published>2018-09-25T06:45:01.000Z</published>
+    <updated>2018-09-25T06:53:31.834Z</updated>
+    
+    <content type="html"><![CDATA[<ol><li>update()函数，实质上是调用了repaint函数，但是不是同步的，就是repaint函数可能不会立即执行。调用多次update()可能只执行了一次repaint（）函数。</li></ol><p>void QWidget::update()<br>2.就是直接调用repaint()函数，如果这个控件不是disable状态或者不是隐藏状态，它将直接调用paintEvent()函数。如果你需要立刻刷新，官方也建议之间是用repaint()函数。</p><p>void QWidget::repaint()<br>3.如果以上都不行，你也可以试试以下这个方法。showNormal（），它也许会有用。</p><p>void QWidget::showNormal()<br>4.使用resize（）函数。可以这样调用this-&gt;resize(this-&gt;size());</p><p>void resize(const QSize &amp;)<br>5.终极大招为 adjust()函数，一般情况下直接使用这个函数，就能进行界面的实时调整</p><p>void QWidget::adjustSize()</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;ol&gt;
+&lt;li&gt;update()函数，实质上是调用了repaint函数，但是不是同步的，就是repaint函数可能不会立即执行。调用多次update()可能只执行了一次repaint（）函数。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;void QWidget::update()&lt;br&gt;2.
+      
+    
+    </summary>
+    
+      <category term="QT" scheme="http://dravinbox.github.io/categories/QT/"/>
+    
+    
+      <category term="QT" scheme="http://dravinbox.github.io/tags/QT/"/>
+    
+      <category term="页面刷新" scheme="http://dravinbox.github.io/tags/%E9%A1%B5%E9%9D%A2%E5%88%B7%E6%96%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>encrypt</title>
+    <link href="http://dravinbox.github.io/2018/09/20/encrypt/"/>
+    <id>http://dravinbox.github.io/2018/09/20/encrypt/</id>
+    <published>2018-09-20T01:31:09.000Z</published>
+    <updated>2018-09-25T06:45:17.261Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="非对称算法"><a href="#非对称算法" class="headerlink" title="非对称算法"></a>非对称算法</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>非对称加密算法：它需要使用不同的密钥来分别完成加密和解密操作，一个公开发布，即公开密钥，另一个由用户自己秘密保存，即私用密钥。</p><h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>第一种用法：公钥加密，私钥解密。—用于加解密<br>第二种用法：私钥签名，公钥验签。—用于签名<br>有点混乱，不要去硬记，总结一下:<br>你只要想：<br>既然是加密，那肯定是不希望别人知道我的消息，所以只有我才能解密，所以可得出公钥负责加密，私钥负责解密；<br>既然是签名，那肯定是不希望有人冒充我发消息，只有我才能发布这个签名，所以可得出私钥负责签名，公钥负责验证。</p><p>第一种用法，能防止信息内容被他人获取，但可以被他人篡改。<br>第二种用法，能防止信息内容被他人篡改，但可以被他人获取。</p><p>所以人们习惯公私钥一起使用，拿对方的公钥加密，用自己的私钥签名。这样的信息既可以防止被获取，又防止被篡改。</p><h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><p>非对称算法，常用的场景是证书颁发与使用。<br>证书是一个经证书授权中心签过名的包含公钥及公钥拥有者信息的文件。证书授权中心（CA）对证书签名的过程即为证书的颁发过程。证书里面的公钥只属于某一个实体（网站，个人等），它的作用是防止一个实体伪装成另外一个实体。</p><p>证书可以保证非对称加密算法的合理性，假设现有一个证书授权中心Q, 其中A和B的通话过程如下：<br>A ——-&gt; Hello (明文) ———&gt; B<br>A &lt;——- Hello (明文) ———- B<br>A &lt;—— B 发送证书X 给 A  ——- B<br>A ——- 密 文 —————–&gt; B<br>A &lt;—— 明 文 + 签 名 ———– B</p><p>其中证书X 是由一个证书授权中心Q 颁发给B的，那么B就可以把证书展示给A看，证书X 上的公钥是B的。<br>A呢就可以通过证书授权中心Q 下载证书T，使用证书T上的公钥来验签证书X上的签名，看看证书X是不是由该证书授权中心Q 颁发的,拥有人是不是B，过没过期等。<br>验证没问题后，A就使用证书X 上的公钥加密，发送被B，B就可以使用他的私钥进行解密了。<br>然后B就可以发明文与对应的签名给A，A就可以使用证书X上的公钥进行验签。</p><p>升级：<br>A &lt;—— B 发送证书X 给 A  ——- B<br>A ——- A 发送证书Y 给 B ——-&gt; B<br>A ——- 密 文 + 签 名 ———-&gt; B<br>A &lt;—— 密 文 + 签 名 ———– B</p><p>既可以防止信息内容被获取，又可以防止信息内容被篡改</p><h2 id="生成SSL自签正式"><a href="#生成SSL自签正式" class="headerlink" title="生成SSL自签正式"></a>生成SSL自签正式</h2><p>在密码学中，X.509是一个标准，规范了公开秘钥认证、证书吊销列表、授权凭证、凭证路径验证算法等<br>X.509证书包含三个文件：key，csr，crt：</p><ul><li>key是服务器上的私钥文件，用于对发送给客户端数据的加密，以及对从客户端接收到数据的解密</li><li>csr是证书签名请求文件，用于提交给证书颁发机构（CA）对证书签名</li><li>crt是由证书颁发机构（CA）签名后的证书，或者是开发者自签名的证书，包含证书持有人的信息，持有人的公钥，以及签署者的签名等信息</li></ul><ol><li><p>生成私钥<br>openssl genrsa -des3 -out server.key 1024<br>说明：生成rsa私钥，des3算法，2048位强度，server.key是秘钥文件名。</p><p>注意：生成私钥，需要提供一个至少4位的密码。</p><p>1024位RSA非对称密钥对已经变得不安全了，所以，美国国家标准技术研究院( NIST )要求停止使用不安全的1024位非对称加密算法。微软已经要求所有受信任的根证书颁发机构必须于2010年12月31日之前升级其不安全的1024位根证书到2048位和停止颁发不安全的1024位用户证书，12 月 31 日之后会把不安全都所有 1024 位根证书从 Windows 受信任的根证书颁发机构列表中删除！</p><p>而目前几乎所有自签证书都是1024位，自签根证书也都是1024位，当然都是不安全的。还是那句话：由于部署自签SSL证书而无法获得专业SSL证书提供商的专业指导，根本就不知道1024位已经不安全了。</p></li><li><p>生成CSR（证书签名请求）<br>生成私钥之后，便可以创建csr文件了。</p><p>此时可以有两种选择。理想情况下，可以将证书发送给证书颁发机构（CA），CA验证过请求者的身份之后，会出具签名证书（很贵）。</p><p>另外，如果只是内部或者测试需求，也可以使用OpenSSL实现自签名，具体操作如下：</p><p>openssl req -new -key server.key -out server.csr</p><p>说明：需要依次输入国家，地区，城市，组织，组织单位，Common Name和Email。其中Common Name，可以写自己的名字或者域名，</p><p>如果要支持https，Common Name应该与域名保持一致，否则会引起浏览器警告。</p></li><li><p>删除私钥中的密码</p><p>在第1步创建私钥的过程中，由于必须要指定一个密码。而这个密码会带来一个副作用，那就是在每次Apache启动Web服务器时，都会要求输入密码，</p><p>这显然非常不方便。要删除私钥中的密码，操作如下：</p><p>openssl rsa -in server.key -out server.key</p></li><li><p>生成自签名证书<br>如果你不想花钱让CA签名，或者只是测试SSL的具体实现。那么，现在便可以着手生成一个自签名的证书了。</p><p>需要注意的是，在使用自签名的临时证书时，浏览器会提示证书的颁发机构是未知的。</p><p>openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt</p><p>说明：crt上有证书持有人的信息，持有人的公钥，以及签署者的签名等信息。当用户安装了证书之后，便意味着信任了这份证书，同时拥有了其中的公钥。证书上会说明用途，例如服务器认证，客户端认证，或者签署其他证书。当系统收到一份新的证书的时候，证书会说明，是由谁签署的。如果这个签署者确实可以签署其他证书，并且收到证书上的签名和签署者的公钥可以对上的时候，系统就自动信任新的证书。</p></li><li><p>安装私钥和证书</p><p>将私钥和证书文件复制到Apache的配置目录下即可，在Mac 10.10系统中，复制到/etc/apache2/目录中即可。</p></li></ol>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;非对称算法&quot;&gt;&lt;a href=&quot;#非对称算法&quot; class=&quot;headerlink&quot; title=&quot;非对称算法&quot;&gt;&lt;/a&gt;非对称算法&lt;/h1&gt;&lt;h2 id=&quot;概念&quot;&gt;&lt;a href=&quot;#概念&quot; class=&quot;headerlink&quot; title=&quot;概念&quot;&gt;&lt;/a&gt;概
+      
+    
+    </summary>
+    
+      <category term="密码学" scheme="http://dravinbox.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/"/>
+    
+      <category term="非对称算法" scheme="http://dravinbox.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/%E9%9D%9E%E5%AF%B9%E7%A7%B0%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="非对称算法" scheme="http://dravinbox.github.io/tags/%E9%9D%9E%E5%AF%B9%E7%A7%B0%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="rsa" scheme="http://dravinbox.github.io/tags/rsa/"/>
+    
+  </entry>
   
   <entry>
     <title>weixin1</title>
@@ -502,71 +561,6 @@
       <category term="nginx" scheme="http://dravinbox.github.io/tags/nginx/"/>
     
       <category term="tomcat" scheme="http://dravinbox.github.io/tags/tomcat/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>maven nexus 私库配置</title>
-    <link href="http://dravinbox.github.io/2018/01/15/maven-nexus/"/>
-    <id>http://dravinbox.github.io/2018/01/15/maven-nexus/</id>
-    <published>2018-01-15T08:19:21.000Z</published>
-    <updated>2018-01-16T09:24:19.101Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="nexus的配置"><a href="#nexus的配置" class="headerlink" title="nexus的配置"></a>nexus的配置</h1><p>使用docker 安装nexus</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -p 32770:8081 --name nexus sonatype/nexus</span><br></pre></td></tr></table></figure><p>1.访问<a href="http://localhost:32770/nexus" target="_blank" rel="noopener">http://localhost:32770/nexus</a><br>2.在<servers>节点增加一个用户</servers></p><figure class="highlight xml"><figcaption><span>setting.xml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">server</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">id</span>&gt;</span>rrg<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">username</span>&gt;</span>rrg<span class="tag">&lt;/<span class="name">username</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">password</span>&gt;</span>rrg88888<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">server</span>&gt;</span></span><br></pre></td></tr></table></figure><p>3.修改central为阿里云的代理<br>4.修改setting文件，包括mirro 和profile</p><figure class="highlight xml"><figcaption><span>setting.xml</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--mirrors节点添加如下：--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">mirror</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">id</span>&gt;</span>local-nexus3<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">mirrorOf</span>&gt;</span>*<span class="tag">&lt;/<span class="name">mirrorOf</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">name</span>&gt;</span>local maven3<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://localhost:32770/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">mirror</span>&gt;</span> </span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--profiles节点添加如下：--&gt;</span></span><br><span class="line">     <span class="tag">&lt;<span class="name">profile</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">id</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="name">repositories</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;<span class="name">repository</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">id</span>&gt;</span>central<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">name</span>&gt;</span>local-maven-main-repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://localhost:32770/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">           <span class="tag">&lt;/<span class="name">repository</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">repositories</span>&gt;</span></span><br><span class="line"></span><br><span class="line">         <span class="tag">&lt;<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">id</span>&gt;</span>central<span class="tag">&lt;/<span class="name">id</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">name</span>&gt;</span>local-maven-plugin-repository<span class="tag">&lt;/<span class="name">name</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">url</span>&gt;</span>http://localhost:32770/nexus/content/groups/public/<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">releases</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>true<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">releases</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;<span class="name">snapshots</span>&gt;</span></span><br><span class="line">                 <span class="tag">&lt;<span class="name">enabled</span>&gt;</span>false<span class="tag">&lt;/<span class="name">enabled</span>&gt;</span></span><br><span class="line">               <span class="tag">&lt;/<span class="name">snapshots</span>&gt;</span></span><br><span class="line">             <span class="tag">&lt;/<span class="name">pluginRepository</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="name">pluginRepositories</span>&gt;</span></span><br><span class="line">       <span class="tag">&lt;/<span class="name">profile</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!-- 最后激活 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">activeProfiles</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">activeProfile</span>&gt;</span>dev<span class="tag">&lt;/<span class="name">activeProfile</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">activeProfiles</span>&gt;</span></span><br></pre></td></tr></table></figure><p>5.发布与部署<br>6.使用<br>7.发布第3方包</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;nexus的配置&quot;&gt;&lt;a href=&quot;#nexus的配置&quot; class=&quot;headerlink&quot; title=&quot;nexus的配置&quot;&gt;&lt;/a&gt;nexus的配置&lt;/h1&gt;&lt;p&gt;使用docker 安装nexus&lt;/p&gt;
-&lt;figure class=&quot;highlight 
-      
-    
-    </summary>
-    
-      <category term="maven" scheme="http://dravinbox.github.io/categories/maven/"/>
-    
-      <category term="nexus" scheme="http://dravinbox.github.io/categories/maven/nexus/"/>
-    
-    
-      <category term="maven" scheme="http://dravinbox.github.io/tags/maven/"/>
-    
-      <category term="nexus" scheme="http://dravinbox.github.io/tags/nexus/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>docker-gui</title>
-    <link href="http://dravinbox.github.io/2017/12/25/docker-gui/"/>
-    <id>http://dravinbox.github.io/2017/12/25/docker-gui/</id>
-    <published>2017-12-25T01:39:33.000Z</published>
-    <updated>2017-12-25T03:08:08.282Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="在Mac上使用Docker运行GUI应用程序"><a href="#在Mac上使用Docker运行GUI应用程序" class="headerlink" title="在Mac上使用Docker运行GUI应用程序"></a>在Mac上使用Docker运行GUI应用程序</h1><p>firefox<br><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmsrqtspn3j31kw0wl75f.jpg" alt=""><br>vscode<br><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmstzu8y5xj31kw17wdgx.jpg" alt=""></p><p>需要准备的东西：</p><ul><li>osx系统</li><li>docker for mac</li><li>XQartz 2.7.11</li><li>一位国外的美女大神写的Dockerfile</li></ul><h2 id="osx系统没有就不用看下去"><a href="#osx系统没有就不用看下去" class="headerlink" title="osx系统没有就不用看下去"></a>osx系统没有就不用看下去</h2><h2 id="docker-for-mac-自行安装"><a href="#docker-for-mac-自行安装" class="headerlink" title="docker for mac 自行安装"></a>docker for mac 自行安装</h2><h2 id="XQuartz"><a href="#XQuartz" class="headerlink" title="XQuartz"></a>XQuartz</h2><p>使用brew 安装</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew cask install xquartz</span><br></pre></td></tr></table></figure><p>关于Quartz的最新版，可以前往<a href="https://www.xquartz.org/releases/index.html" target="_blank" rel="noopener">XQuartz官网</a></p><h2 id="运行起来！"><a href="#运行起来！" class="headerlink" title="运行起来！"></a>运行起来！</h2><p>使用我们本机的终端来打开XQuartz</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">open -a XQuartz</span><br></pre></td></tr></table></figure><p><img src="https://ws4.sinaimg.cn/large/006tNc79gy1fmss1a25xrj30qo0js0sp.jpg" alt=""></p><p>我们就运行起来了xquartz的终端，我们打开它的偏好设置</p><p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmss2e5fj6j30qw0k674y.jpg" alt=""></p><p>把这个钩上，然后重启XQuartz就生效。</p><p>我们在XQuartz的终端输入一下命令,来允许你本机的连接:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ip=$(ifconfig en0 | grep inet | awk <span class="string">'$1=="inet" &#123;print $2&#125;'</span>)</span><br><span class="line">xhost + <span class="variable">$ip</span></span><br></pre></td></tr></table></figure><p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmss6q865ej30qs0jq74b.jpg" alt=""></p><p>设置好之后，我们就可以运行一下Jessie大神做的Firefox镜像，她写的dockerfile<a href="https://github.com/jessfraz/dockerfiles/tree/master/firefox" target="_blank" rel="noopener">在这</a></p><p>firefox:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d --name firefox -e DISPLAY=<span class="variable">$ip</span>:0 -v /tmp/.X11-unix:/tmp/.X11-unix jess/firefox</span><br></pre></td></tr></table></figure><p>vscode:</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -v /etc/localtime:/etc/localtime:ro -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=<span class="variable">$ip</span>:0 --name vscode jess/vscode</span><br></pre></td></tr></table></figure><p>chrome(记得加上–privileged):<br>因为Chrome使用的是沙盒，因此运行一个没权限的沙盒将等到一个错误：<br>Failed to move to new namespace: PID namespaces supported, Network namespace supported, but failed: errno = Operation not permitted<br>使用<code>--privileged</code>可以给容器赋予权限去访问主机的资源，就如主机的进程那样访问主机的资源。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -d -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=<span class="variable">$ip</span>:0 -v ~/Downloads:/root/Downloads --privileged --name chrome jess/chrome</span><br></pre></td></tr></table></figure><h2 id="Merry-Christmas"><a href="#Merry-Christmas" class="headerlink" title="Merry Christmas"></a>Merry Christmas</h2><p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmssiaps7wg30dw0dwwml.gif" alt=""></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;在Mac上使用Docker运行GUI应用程序&quot;&gt;&lt;a href=&quot;#在Mac上使用Docker运行GUI应用程序&quot; class=&quot;headerlink&quot; title=&quot;在Mac上使用Docker运行GUI应用程序&quot;&gt;&lt;/a&gt;在Mac上使用Docker运行GUI应用
-      
-    
-    </summary>
-    
-      <category term="Docker" scheme="http://dravinbox.github.io/categories/Docker/"/>
-    
-      <category term="部署例子" scheme="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/"/>
-    
-      <category term="运行GUI应用程序" scheme="http://dravinbox.github.io/categories/Docker/%E9%83%A8%E7%BD%B2%E4%BE%8B%E5%AD%90/%E8%BF%90%E8%A1%8CGUI%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F/"/>
-    
-    
-      <category term="Docker" scheme="http://dravinbox.github.io/tags/Docker/"/>
-    
-      <category term="GUI" scheme="http://dravinbox.github.io/tags/GUI/"/>
-    
-      <category term="FireFox" scheme="http://dravinbox.github.io/tags/FireFox/"/>
-    
-      <category term="VSCode" scheme="http://dravinbox.github.io/tags/VSCode/"/>
     
   </entry>
   

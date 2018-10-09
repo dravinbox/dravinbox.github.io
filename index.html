@@ -321,6 +321,351 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/09/25/qt-update-ui/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/25/qt-update-ui/" itemprop="url">qt-update-ui</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-25T14:45:01+08:00">
+                2018-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/QT/" itemprop="url" rel="index">
+                    <span itemprop="name">QT</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ol>
+<li>update()函数，实质上是调用了repaint函数，但是不是同步的，就是repaint函数可能不会立即执行。调用多次update()可能只执行了一次repaint（）函数。</li>
+</ol>
+<p>void QWidget::update()<br>2.就是直接调用repaint()函数，如果这个控件不是disable状态或者不是隐藏状态，它将直接调用paintEvent()函数。如果你需要立刻刷新，官方也建议之间是用repaint()函数。</p>
+<p>void QWidget::repaint()<br>3.如果以上都不行，你也可以试试以下这个方法。showNormal（），它也许会有用。</p>
+<p>void QWidget::showNormal()<br>4.使用resize（）函数。可以这样调用this-&gt;resize(this-&gt;size());</p>
+<p>void resize(const QSize &amp;)<br>5.终极大招为 adjust()函数，一般情况下直接使用这个函数，就能进行界面的实时调整</p>
+<p>void QWidget::adjustSize()</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/09/20/encrypt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/20/encrypt/" itemprop="url">encrypt</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-20T09:31:09+08:00">
+                2018-09-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/密码学/" itemprop="url" rel="index">
+                    <span itemprop="name">密码学</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/密码学/非对称算法/" itemprop="url" rel="index">
+                    <span itemprop="name">非对称算法</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="非对称算法"><a href="#非对称算法" class="headerlink" title="非对称算法"></a>非对称算法</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>非对称加密算法：它需要使用不同的密钥来分别完成加密和解密操作，一个公开发布，即公开密钥，另一个由用户自己秘密保存，即私用密钥。</p>
+<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p>第一种用法：公钥加密，私钥解密。—用于加解密<br>第二种用法：私钥签名，公钥验签。—用于签名<br>有点混乱，不要去硬记，总结一下:<br>你只要想：<br>既然是加密，那肯定是不希望别人知道我的消息，所以只有我才能解密，所以可得出公钥负责加密，私钥负责解密；<br>既然是签名，那肯定是不希望有人冒充我发消息，只有我才能发布这个签名，所以可得出私钥负责签名，公钥负责验证。</p>
+<p>第一种用法，能防止信息内容被他人获取，但可以被他人篡改。<br>第二种用法，能防止信息内容被他人篡改，但可以被他人获取。</p>
+<p>所以人们习惯公私钥一起使用，拿对方的公钥加密，用自己的私钥签名。这样的信息既可以防止被获取，又防止被篡改。</p>
+<h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><p>非对称算法，常用的场景是证书颁发与使用。<br>证书是一个经证书授权中心签过名的包含公钥及公钥拥有者信息的文件。证书授权中心（CA）对证书签名的过程即为证书的颁发过程。证书里面的公钥只属于某一个实体（网站，个人等），它的作用是防止一个实体伪装成另外一个实体。</p>
+<p>证书可以保证非对称加密算法的合理性，假设现有一个证书授权中心Q, 其中A和B的通话过程如下：<br>A ——-&gt; Hello (明文) ———&gt; B<br>A &lt;——- Hello (明文) ———- B<br>A &lt;—— B 发送证书X 给 A  ——- B<br>A ——- 密 文 —————–&gt; B<br>A &lt;—— 明 文 + 签 名 ———– B</p>
+<p>其中证书X 是由一个证书授权中心Q 颁发给B的，那么B就可以把证书展示给A看，证书X 上的公钥是B的。<br>A呢就可以通过证书授权中心Q 下载证书T，使用证书T上的公钥来验签证书X上的签名，看看证书X是不是由该证书授权中心Q 颁发的,拥有人是不是B，过没过期等。<br>验证没问题后，A就使用证书X 上的公钥加密，发送被B，B就可以使用他的私钥进行解密了。<br>然后B就可以发明文与对应的签名给A，A就可以使用证书X上的公钥进行验签。</p>
+<p>升级：<br>A &lt;—— B 发送证书X 给 A  ——- B<br>A ——- A 发送证书Y 给 B ——-&gt; B<br>A ——- 密 文 + 签 名 ———-&gt; B<br>A &lt;—— 密 文 + 签 名 ———– B</p>
+<p>既可以防止信息内容被获取，又可以防止信息内容被篡改</p>
+<h2 id="生成SSL自签正式"><a href="#生成SSL自签正式" class="headerlink" title="生成SSL自签正式"></a>生成SSL自签正式</h2><p>在密码学中，X.509是一个标准，规范了公开秘钥认证、证书吊销列表、授权凭证、凭证路径验证算法等<br>X.509证书包含三个文件：key，csr，crt：</p>
+<ul>
+<li>key是服务器上的私钥文件，用于对发送给客户端数据的加密，以及对从客户端接收到数据的解密</li>
+<li>csr是证书签名请求文件，用于提交给证书颁发机构（CA）对证书签名</li>
+<li>crt是由证书颁发机构（CA）签名后的证书，或者是开发者自签名的证书，包含证书持有人的信息，持有人的公钥，以及签署者的签名等信息</li>
+</ul>
+<ol>
+<li><p>生成私钥<br>openssl genrsa -des3 -out server.key 1024<br>说明：生成rsa私钥，des3算法，2048位强度，server.key是秘钥文件名。</p>
+<p>注意：生成私钥，需要提供一个至少4位的密码。</p>
+<p>1024位RSA非对称密钥对已经变得不安全了，所以，美国国家标准技术研究院( NIST )要求停止使用不安全的1024位非对称加密算法。微软已经要求所有受信任的根证书颁发机构必须于2010年12月31日之前升级其不安全的1024位根证书到2048位和停止颁发不安全的1024位用户证书，12 月 31 日之后会把不安全都所有 1024 位根证书从 Windows 受信任的根证书颁发机构列表中删除！</p>
+<p>而目前几乎所有自签证书都是1024位，自签根证书也都是1024位，当然都是不安全的。还是那句话：由于部署自签SSL证书而无法获得专业SSL证书提供商的专业指导，根本就不知道1024位已经不安全了。</p>
+</li>
+<li><p>生成CSR（证书签名请求）<br>生成私钥之后，便可以创建csr文件了。</p>
+<p>此时可以有两种选择。理想情况下，可以将证书发送给证书颁发机构（CA），CA验证过请求者的身份之后，会出具签名证书（很贵）。</p>
+<p>另外，如果只是内部或者测试需求，也可以使用OpenSSL实现自签名，具体操作如下：</p>
+<p>openssl req -new -key server.key -out server.csr</p>
+<p>说明：需要依次输入国家，地区，城市，组织，组织单位，Common Name和Email。其中Common Name，可以写自己的名字或者域名，</p>
+<p>如果要支持https，Common Name应该与域名保持一致，否则会引起浏览器警告。</p>
+</li>
+<li><p>删除私钥中的密码</p>
+<p>在第1步创建私钥的过程中，由于必须要指定一个密码。而这个密码会带来一个副作用，那就是在每次Apache启动Web服务器时，都会要求输入密码，</p>
+<p>这显然非常不方便。要删除私钥中的密码，操作如下：</p>
+<p>openssl rsa -in server.key -out server.key</p>
+</li>
+<li><p>生成自签名证书<br>如果你不想花钱让CA签名，或者只是测试SSL的具体实现。那么，现在便可以着手生成一个自签名的证书了。</p>
+<p>需要注意的是，在使用自签名的临时证书时，浏览器会提示证书的颁发机构是未知的。</p>
+<p>openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt</p>
+<p>说明：crt上有证书持有人的信息，持有人的公钥，以及签署者的签名等信息。当用户安装了证书之后，便意味着信任了这份证书，同时拥有了其中的公钥。证书上会说明用途，例如服务器认证，客户端认证，或者签署其他证书。当系统收到一份新的证书的时候，证书会说明，是由谁签署的。如果这个签署者确实可以签署其他证书，并且收到证书上的签名和签署者的公钥可以对上的时候，系统就自动信任新的证书。</p>
+</li>
+<li><p>安装私钥和证书</p>
+<p>将私钥和证书文件复制到Apache的配置目录下即可，在Mac 10.10系统中，复制到/etc/apache2/目录中即可。</p>
+</li>
+</ol>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/09/09/weixin1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1553,411 +1898,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/02/26/java-concurrent-1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dravin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dravin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/26/java-concurrent-1/" itemprop="url">java并发编程第一篇</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-26T08:26:02+08:00">
-                2018-02-26
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/" itemprop="url" rel="index">
-                    <span itemprop="name">java</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/java/concurrent/" itemprop="url" rel="index">
-                    <span itemprop="name">concurrent</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>1.1并发编程的目的<br>1.2线程安全<br>1.3对象锁的同步和异步<br>1.4脏读<br>1.5synchronized的其他概念<br>1.6synchronized代码块<br>1.7volatile关键字</p>
-<hr>
-<h2 id="1-1-并发编程的目的"><a href="#1-1-并发编程的目的" class="headerlink" title="1.1 并发编程的目的"></a>1.1 并发编程的目的</h2><p>第一：面试非常重要<br>第二：知识拓展<br>第三：在以后的分布式系统中，你都可以找到类似的并发，分布式，并行处理的问题</p>
-<p>多线程中：<br>synchronized  同步的<br>volatile   爆炸性，挥发性<br>ReentrantLock  重进入锁<br>concurrent  并发的；一致的；同时发生的</p>
-<hr>
-<h2 id="1-2-线程安全"><a href="#1-2-线程安全" class="headerlink" title="1.2 线程安全"></a>1.2 线程安全</h2><h3 id="1-2-1-概念"><a href="#1-2-1-概念" class="headerlink" title="1.2.1 概念"></a>1.2.1 概念</h3><p>当多个线程访问某一个类（对象或方法）时，这个类始终都能表现出正确的行为，那么这个类（对象或方法）就是线程安全的。</p>
-<p>synchronized:可以在任意对象及方法上加锁，而加锁的这段代码称为“互斥区”或“临界区”</p>
-<h3 id="1-2-2-多线程与多个锁"><a href="#1-2-2-多线程与多个锁" class="headerlink" title="1.2.2 多线程与多个锁"></a>1.2.2 多线程与多个锁</h3><p>关键字synchronized 是对象锁，多个对象相当于有多个锁。所以说当多个线程操作的是不同的对象时，就相当于使用多把锁，多线程之间互不影响。</p>
-<p>注意，当synchronized修饰的是静态方法时，这把锁是类锁，无论有多少个对象，它们公用一把锁，因此会产生锁竞争</p>
-<hr>
-<h2 id="1-3-对象锁的同步和异步"><a href="#1-3-对象锁的同步和异步" class="headerlink" title="1.3 对象锁的同步和异步"></a>1.3 对象锁的同步和异步</h2><p>同步：synchronized<br>    同步概念就是共享，共享资源。</p>
-<p>异步：asynchronized<br>    异步的概念就是独立，相互之间不受任何制约。</p>
-<p>同步需要线程安全。需要两个特性：</p>
-<p>1.原子性（同步）</p>
-<p>2.可见性</p>
-<h3 id="1-3-1-对象锁的必要性"><a href="#1-3-1-对象锁的必要性" class="headerlink" title="1.3.1 对象锁的必要性"></a>1.3.1 对象锁的必要性</h3><h4 id="案例1"><a href="#案例1" class="headerlink" title="案例1"></a>案例1</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> mytest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span>  <span class="keyword">double</span> money=<span class="number">1000</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//取钱</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span>   <span class="keyword">double</span> <span class="title">getMoney</span><span class="params">(<span class="keyword">double</span> get_money)</span></span>&#123;</span><br><span class="line">		money=money-get_money;</span><br><span class="line">		System.out.println(<span class="string">"取钱后，总金额："</span>+money);</span><br><span class="line">		<span class="keyword">return</span> get_money ;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//存钱</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span>   <span class="keyword">double</span> <span class="title">putMoney</span><span class="params">(<span class="keyword">double</span> put_money)</span></span>&#123;</span><br><span class="line">		money+=put_money;</span><br><span class="line">		System.out.println(<span class="string">"存钱后，总金额："</span>+money);</span><br><span class="line">		<span class="keyword">return</span> money;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">		Bank bank= <span class="keyword">new</span> Bank();</span><br><span class="line">		Thread t1=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				bank.getMoney(<span class="number">100</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t1"</span>);</span><br><span class="line">		Thread t2=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				bank.putMoney(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t2"</span>);</span><br><span class="line">		</span><br><span class="line">		t1.start();</span><br><span class="line">		t2.start();</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果：<br>取钱后，总金额：1000.0<br>存钱后，总金额：1000.0</p>
-<p>我们期待的结果应该是<br>“取钱后，总金额：900.0<br>存钱后，总金额：1000.0”，那是因为线程1和线程2的代码经过排列之后才给cpu处理，有可能排列的是这样的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//有可能排序成这样，依次让cpu处理:</span></span><br><span class="line">money=money-get_money;<span class="comment">//线程1的代码</span></span><br><span class="line">money+=put_money;<span class="comment">//线程2的代码</span></span><br><span class="line">System.out.println(<span class="string">"取钱后，总金额："</span>+money);<span class="comment">//线程1的代码</span></span><br><span class="line">System.out.println(<span class="string">"存钱后，总金额："</span>+money);<span class="comment">//线程2的代码</span></span><br></pre></td></tr></table></figure>
-<p>所以有可能出现以上结果</p>
-<h4 id="改进代码"><a href="#改进代码" class="headerlink" title="改进代码"></a>改进代码</h4><p>加上synchronized,使得getMoney和putMoney的方法拥有原子性，就是说，里面的代码是一个整体，在cpu排序处理时，不可插入其他线程的代码。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> mytest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span>  <span class="keyword">double</span> money=<span class="number">1000</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//取钱</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span>   <span class="keyword">double</span> <span class="title">getMoney</span><span class="params">(<span class="keyword">double</span> get_money)</span></span>&#123;</span><br><span class="line">		money=money-get_money;</span><br><span class="line">		System.out.println(<span class="string">"取钱后，总金额："</span>+money);</span><br><span class="line">		<span class="keyword">return</span> get_money ;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//存钱</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span>   <span class="keyword">synchronized</span>  <span class="keyword">double</span> <span class="title">putMoney</span><span class="params">(<span class="keyword">double</span> put_money)</span></span>&#123;</span><br><span class="line">		money+=put_money;</span><br><span class="line">		System.out.println(<span class="string">"存钱后，总金额："</span>+money);</span><br><span class="line">		<span class="keyword">return</span> money;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">		Bank bank= <span class="keyword">new</span> Bank();</span><br><span class="line">		Thread t1=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				bank.getMoney(<span class="number">100</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t1"</span>);</span><br><span class="line">		Thread t2=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				bank.putMoney(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t2"</span>);</span><br><span class="line">		</span><br><span class="line">		t1.start();</span><br><span class="line">		t2.start();</span><br><span class="line">	</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>结果：<br>取钱后，总金额：900.0<br>存钱后，总金额：1000.0</p>
-<h4 id="对象锁"><a href="#对象锁" class="headerlink" title="对象锁"></a>对象锁</h4><p>被synchronzied修饰的方法叫同步方法，否则叫异步方法。<strong>当某一线程调用该对象的同步方法时，其他线程无法调用该对象的其他同步方法，但是可以调用该对象的异步方法</strong>。也就是说，无论多少个synchronized方法，一个对象一把锁，使用了一把锁，其他的线程只能等待锁释放，才能访问同步方法。</p>
-<h4 id="案例2"><a href="#案例2" class="headerlink" title="案例2"></a>案例2</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> mytest;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Bank</span> </span>&#123;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">double</span> money=<span class="number">1000</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//同步方法，取钱</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span>  <span class="keyword">double</span> <span class="title">getMoney</span><span class="params">(<span class="keyword">double</span> get_money)</span></span>&#123;</span><br><span class="line">		money=money-get_money;</span><br><span class="line">		System.out.println(<span class="string">"取钱后，总金额："</span>+money);</span><br><span class="line"><span class="comment">//		return get_money ;</span></span><br><span class="line">		<span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">			System.out.println(Thread.currentThread().getName()+<span class="string">"拿着把锁"</span>);</span><br><span class="line">			</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//异步方法，存钱</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">synchronized</span>  <span class="keyword">double</span> <span class="title">putMoney</span><span class="params">(<span class="keyword">double</span> put_money)</span></span>&#123;</span><br><span class="line">		money+=put_money;</span><br><span class="line">		System.out.println(<span class="string">"存钱后，总金额："</span>+money);</span><br><span class="line">		<span class="keyword">return</span> money;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//异步方法</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span>  <span class="keyword">void</span> <span class="title">getm</span><span class="params">()</span></span>&#123;</span><br><span class="line">		<span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">		System.out.println(<span class="string">"异步方法，============总金额："</span>+money);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String [] args)</span></span>&#123;</span><br><span class="line">		Bank bank= <span class="keyword">new</span> Bank();</span><br><span class="line">		Thread t1=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="comment">//访问同步方法</span></span><br><span class="line">				bank.getMoney(<span class="number">100</span>);</span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t1"</span>);</span><br><span class="line">		Thread t2=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="comment">//访问同步方法</span></span><br><span class="line">				bank.putMoney(<span class="number">100</span>);</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t2"</span>);</span><br><span class="line">		Thread t3=<span class="keyword">new</span> Thread(<span class="keyword">new</span> Runnable()&#123;</span><br><span class="line">			<span class="meta">@Override</span></span><br><span class="line">			<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">				<span class="comment">//访问异步方法</span></span><br><span class="line">				bank.getm();</span><br><span class="line"></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		&#125;,<span class="string">"t3"</span>);</span><br><span class="line">		</span><br><span class="line">		t1.start();</span><br><span class="line">		t2.start();</span><br><span class="line">		t3.start();</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">		</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>结果：<br>t1拿着把锁<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>t1拿着把锁<br>t1拿着把锁<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>异步方法，============总金额：900.0<br>t1拿着把锁<br>t1拿着把锁<br>异步方法，============总金额：900.0</p>
-<h4 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h4><p>当线程持续拿着一把对象锁(bank)不放时，其他线程就不能访问该对象锁(bank)，但是能访问bank的异步方法。</p>
-<hr>
-<h2 id="1-4-脏读"><a href="#1-4-脏读" class="headerlink" title="1.4 脏读"></a>1.4 脏读</h2><p>对于对象的同步和异步的方法，我们在设计自己的程序时候，一定要考虑问题的整体(<strong>原子性</strong>)，不然会出现数据不一致的错误。</p>
-<p>例子：<br>set/get方法都加上synchronized的修饰。</p>
-<p>synchronized能保证函数的<strong>原子性</strong></p>
-<hr>
-<h2 id="1-5-synchronized的其他概念"><a href="#1-5-synchronized的其他概念" class="headerlink" title="1.5 synchronized的其他概念"></a>1.5 synchronized的其他概念</h2><h3 id="锁重入概念"><a href="#锁重入概念" class="headerlink" title="锁重入概念"></a>锁重入概念</h3><p>关键字synchronized 拥有锁重入的功能，也就是在使用synchronized时，当一个线程得到一个对象的锁后，再次调用此对象时就是可以再次获得该对象的锁。</p>
-<ul>
-<li>锁重入形式1:对于某一线程操作某一对象时，在该类函数中，不同的同步方法相互调用，形成锁重入。</li>
-<li>锁重入形式2:对于某一线程操作某一对象时，在父子类函数中，不同类的不同的同步方法相互调用，形成锁重入。</li>
-</ul>
-<h3 id="synchronized的异常处理"><a href="#synchronized的异常处理" class="headerlink" title="synchronized的异常处理"></a>synchronized的异常处理</h3><p>当synchronized处理过程中，抛出异常时会丢失锁，因此要好好的处理异常，不然业务逻辑就发生严重错误。</p>
-<hr>
-<h2 id="1-6-synchronized代码块"><a href="#1-6-synchronized代码块" class="headerlink" title="1.6 synchronized代码块"></a>1.6 synchronized代码块</h2><h3 id="对象锁-1"><a href="#对象锁-1" class="headerlink" title="对象锁"></a>对象锁</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(<span class="keyword">this</span>)&#123;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//修改对象里的属性时，不会释放锁。</span></span><br></pre></td></tr></table></figure>
-<h3 id="字符串-它也是对象-锁："><a href="#字符串-它也是对象-锁：" class="headerlink" title="字符串(它也是对象)锁："></a>字符串(它也是对象)锁：</h3><p>1.使用常量字符串作为锁<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(“ssss”)&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">        <span class="comment">//这种形式某一线程不会释放锁,此序使用"ssss"对象锁</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>2.使用new String(“sss”)作为锁,每次访问该代码块，都使用新的字符串作为锁<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(<span class="keyword">new</span> String(“sss”))&#123;</span><br><span class="line">    <span class="keyword">while</span>(<span class="keyword">true</span>)&#123;</span><br><span class="line">        <span class="comment">//这种形式任意线程不会释放锁,此序使用各自new 出来的"ssss"对象锁,相互不影响</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>3.修改对象的引用，导致释放锁<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> lockstr=’ssss’;</span><br><span class="line"><span class="keyword">synchronized</span>(lockstr)&#123;</span><br><span class="line">    lockstr=“aaa”;</span><br><span class="line">    <span class="comment">//这种形式，当线程在改变的瞬间释放锁，导致其他线程进来</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="死锁："><a href="#死锁：" class="headerlink" title="死锁："></a>死锁：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//线程1执行的代码块：</span></span><br><span class="line"><span class="keyword">synchronized</span>(object1)&#123;</span><br><span class="line">    <span class="comment">//尝试获取object2锁</span></span><br><span class="line">    <span class="keyword">synchronized</span>(object2)&#123;</span><br><span class="line">    ..</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//线程2执行的代码块：</span></span><br><span class="line"><span class="keyword">synchronized</span>(object2)&#123;</span><br><span class="line">    <span class="comment">//尝试获取object1锁</span></span><br><span class="line">    <span class="keyword">synchronized</span>(object1)&#123;</span><br><span class="line">    ..</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>以上是双方互持有对方的锁，形成了死锁</p>
-<hr>
-<h2 id="1-7-volatile关键字"><a href="#1-7-volatile关键字" class="headerlink" title="1.7 volatile关键字"></a>1.7 volatile关键字</h2><p>volatile 关键字主要作用是使变量在多个线程间可见</p>
-<blockquote>
-<p>下面这段话摘自《深入理解Java虚拟机》：<br>“观察加入volatile关键字和没有加入volatile关键字时所生成的汇编代码发现，加入volatile关键字时，会多出一个lock前缀指令”<br>　　lock前缀指令实际上相当于一个内存屏障（也成内存栅栏），内存屏障会提供3个功能：<br>　　1）它确保指令重排序时不会把其后面的指令排到内存屏障之前的位置，也不会把前面的指令排到内存屏障的后面；即在执行到内存屏障这句指令时，在它前面的操作已经全部完成；<br>　　2）它会强制将对缓存的修改操作立即写入主存；<br>　　3）如果是写操作，它会导致其他CPU中对应的缓存行无效。</p>
-</blockquote>
-<h3 id="可见性"><a href="#可见性" class="headerlink" title="可见性"></a>可见性</h3><p>当一个共享变量被volatile修饰时，它会保证修改的值会立即被更新到主存，当有其他线程需要读取时，它会去内存中读取新值。<br>　　而普通的共享变量不能保证可见性，因为普通共享变量被修改之后，什么时候被写入主存是不确定的，当其他线程去读取时，此时内存中可能还是原来的旧值，因此无法保证可见性。<br>　　另外，通过synchronized和Lock也能够保证可见性，synchronized和Lock能保证同一时刻只有一个线程获取锁然后执行同步代码，并且在释放锁之前会将对变量的修改刷新到主存当中。因此可以保证可见性。</p>
-<p>使用volatile关键字的话，当线程2进行修改时，会导致线程1的工作内存中缓存变量stop的缓存行无效（反映到硬件层的话，就是CPU的L1或者L2缓存中对应的缓存行无效）；由于线程1的工作内存中缓存变量stop的缓存行无效，所以线程1再次读取变量stop的值时会去主存读取。</p>
-<p><strong>综上所述，volatile能保证可见性,synchronized和Lock也能保证可见性</strong></p>
-<h3 id="原子性"><a href="#原子性" class="headerlink" title="原子性"></a>原子性</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">x = <span class="number">10</span>;         <span class="comment">//语句1</span></span><br><span class="line">y = x;         <span class="comment">//语句2</span></span><br><span class="line">x++;           <span class="comment">//语句3</span></span><br><span class="line">x = x + <span class="number">1</span>;     <span class="comment">//语句4</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>语句1 是直接将数值10赋值给x，也就是说线程执行这个语句的会直接将数值10写入到工作内存中。</li>
-<li>语句2 实际上包含2个操作，它先要去读取x的值，再将x的值写入工作内存，虽然读取x的值以及 将x的值写入工作内存 这2个操作都是原子性操作，但是合起来就不是原子性操作了。</li>
-<li>同样的，x++和 x = x+1包括3个操作：读取x的值，进行加1操作，写入新的值。</li>
-</ul>
-<p><strong>所以上面4个语句只有语句1的操作具备原子性。</strong></p>
-<p><strong>volatile 能保证可见性，但不能保证原子性</strong><br><strong>synchronized，Lock,java.util.concurrent.atomic*能保证原子性</strong></p>
-<h3 id="有序性"><a href="#有序性" class="headerlink" title="有序性"></a>有序性</h3><p>在前面提到volatile关键字能禁止指令重排序，所以volatile能在一定程度上保证有序性。</p>
-<p>　　volatile关键字禁止指令重排序有两层意思：</p>
-<ol>
-<li><p>当程序执行到volatile变量的读操作或者写操作时，在其前面的操作的更改肯定全部已经进行，且结果已经对后面的操作可见；在其后面的操作肯定还没有进行；</p>
-</li>
-<li><p>在进行指令优化时，不能将在对volatile变量访问的语句放在其后面执行，也不能把volatile变量后面的语句放到其前面执行。</p>
-</li>
-</ol>
-<p>　　可能上面说的比较绕，举个简单的例子：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//x、y为非volatile变量</span></span><br><span class="line"><span class="comment">//flag为volatile变量</span></span><br><span class="line"> </span><br><span class="line">x = <span class="number">2</span>;        <span class="comment">//语句1</span></span><br><span class="line">y = <span class="number">0</span>;        <span class="comment">//语句2</span></span><br><span class="line">flag = <span class="keyword">true</span>;  <span class="comment">//语句3</span></span><br><span class="line">x = <span class="number">4</span>;         <span class="comment">//语句4</span></span><br><span class="line">y = -<span class="number">1</span>;       <span class="comment">//语句5</span></span><br></pre></td></tr></table></figure></p>
-<p>　由于flag变量为volatile变量，那么在进行指令重排序的过程的时候，不会将语句3放到语句1、语句2前面，也不会讲语句3放到语句4、语句5后面。但是要注意语句1和语句2的顺序、语句4和语句5的顺序是不作任何保证的。</p>
-<p>　　并且volatile关键字能保证，执行到语句3时，语句1和语句2必定是执行完毕了的，且语句1和语句2的执行结果对语句3、语句4、语句5是可见的。</p>
-<p>一个例子：　<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//线程1:</span></span><br><span class="line">context = loadContext();   <span class="comment">//语句1</span></span><br><span class="line">inited = <span class="keyword">true</span>;             <span class="comment">//语句2</span></span><br><span class="line"> </span><br><span class="line"><span class="comment">//线程2:</span></span><br><span class="line"><span class="keyword">while</span>(!inited )&#123;</span><br><span class="line">  sleep() </span><br><span class="line">&#125;</span><br><span class="line">doSomethingwithconfig(context);</span><br></pre></td></tr></table></figure></p>
-<p>前面举这个例子的时候，提到有可能语句2会在语句1之前执行，那么久可能导致context还没被初始化，而线程2中就使用未初始化的context去进行操作，导致程序出错。</p>
-<p>　　这里如果用volatile关键字对inited变量进行修饰，就不会出现这种问题了，因为当执行到语句2时，必定能保证context已经初始化完毕。</p>
-<h3 id="volatile应用场景"><a href="#volatile应用场景" class="headerlink" title="volatile应用场景"></a>volatile应用场景</h3><p>ynchronized关键字是防止多个线程同时执行一段代码，那么就会很影响程序执行效率，而volatile关键字在某些情况下性能要优于synchronized，但是要注意volatile关键字是无法替代synchronized关键字的，因为volatile关键字无法保证操作的原子性。通常来说，使用volatile必须具备以下2个条件：</p>
-<p>　　1）对变量的写操作不依赖于当前值</p>
-<p>　　2）该变量没有包含在具有其他变量的不变式中</p>
-<p>　　实际上，这些条件表明，可以被写入 volatile 变量的这些有效值独立于任何程序的状态，包括变量的当前状态。</p>
-<p>　　事实上，我的理解就是上面的2个条件需要保证操作是原子性操作，才能保证使用volatile关键字的程序在并发时能够正确执行。</p>
-<p>　　下面列举几个Java中使用volatile的几个场景。
-　　</p>
-<h3 id="状态标记量"><a href="#状态标记量" class="headerlink" title="状态标记量"></a>状态标记量</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//例1</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="keyword">boolean</span> flag = <span class="keyword">false</span>;</span><br><span class="line"> <span class="comment">//线程1</span></span><br><span class="line"><span class="keyword">while</span>(!flag)&#123;</span><br><span class="line">    doSomething();</span><br><span class="line">&#125;</span><br><span class="line"> <span class="comment">//线程2</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFlag</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    flag = <span class="keyword">true</span>;</span><br><span class="line">&#125;</span><br><span class="line">setFlag();</span><br></pre></td></tr></table></figure>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//例2</span></span><br><span class="line"><span class="keyword">volatile</span> <span class="keyword">boolean</span> inited = <span class="keyword">false</span>;</span><br><span class="line"><span class="comment">//线程1:</span></span><br><span class="line">context = loadContext();  </span><br><span class="line">inited = <span class="keyword">true</span>;            </span><br><span class="line"> </span><br><span class="line"><span class="comment">//线程2:</span></span><br><span class="line"><span class="keyword">while</span>(!inited )&#123;</span><br><span class="line">sleep()</span><br><span class="line">&#125;</span><br><span class="line">doSomethingwithconfig(context);</span><br></pre></td></tr></table></figure>
-<p><strong>就是在两个线程之间，一个线程的循环状态被两外一线程通过inited的值来控制</strong></p>
-<h3 id="double-check"><a href="#double-check" class="headerlink" title="double check"></a>double check</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//例3</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Singleton</span></span>&#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">volatile</span> <span class="keyword">static</span> Singleton instance = <span class="keyword">null</span>;</span><br><span class="line">     </span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">Singleton</span><span class="params">()</span> </span>&#123;</span><br><span class="line">         </span><br><span class="line">    &#125;</span><br><span class="line">     </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Singleton <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(instance==<span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">synchronized</span> (Singleton.class) &#123;</span><br><span class="line">                <span class="keyword">if</span>(instance==<span class="keyword">null</span>)</span><br><span class="line">                    instance = <span class="keyword">new</span> Singleton();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> instance;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>double-check的应用就是：多线程取得单例时，先只允许同步获取单例，一旦单例被实例化出来，其他的线程就无须来竞争锁都可以异步获取单例。</strong></p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2018/02/25/socket-io-3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Dravin">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Dravin's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/25/socket-io-3/" itemprop="url">Socket网络编程第三篇</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-25T15:26:38+08:00">
-                2018-02-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Socket/" itemprop="url" rel="index">
-                    <span itemprop="name">Socket</span>
-                  </a>
-                </span>
-
-                
-                
-                  ， 
-                
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Socket/Socket-03/" itemprop="url" rel="index">
-                    <span itemprop="name">Socket-03</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h1><p>代码：<a href="https://github.com/dravinbox/SocketIO_03" target="_blank" rel="noopener">https://github.com/dravinbox/SocketIO_03</a></p>
-<ol>
-<li>最佳实践（数据通信，心跳检测）</li>
-<li>netty实现文件服务器（基于Http协议）</li>
-<li>mina入门基础</li>
-</ol>
-<h2 id="1-1-最佳实践-数据通信"><a href="#1-1-最佳实践-数据通信" class="headerlink" title="1.1 最佳实践 - 数据通信"></a>1.1 最佳实践 - 数据通信</h2><p>考虑机器应该如何使用netty通信：</p>
-<ol>
-<li>第一种，使用长连接，如果服务器的性能足够好，并且我们的客户端的数量也比较少的情况下，推荐这种</li>
-<li>第二种，一次性批量提交数据，采用短连接；又或者定时任务轮询提交，在对于实时性不高的应用程序中可以推荐使用。</li>
-<li>第三种，我们可以使用特殊的长连接，超时时断开连接，下次需要发送请求时，再次建立连接。</li>
-</ol>
-<h2 id="1-2最佳实践-心跳检测"><a href="#1-2最佳实践-心跳检测" class="headerlink" title="1.2最佳实践 - 心跳检测"></a>1.2最佳实践 - 心跳检测</h2><p>我们使用Socket 通信一般经常会处理多个服务器之间的心跳检测，一般来说我们去维护服务器集群，肯定有一台或几台服务主机（Master),然后还有N台（Slave）,那么我们的主机肯定要时时刻刻知道自己下面的从服务器的各种情况，然后进行实时监控的功能，这个在分布式架构里叫做心跳检测或心跳监控，最佳处理方案是使用一下通信框架进行实践如Netty</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2012,7 +1952,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">27</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2023,7 +1963,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">35</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -2034,7 +1974,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">29</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
