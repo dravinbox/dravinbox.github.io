@@ -231,22 +231,57 @@
     </url>
 
     <url>
-        <loc>http://dravinbox.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/</loc>
-        <lastmod>2018-09-25T06:45:17.261Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://dravinbox.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/%E9%9D%9E%E5%AF%B9%E7%A7%B0%E7%AE%97%E6%B3%95/</loc>
-        <lastmod>2018-09-25T06:45:17.261Z</lastmod>
+        <loc>http://dravinbox.github.io/categories/Kubernetes/</loc>
+        <lastmod>2018-10-09T05:21:53.068Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
         <loc>http://dravinbox.github.io/categories/QT/</loc>
-        <lastmod>2018-09-25T06:53:31.834Z</lastmod>
+        <lastmod>2018-10-09T05:57:48.158Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/scrum/</loc>
+        <lastmod>2018-10-19T07:44:20.617Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/</loc>
+        <lastmod>2018-10-31T08:11:25.018Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/%E5%AF%86%E7%A0%81%E5%AD%A6/%E9%9D%9E%E5%AF%B9%E7%A7%B0%E7%AE%97%E6%B3%95/</loc>
+        <lastmod>2018-10-31T08:11:25.018Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/Machine-Study/Starter/</loc>
+        <lastmod>2018-10-31T08:29:06.631Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/Machine-Study/</loc>
+        <lastmod>2018-10-31T08:30:54.248Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/categories/Machine-Study/%E6%8E%A8%E8%8D%90%E7%AE%97%E6%B3%95/</loc>
+        <lastmod>2018-10-31T08:30:54.248Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

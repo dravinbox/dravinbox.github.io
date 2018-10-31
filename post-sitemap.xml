@@ -7,8 +7,32 @@
     </url>
 
     <url>
-        <loc>http://dravinbox.github.io/2018/09/25/qt-update-ui/</loc>
-        <lastmod>2018-09-25T06:53:31.834Z</lastmod>
+        <loc>http://dravinbox.github.io/2018/10/24/machine-study-3/</loc>
+        <lastmod>2018-10-31T08:30:54.248Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/10/25/machine-study-4/</loc>
+        <lastmod>2018-10-31T08:30:43.229Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/10/22/machine-study-2-caffe/</loc>
+        <lastmod>2018-10-31T08:29:27.069Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/10/22/machine-study-1-background/</loc>
+        <lastmod>2018-10-31T08:29:06.631Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
@@ -16,7 +40,79 @@
 
     <url>
         <loc>http://dravinbox.github.io/2018/09/20/encrypt/</loc>
-        <lastmod>2018-09-25T06:45:17.261Z</lastmod>
+        <lastmod>2018-10-31T08:11:25.018Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/10/19/scrum-7/</loc>
+        <lastmod>2018-10-19T07:46:19.649Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/10/17/scrum-4/</loc>
+        <lastmod>2018-10-19T07:44:20.617Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/10/17/scrum-6/</loc>
+        <lastmod>2018-10-17T07:09:10.041Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/10/17/scrum-5/</loc>
+        <lastmod>2018-10-17T07:06:31.319Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/10/17/scrum-3/</loc>
+        <lastmod>2018-10-17T03:57:17.570Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/10/16/scrum-2/</loc>
+        <lastmod>2018-10-17T03:05:13.326Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/10/16/scrum-1/</loc>
+        <lastmod>2018-10-16T15:58:01.015Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/09/25/qt-update-ui/</loc>
+        <lastmod>2018-10-09T05:57:48.158Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.6</priority>
+
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/2018/08/03/k8s-1/</loc>
+        <lastmod>2018-10-09T05:21:53.068Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.6</priority>
 
