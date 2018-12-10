@@ -198,20 +198,6 @@
     </url>
 
     <url>
-        <loc>http://dravinbox.github.io/tags/Kubernetes/</loc>
-        <lastmod>2018-10-09T05:21:53.069Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
-        <loc>http://dravinbox.github.io/tags/k8s/</loc>
-        <lastmod>2018-10-09T05:21:53.069Z</lastmod>
-        <changefreq>weekly</changefreq>
-        <priority>0.2</priority>
-    </url>
-
-    <url>
         <loc>http://dravinbox.github.io/tags/QT/</loc>
         <lastmod>2018-10-09T05:57:48.159Z</lastmod>
         <changefreq>weekly</changefreq>
@@ -277,6 +263,34 @@
     <url>
         <loc>http://dravinbox.github.io/tags/%E5%BE%AE%E4%BF%A1%E6%94%AF%E4%BB%98/</loc>
         <lastmod>2018-11-23T13:02:02.966Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/tags/Kubernetes/</loc>
+        <lastmod>2018-12-03T06:58:06.308Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/tags/k8s/</loc>
+        <lastmod>2018-12-03T06:58:06.308Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/tags/git/</loc>
+        <lastmod>2018-12-10T09:32:14.741Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>http://dravinbox.github.io/tags/branch/</loc>
+        <lastmod>2018-12-10T09:32:14.741Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

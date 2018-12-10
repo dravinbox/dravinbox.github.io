@@ -4,6 +4,50 @@
 
     
   <url>
+    <loc>http://dravinbox.github.io/2018/12/10/git-branch/</loc>
+    <lastmod>2018-12-10T09:32:14.741Z</lastmod>
+    <data>
+        <display>
+        <title>git-branch</title>
+        <pubTime>2018-12-10T02:49:51.000Z</pubTime>
+        
+        <tag>git</tag>
+         
+        <tag>branch</tag>
+         
+         
+           
+             
+              <breadCrumb title="Git" url="http://dravinbox.github.io/categories/Git/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
+    <loc>http://dravinbox.github.io/2018/12/03/k8s-2/</loc>
+    <lastmod>2018-12-03T06:58:06.308Z</lastmod>
+    <data>
+        <display>
+        <title>k8s-2</title>
+        <pubTime>2018-12-03T06:57:32.000Z</pubTime>
+        
+        <tag>Kubernetes</tag>
+         
+        <tag>k8s</tag>
+         
+         
+           
+             
+              <breadCrumb title="Kubernetes" url="http://dravinbox.github.io/categories/Kubernetes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://dravinbox.github.io/2018/01/20/weixin-subapp-pay/</loc>
     <lastmod>2018-11-23T13:02:02.966Z</lastmod>
     <data>
