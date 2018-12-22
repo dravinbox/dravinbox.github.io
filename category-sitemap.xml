@@ -280,15 +280,15 @@
     </url>
 
     <url>
-        <loc>http://dravinbox.github.io/categories/Kubernetes/</loc>
-        <lastmod>2018-12-03T06:58:06.308Z</lastmod>
+        <loc>http://dravinbox.github.io/categories/Git/</loc>
+        <lastmod>2018-12-12T06:01:07.795Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>http://dravinbox.github.io/categories/Git/</loc>
-        <lastmod>2018-12-10T09:32:14.741Z</lastmod>
+        <loc>http://dravinbox.github.io/categories/Kubernetes/</loc>
+        <lastmod>2018-12-22T07:54:25.853Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

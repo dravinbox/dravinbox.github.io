@@ -321,6 +321,208 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2017/12/22/docker-part3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Dravin">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Dravin's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/22/docker-part3/" itemprop="url">Docker入门-part3-Services</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-22T10:50:56+08:00">
+                2017-12-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Docker/Docker入门/" itemprop="url" rel="index">
+                    <span itemprop="name">Docker入门</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="关于服务-About-services"><a href="#关于服务-About-services" class="headerlink" title="关于服务 About services"></a>关于服务 About services</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本Docker入门系列文章是翻译于Docker官方getStarted文档,如有出入，请跳转查看<a href="https://docs.docker.com/get-started/" target="_blank" rel="noopener">官方文档</a></p>
+<h2 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h2><blockquote>
+<p>In a distributed application, different pieces of the app are called “services.” For example, if you imagine a video sharing site, it probably includes a service for storing application data in a database, a service for video transcoding in the background after a user uploads something, a service for the front-end, and so on.<br>Services are really just “containers in production.” A service only runs one image, but it codifies the way that image runs—what ports it should use, how many replicas of the container should run so the service has the capacity it needs, and so on. Scaling a service changes the number of container instances running that piece of software, assigning more computing resources to the service in the process.<br>Luckily it’s very easy to define, run, and scale services with the Docker platform – just write a <code>docker-compose.yml</code> file.</p>
+</blockquote>
+<p>可以理解为，服务包含多个容器。一个服务通过docker-compose.yml创建，里面定义了多个容器的行为，资源消耗等问题。</p>
+<h2 id="编写你的-docker-compose-yml-文件"><a href="#编写你的-docker-compose-yml-文件" class="headerlink" title="编写你的 docker-compose.yml 文件"></a>编写你的 docker-compose.yml 文件</h2><p>这个文件定义了容器的行为</p>
+<h3 id="docker-compose-yml文件"><a href="#docker-compose-yml文件" class="headerlink" title="docker-compose.yml文件"></a>docker-compose.yml文件</h3><p>在你喜欢的目录下，创建 一个文件叫docker-compose.yml，使用你之前在Part 2推送的镜像，更新一下下面中username/repo:tag 的位置代码：</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">"3"</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line"><span class="attr">  web:</span></span><br><span class="line">    <span class="comment">#使用之前你推送的镜像路径 替代这里的 username/repo:tag </span></span><br><span class="line"><span class="attr">    image:</span> <span class="string">username/repo:tag</span></span><br><span class="line"><span class="attr">    deploy:</span></span><br><span class="line"><span class="attr">      replicas:</span> <span class="number">5</span></span><br><span class="line"><span class="attr">      resources:</span></span><br><span class="line"><span class="attr">        limits:</span></span><br><span class="line"><span class="attr">          cpus:</span> <span class="string">"0.1"</span></span><br><span class="line"><span class="attr">          memory:</span> <span class="number">50</span><span class="string">M</span></span><br><span class="line"><span class="attr">      restart_policy:</span></span><br><span class="line"><span class="attr">        condition:</span> <span class="string">on-failure</span></span><br><span class="line"><span class="attr">    ports:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">"4000:80"</span></span><br><span class="line"><span class="attr">    networks:</span></span><br><span class="line"><span class="bullet">      -</span> <span class="string">webnet</span></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line"><span class="attr">  webnet:</span></span><br></pre></td></tr></table></figure>
+<h3 id="文件解释"><a href="#文件解释" class="headerlink" title="文件解释"></a>文件解释</h3><p>这个文件告诉docker 去做以下的事：</p>
+<ul>
+<li>拉取远程镜像</li>
+<li>运行5个容器作为一个服务，命名为<code>web</code>;限制每一个的资源：最多10%CPU的使用和50MB内存</li>
+<li>如果有一个容器宕机，立马重启它这个容器</li>
+<li>映射宿主机的4000端口到<code>web</code>该服务的80端口</li>
+<li>这里面的5个容器通过负载均衡网络<code>webnet</code>共享80端口</li>
+<li>定义一个默认配置的网络<code>webnet</code>，它是一个负载均衡的网络(load-balanced overlay network)</li>
+</ul>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmpkesyoytg30j20cutwa.gif" alt=""></p>
+<h2 id="运行你的负载均衡APP"><a href="#运行你的负载均衡APP" class="headerlink" title="运行你的负载均衡APP"></a>运行你的负载均衡APP</h2><p>在我们使用<code>docker stack deploy</code>前先执行下面的命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm init</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p><strong>注意</strong>：如果你不运行<code>docker swarm init</code>你将得到一个错误：“this node is not a swarm manager”</p>
+</blockquote>
+<p>运行 以上命令后，使用一下命令给你的负载均衡APP命名，这里名为getstartedlab :</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>如果你运行起来有***.***.*** must be a mapping 就说明的你yml配置文件格式不对</p>
+</blockquote>
+<p>好了，我们来看看这个服务是不是有5个容器在运行，使用以下命令查看服务：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker service ls</span><br></pre></td></tr></table></figure>
+<p>我们可以看到服务name 是getstartedlab_web ，就是APP名__服务名的结合。<br>这里服务中的每一个容器称为<strong>任务(Task)</strong>，这些任务都分配着唯一的ID，查看该服务的详细任务列表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker service ps getstartedlab_web</span><br></pre></td></tr></table></figure>
+<p>以上 看到服务里各个任务id，当然容器对于外部系统来说，也有容器id:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker container ls -q</span><br></pre></td></tr></table></figure>
+<p>现在你可以使用<code>curl -4 http://localhost:4000</code>多次执行，或多次浏览该URL，你会发现所有不同，他们真的负载均衡了。你可以看到变得是容器ID,就是上面<code>docker containter ls -q</code>的结果之一。</p>
+<p><img src="https://ws1.sinaimg.cn/large/006tNc79gy1fmpl5et388g30j20cuhdt.gif" alt=""></p>
+<h2 id="调控你的APP"><a href="#调控你的APP" class="headerlink" title="调控你的APP"></a>调控你的APP</h2><p>你可以修改docker-compose.yml里的replicas的值，然后保存，再次执行：<br>修改前我查看一下容器id列表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span> container ls -q</span><br><span class="line">6e64e2240278</span><br><span class="line">3ccbef3e8459</span><br><span class="line">985e1fec1482</span><br><span class="line">8c7dbe7aad8d</span><br><span class="line">6633801d7557</span><br></pre></td></tr></table></figure>
+<p>这里我修改replicas为7，然后保存，再次执行以下命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack deploy -c docker-compose.yml getstartedlab</span><br></pre></td></tr></table></figure>
+<p>再查看容器id列表：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span> container ls -q</span><br><span class="line">cc9987a174f1</span><br><span class="line">e4b0337fed8d</span><br><span class="line">6e64e2240278</span><br><span class="line">3ccbef3e8459</span><br><span class="line">985e1fec1482</span><br><span class="line">8c7dbe7aad8d</span><br><span class="line">6633801d7557</span><br></pre></td></tr></table></figure>
+<p>发现它保留了原来的容器，并增加两个新的容器：cc9987a174f1和e4b0337fed8d，说明调控任务数量时，它不会把原来的全部容器杀死，而是一种更新。</p>
+<p><img src="https://ws2.sinaimg.cn/large/006tNc79gy1fmplmbl6ekg30j20cu1kx.gif" alt=""></p>
+<h2 id="关闭你的app和关闭swarm"><a href="#关闭你的app和关闭swarm" class="headerlink" title="关闭你的app和关闭swarm"></a>关闭你的app和关闭swarm</h2><p>关闭app</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stack rm getstartedlab</span><br></pre></td></tr></table></figure>
+<p>关闭swarm:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker swarm leave --force</span><br></pre></td></tr></table></figure>
+<p><img src="https://ws3.sinaimg.cn/large/006tNc79gy1fmplnwmw78g30j20cuqad.gif" alt=""></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">docker stack ls                                            <span class="comment"># List stacks or apps</span></span><br><span class="line">docker stack deploy -c &lt;composefile&gt; &lt;appname&gt;  <span class="comment"># Run the specified Compose file</span></span><br><span class="line">docker service ls                 <span class="comment"># List running services associated with an app</span></span><br><span class="line">docker service ps &lt;service&gt;                  <span class="comment"># List tasks associated with an app</span></span><br><span class="line">docker inspect &lt;task or container&gt;                   <span class="comment"># Inspect task or container</span></span><br><span class="line">docker container ls -q                                      <span class="comment"># List container IDs</span></span><br><span class="line">docker stack rm &lt;appname&gt;                             <span class="comment"># Tear down an application</span></span><br><span class="line">docker swarm leave --force      <span class="comment"># Take down a single node swarm from the manager</span></span><br></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://dravinbox.github.io/2017/12/22/docker-part2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -952,7 +1154,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">43</span>
+                  <span class="site-state-item-count">44</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

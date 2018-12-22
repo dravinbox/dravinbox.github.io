@@ -4,8 +4,30 @@
 
     
   <url>
+    <loc>http://dravinbox.github.io/2018/12/22/k8s-install/</loc>
+    <lastmod>2018-12-22T07:54:25.853Z</lastmod>
+    <data>
+        <display>
+        <title>k8s-install</title>
+        <pubTime>2018-12-22T06:07:10.000Z</pubTime>
+        
+        <tag>Kubernetes</tag>
+         
+        <tag>k8s</tag>
+         
+         
+           
+             
+              <breadCrumb title="Kubernetes" url="http://dravinbox.github.io/categories/Kubernetes/"/>
+          
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://dravinbox.github.io/2018/12/10/git-branch/</loc>
-    <lastmod>2018-12-10T09:32:14.741Z</lastmod>
+    <lastmod>2018-12-12T06:01:07.795Z</lastmod>
     <data>
         <display>
         <title>git-branch</title>
